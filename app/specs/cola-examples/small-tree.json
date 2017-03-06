@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {"name": "a"},
+    {"name": "b"},
+    {"name": "c"},
+    {"name": "d"},
+    {"name": "e"},
+    {"name": "f"}
+  ],
+  "links": [
+    {"source": 0, "target": 1},
+    {"source": 0, "target": 2},
+    {"source": 1, "target": 3},
+    {"source": 2, "target": 4},
+    {"source": 2, "target": 5}
+  ], 
+  "constraints": [
+    {"type": "alignment", "axis": "y", "offsets":[{"node":0, "offset":0}]},
+    {"type": "alignment", "axis": "y", "offsets":[{"node":1, "offset":0}, {"node":2, "offset":0}]},
+    {"type": "alignment", "axis": "y", "offsets":[{"node":3, "offset":0}, {"node":4, "offset":0}, {"node":5, "offset":0}]},
+    {"axis": "x", "left": 1, "right": 2, "gap": 50},
+    {"axis": "x", "left": 3, "right": 4, "gap": 50},
+    {"axis": "x", "left": 3, "right": 5, "gap": 50},
+    {"axis": "x", "left": 4, "right": 5, "gap": 50},
+    {"type": "alignment", "axis": "x", "offsets":[{"node":0, "offset":0}, {"node":1, "offset":0}]}, {"type": "alignment", "axis": "x", "offsets":[{"node":1, "offset":0}, {"node":3, "offset":0}]},
+    {"type": "alignment", "axis": "x", "offsets":[{"node":2, "offset":0}, {"node":4, "offset":0}]},
+    {"axis": "y", "left": 0, "right": 1, "gap": 25},
+    {"axis": "y", "left": 0, "right": 2, "gap": 25},
+    {"axis": "y", "left": 0, "right": 3, "gap": 25},
+    {"axis": "y", "left": 0, "right": 4, "gap": 25},
+    {"axis": "y", "left": 0, "right": 5, "gap": 25},
+    {"axis": "y", "left": 1, "right": 3, "gap": 25},
+    {"axis": "y", "left": 1, "right": 4, "gap": 25},
+    {"axis": "y", "left": 1, "right": 5, "gap": 25},
+    {"axis": "y", "left": 2, "right": 3, "gap": 25},
+    {"axis": "y", "left": 2, "right": 4, "gap": 25},
+    {"axis": "y", "left": 2, "right": 5, "gap": 25}
+  ]
+}

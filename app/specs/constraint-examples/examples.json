@@ -1,0 +1,100 @@
+// Tree Layout
+
+"constraints": [
+  {
+    "name": "layer",
+    "set": {"property": "depth"},
+    "constraints": [{ "type": "align", "axis": "x" }]
+  },
+  {
+    "name": "ordered",
+    "from": "layer",
+    "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+  }
+]
+
+// Sorted Tree Layout
+
+"constraints": [
+  {
+    "name": "layer",
+    "set": {"property": "depth"},
+    "constraints": [
+      { "type": "align", "axis": "x" },
+      { "type": "order", "axis": "x", "by": "_id" }
+    ]
+  },
+  {
+    "name": "ordered",
+    "from": "layer",
+    "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+  }
+]
+
+// Customized Cluster Hierarchy
+
+"constraints": [
+  {
+    "name": "cluster",
+    "set": {"property": "type"},
+    "constraints": [
+      { "type": "order", "axis": "x", "by": "_id" },
+      { "type": "align", "axis": "x" }
+    ]
+  },
+  {
+    "name": "layer",
+    "from": "cluster",
+    "constraints": [
+      { 
+        "type": "order", 
+        "axis": "y", 
+        "by": "type", 
+        "order": ["carnivore", "herbivore", "plant"]
+      }
+    ]
+  }
+]
+
+// Flow Layout
+
+"constraints": [
+  {
+    "name": "layer",
+    "set": {"property": "parent"},
+    "constraints": [
+      { "type": "position", "position": "right", "of": "parent.x" }
+    ]
+  },
+  {
+    "name": "ordered",
+    "from": "layer",
+    "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+  }
+]
+
+// Only align one of the layers
+
+"constraints": [
+  {
+    "name": "cluster",
+    "set": {"property": "type"}
+  },
+  {
+    "name": "layer",
+    "from": "cluster",
+    "constraints": [
+      { 
+        "type": "order", 
+        "axis": "y", 
+        "by": "type", 
+        "order": ["carnivore", "herbivore", "plant"]
+      }
+    ]
+  },
+  {
+    "name": "plant",
+    "set": {"expr": "datum.type == 'plant'"},
+    "constraints": [{ "type": "align", "axis": "x" }]
+  }
+]

@@ -1,0 +1,330 @@
+body {
+  margin: 0px;
+  display: flex;
+  flex-flow: row;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
+}
+
+/*********************** HEADER **********************/
+
+.header {
+  padding: 10px;
+  height: 20px;
+  background: rgba(5,5,5,0.81);
+  color: white;
+}
+
+h1 {
+  font-size: larger;
+  font-family: monospace;
+  margin: 0px;
+  display: inline;
+  font-weight: normal;
+  cursor: default;
+}
+
+.fa.fa-play {
+  padding: 0px 5px;
+  font-size: smaller;
+  cursor: pointer;
+}
+
+.controls {
+  float: right;
+}
+
+.controls span {
+  padding: 0px 2px;
+  cursor: pointer;
+}
+
+/*********************** SPECS ***********************/
+
+.mod_spec {
+  display: flex;
+  flex-flow: column;
+  flex: 0 0 40%;
+}
+
+.specs {
+  display: flex;
+  flex-flow: column;
+  flex: 1 0 auto;
+  border: 1px solid black;
+  margin: 2px;
+}
+
+.specs textarea {
+  flex: 1 0 auto;
+  outline: none;
+}
+
+.cola-spec {
+  background: #aaa;
+  overflow: scroll;
+}
+
+.separator {
+  background: lightgray;
+  width: 100%;
+  height: 15px;
+  cursor: pointer;
+}
+.separator span {
+  position: relative;
+  left: 50%;
+  padding: 0px 2px;
+  color: rgba(5,5,5,0.81);
+  cursor: pointer;
+}
+
+/*********************** GRAPH ***********************/
+
+.mod_vis {
+  flex: 1 0 auto;
+  display: flex;
+  flex-flow: column;
+}
+
+.graph {
+  margin: 2px;
+  border: 1px dashed lightgray;
+  flex: 1 0 40%;
+}
+
+/******************** TEMP REGION ********************/
+
+.temp-region {
+  display: none;
+  margin: 0px 2px 4px 2px;
+  flex: 0 1 40%;
+  overflow: scroll;
+}
+
+/*---------------------- ERROR ----------------------*/
+
+.temp-region.error {
+  border: 1px solid #c80101;
+}
+
+.temp-region.config .error {
+  display: block;
+  margin: 5px;
+}
+
+.temp-region.error .error p, .temp-region.error .error span {
+  display: inline-block;
+  padding: 0px 5px;
+  margin: 13px 0px;
+  font-size: smaller;
+  color: #c80101;
+}
+
+.temp-region.error .error p {
+  font-family: sans-serif;
+}
+
+.temp-region.error .options, 
+.temp-region.error .debug, 
+.temp-region.error .help {
+  display: none;
+}
+
+/*---------------------- CONFIG ---------------------*/
+
+.temp-region.config {
+  border: 1px solid #01adc8;
+}
+
+.temp-region.config .options {
+  display: block;
+  margin: 5px;
+}
+
+.temp-region.config h1 {
+  display: inline-block;
+  margin: 0px 0px 5px 0px;
+  font-size: 20px;
+  color: #01adc8;
+}
+
+.temp-region.config h2 {
+  margin: 2px 0px;
+  font-size: larger;
+  font-family: monospace;
+  font-weight: normal;
+  display: inline;
+  color: #01adc8;
+}
+
+.temp-region.config .explanation {
+  margin: 0px 5px;
+  font-size: smaller;
+  font-style: italic;
+  color: lightgray;
+}
+
+.temp-region.config .label {
+  display: inline-block;
+  width: 175px;
+}
+
+.temp-region.config .label span {
+  float: right;
+}
+
+.temp-region.config .value {
+  color: lightgray;
+}
+
+.temp-region.config .error, 
+.temp-region.config .debug, 
+.temp-region.config .help {
+  display: none;
+}
+
+/*---------------------- DEBUG ----------------------*/
+
+.temp-region.debug {
+  border: 1px solid #efad0c;
+}
+
+.temp-region.debug .debug {
+  display: block;
+  margin: 5px;
+  width: 100%;
+}
+
+.temp-region.debug h1 {
+  display: inline-block;
+  margin: 0px 0px 5px 0px;
+  font-size: 20px;
+  color: #efad0c;
+}
+
+.temp-region.debug .name {
+  font-family: monospace;
+  font-size: 18px;
+  color: #efad0c;
+}
+
+.fa-caret-right, .fa-caret-down {
+  margin-left: 6px;
+  color: #efad0c;
+  cursor: pointer;
+}
+
+.temp-region.debug .contents {
+  margin-left: 10px;
+  padding: 6px 0px;
+  font-size: 11pt;
+}
+
+.temp-region.debug .check span {
+  padding-left: 2px;
+  color: lightgray;
+  cursor: pointer;
+}
+
+.temp-region.debug .contents .number {
+  font-family: monospace;
+  color: #efad0c;
+}
+
+.temp-region.debug .error, 
+.temp-region.debug .options, 
+.temp-region.debug .help {
+  display: none;
+}
+
+/*----------------------- HELP ----------------------*/
+
+.temp-region.help {
+  border: 1px solid #78c801;
+}
+
+.temp-region.help .help {
+  display: block;
+  margin: 5px;
+}
+
+.temp-region.help .label {
+  display: inline-block;
+  width: 175px;
+}
+
+.temp-region.help h1 {
+  display: inline-block;
+  margin: 0px 0px 5px 0px;
+  font-size: 20px;
+  color: #78c801;
+}
+
+.temp-region.help h2 {
+  display: inline-block;
+  margin: 0px 0px 5px 0px;
+  font-family: monospace;
+  font-weight: normal;
+  font-size: 18px;
+  color: #78c801;
+  cursor: default;
+}
+
+.temp-region.help h3 {
+  display: inline;
+  float: right;
+  margin: 0px;
+  font-size: 10pt;
+  font-family: monospace;
+  font-weight: normal;
+}
+
+.temp-region.help h4 {
+  display: inline;
+  margin: 0px 0px 5px 0px;
+  font-size: 10pt;
+  font-family: monospace;
+  font-weight: normal;
+}
+
+.temp-region.help .sep {
+  display: inline;
+  margin: 2px 0px 2px 5px;
+  font-size: 10pt;
+  font-family: monospace;
+  font-weight: normal;
+  color: lightgray;
+}
+
+.temp-region.help .type {
+  display: inline;
+  margin: 2px 0px 2px 5px;
+  font-size: 10pt;
+  font-family: monospace;
+  font-weight: normal;
+  color: blue;
+}
+
+.temp-region.help .error, 
+.temp-region.help .options, 
+.temp-region.help .debug {
+  display: none;
+}
+
+/********************* OLD STUFF *********************/
+
+.group {
+  stroke: #fff;
+  stroke-width: 1.5px;
+  cursor: move;
+  opacity: 0.7;
+}
