@@ -4,34 +4,53 @@ var hvz = {};
 /*********************** HVZ ENVIRONMENT ***********************/
 /***************************************************************/
 
-hvz.init = function() {
+// ved.init = function(el, dir) {
+//   // Set base directory
+//   var PATH = dir || 'app/';
+//   vg.config.load.baseURL = PATH;
+//   ved.path = PATH;
 
-  inspector.init();
-  renderer.init();
+//   el = (ved.$d3 = d3.select(el));
 
-  // Set up interactions in environment
-  d3.select("#submit").on("click", hvz.start);
-  d3.select(".separator").on("click", hvz.visibility);
-  d3.select(".fa.fa-play").on("click", hvz.restart);
-  d3.select(".fa.fa-exclamation-circle").on("click", inspector.showError);
-  d3.select(".fa.fa-gear").on("click", inspector.showConfig);
-  d3.select(".fa.fa-bug").on("click", inspector.showDebug);
-  d3.select(".fa.fa-question-circle").on("click", inspector.showHelp);
+//   d3.text(PATH + 'template.html', function(err, text) {
+//     el.html(text);
 
-  var exampleSel = d3.select('.sel_examples');
-  exampleSel.on("change", hvz.load);
-  exampleSel.append("option").text("Custom");
-  exampleSel.selectAll("optgroup")
-      .data(Object.keys(EXAMPLES))
-    .enter().append("optgroup")
-      .attr("label", function(key) { return key; })
-    .selectAll("option.spec")
-      .data(function(key) { return EXAMPLES[key]; })
-    .enter().append("option")
-      .text(function(d) { return d.name; });
+hvz.init = function(el) {
 
-  // Load the graph
-  hvz.load();
+  el = d3.select(el);
+  d3.text("app/template.html", function(err, text) { 
+
+    el.html(text); 
+
+    // Start up the inspector and renderer
+    inspector.init();
+    renderer.init();
+
+    // Set up interactions in environment
+    d3.select("#submit").on("click", hvz.start);
+    d3.select(".separator").on("click", hvz.visibility);
+    d3.select(".fa.fa-play").on("click", hvz.restart);
+    d3.select(".fa.fa-exclamation-circle").on("click", inspector.showError);
+    d3.select(".fa.fa-gear").on("click", inspector.showConfig);
+    d3.select(".fa.fa-bug").on("click", inspector.showDebug);
+    d3.select(".fa.fa-question-circle").on("click", inspector.showHelp);
+
+    var exampleSel = d3.select('.sel_examples');
+    exampleSel.on("change", hvz.load);
+    exampleSel.append("option").text("Custom");
+    exampleSel.selectAll("optgroup")
+        .data(Object.keys(EXAMPLES))
+      .enter().append("optgroup")
+        .attr("label", function(key) { return key; })
+      .selectAll("option.spec")
+        .data(function(key) { return EXAMPLES[key]; })
+      .enter().append("option")
+        .text(function(d) { return d.name; });
+
+    // Load the graph
+    hvz.load();
+
+  });
 };
 
 hvz.start = function() {
@@ -42,7 +61,6 @@ hvz.start = function() {
     hvz.error = null;
     if(inspector.errorVisible) inspector.showError();
     var spec = JSON.parse(document.getElementsByClassName("spec")[0].value);
-    console.log(spec)
     graph.init(spec);
   } catch (error) {
     hvz.error = error;
@@ -80,7 +98,7 @@ hvz.load = function() {
   var exampleSel = document.getElementsByClassName("sel_examples")[0];
   var example = exampleSel.options[exampleSel.selectedIndex].value;
   var type = exampleSel.options[exampleSel.selectedIndex].parentNode.label;
-  var PATH = "/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
+  var PATH = "/app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
 
   d3.text(PATH, function(spec) {
     graph.spec = spec;
