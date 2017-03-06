@@ -4,17 +4,6 @@ var hvz = {};
 /*********************** HVZ ENVIRONMENT ***********************/
 /***************************************************************/
 
-// ved.init = function(el, dir) {
-//   // Set base directory
-//   var PATH = dir || 'app/';
-//   vg.config.load.baseURL = PATH;
-//   ved.path = PATH;
-
-//   el = (ved.$d3 = d3.select(el));
-
-//   d3.text(PATH + 'template.html', function(err, text) {
-//     el.html(text);
-
 hvz.init = function(el) {
 
   el = d3.select(el);
@@ -98,7 +87,7 @@ hvz.load = function() {
   var exampleSel = document.getElementsByClassName("sel_examples")[0];
   var example = exampleSel.options[exampleSel.selectedIndex].value;
   var type = exampleSel.options[exampleSel.selectedIndex].parentNode.label;
-  var PATH = "/app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
+  var PATH = "app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
 
   d3.text(PATH, function(spec) {
     graph.spec = spec;
