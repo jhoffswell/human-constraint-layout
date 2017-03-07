@@ -79,7 +79,7 @@ hvz.start = function() {
 };
 
 hvz.restart = function() {
-  renderer.draw();
+  if(graph.spec && graph.spec.nodes) renderer.draw();
 };
 
 hvz.load = function() {

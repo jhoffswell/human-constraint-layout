@@ -360,7 +360,7 @@ function createColaPosition(left, right, axis, cid) {
     "axis": axis,
     "left": graph.spec.nodes.indexOf(left),
     "right": graph.spec.nodes.indexOf(right),
-    "gap": GAP,
+    "gap": renderer.options["constgap"],
     "_type": cid
   };
   return constraint;

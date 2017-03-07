@@ -1,6 +1,4 @@
 var renderer = {};
-var GAP = 50;
-var WIDTH = 20;
 
 /***************************************************************/
 /************************ GRAPH DRAWING ************************/
@@ -13,12 +11,14 @@ renderer.init = function() {
   document.getElementById("range-layoutconst").value = 25;
   document.getElementById("range-linkdist").value = 60;
   document.getElementById("range-symmetric").value = 0;
+  document.getElementById("range-constgap").value = 50;
+  document.getElementById("range-nodesize").value = 20;
 
   document.getElementById("check-arrows").checked = true;
 
   document.getElementById("text-fillprop").value = "_id";
 
-  ["noconst", "userconst", "layoutconst", "linkdist", "symmetric"].map(updateRange);
+  ["noconst", "userconst", "layoutconst", "linkdist", "symmetric", "constgap", "nodesize"].map(updateRange);
   ["debugprint", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
@@ -76,7 +76,6 @@ renderer.draw = function() {
 };
 
 renderer.drawLinks = function() {
-  
   renderer.links = renderer.svg.selectAll(".link")
       .data(graph.spec.links)
     .enter().append("line")
@@ -101,7 +100,6 @@ renderer.drawLinks = function() {
         .style("stroke-width", "1.5px");
     renderer.links.style("marker-end",  "url(#suit)");
   }    
-  
 };
 
 renderer.drawCircleNodes = function() {
@@ -109,7 +107,7 @@ renderer.drawCircleNodes = function() {
         .data(graph.spec.nodes)
       .enter().append("circle")
         .attr("class", "node")
-        .attr("r", WIDTH / 2)
+        .attr("r", renderer.options["nodesize"] / 2)
         .style("fill", graph.getColor)
       .call(renderer.colajs.drag);
 
@@ -123,8 +121,8 @@ renderer.drawNodes = function() {
         .attr("class", "node")
         .attr("width", function(d) { return d.width; })
         .attr("height", function(d) { return d.height; })
-        .attr("rx", WIDTH)
-        .attr("ry", WIDTH)
+        .attr("rx", renderer.options["nodesize"])
+        .attr("ry", renderer.options["nodesize"])
         .style("fill", graph.getColor)
       .call(renderer.colajs.drag);
 

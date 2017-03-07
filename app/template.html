@@ -55,16 +55,22 @@
         <div class="label"><span>Avoid Overlaps:</span></div>
         <input type="checkbox" id="check-overlaps" onchange="updateCheck('overlaps')" checked><br>
         <div class="label"><span>Link Distance:</span></div>
-          <input type="range" id="range-linkdist" min="0" max="100" onchange="updateRange('linkdist')">
+          <input type="range" id="range-linkdist" min="0" max="500" onchange="updateRange('linkdist')">
           <span class="value" id="value-linkdist"></span><br>
         <div class="label"><span>Symmetric Lengths:</span></div>
           <input type="range" id="range-symmetric" min="0" max="100" onchange="updateRange('symmetric')">
           <span class="value" id="value-symmetric"></span><br>
+        <div class="label"><span>Default Gap:</span></div>
+          <input type="range" id="range-constgap" min="0" max="500" step="5" onchange="updateRange('constgap')">
+          <span class="value" id="value-constgap"></span><br>
 
       <h2>Graph Options</h2>
         <span class="explanation">(Graph drawing options.)</span><br>
         <div class="label"><span>Show Arrowheads:</span></div>
           <input type="checkbox" id="check-arrows" onchange="updateCheck('arrows')"><br>
+        <div class="label"><span>Node Size:</span></div>
+          <input type="range" id="range-nodesize" min="5" max="50" onchange="updateRange('nodesize')">
+          <span class="value" id="value-nodesize"></span><br>
         <div class="label"><span>Fill Property:</span></div>
           <input type="text" id="text-fillprop" onchange="updateText('fillprop')"><br>
         <div class="label"><span>Label Property:</span></div>

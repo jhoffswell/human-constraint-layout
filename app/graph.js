@@ -33,8 +33,8 @@ function calculateParents() {
 /*********************** Node Properties ***********************/
 
 graph.setSize = function(node) {
-  node.width = node.width || WIDTH;
-  node.height = node.height || WIDTH;
+  node.width = node.width || renderer.options["nodesize"];
+  node.height = node.height || renderer.options["nodesize"];
 };
 
 graph.setID = function(node) {
