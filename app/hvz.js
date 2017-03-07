@@ -4,12 +4,11 @@ var hvz = {};
 /*********************** HVZ ENVIRONMENT ***********************/
 /***************************************************************/
 
-hvz.init = function(el) {
+hvz.init = function() {
 
-  el = d3.select(el);
   d3.text("app/template.html", function(err, text) { 
 
-    el.html(text); 
+    d3.select("body").html(text); 
 
     // Start up the inspector and renderer
     inspector.init();
