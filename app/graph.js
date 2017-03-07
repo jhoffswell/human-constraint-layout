@@ -16,21 +16,63 @@ graph.init = function(spec) {
 graph.computeBuiltInProperties = function(constraint) {
   if(JSON.stringify(constraint).indexOf("depth") != -1) calculateDepths();
   if(JSON.stringify(constraint).indexOf("parent") != -1) calculateParents();
+  if(JSON.stringify(constraint).indexOf("incoming") != -1) calculateIncoming();
+  if(JSON.stringify(constraint).indexOf("outgoing") != -1) calculateOutgoing();
+  if(JSON.stringify(constraint).indexOf("neighbors") != -1) calculateNeighbors();
+  if(JSON.stringify(constraint).indexOf("degree") != -1) calculateDegree();
+  if(JSON.stringify(constraint).indexOf("firstchild") != -1) calculateFirstChild();
 };
 
 function calculateDepths() {
+  if(renderer.options["debugprint"]) console.log("        Computing depths.");
   graph.spec.nodes.forEach(function(node) {
     node.depth = node.depth || graph.getDepth(node);
   });
 };
 
 function calculateParents() {
+  if(renderer.options["debugprint"]) console.log("        Computing parents.");
   graph.spec.nodes.forEach(function(node) {
     node.parent = node.parent || graph.getParent(node);
   });
 };
 
-/*********************** Node Properties ***********************/
+function calculateIncoming() {
+  if(renderer.options["debugprint"]) console.log("        Computing incoming.");
+  graph.spec.nodes.forEach(function(node) {
+    node.incoming = node.incoming || graph.getIncoming(node);
+  });
+};
+
+function calculateOutgoing() {
+  if(renderer.options["debugprint"]) console.log("        Computing outgoing.");
+  graph.spec.nodes.forEach(function(node) {
+    node.outgoing = node.outgoing || graph.getOutgoing(node);
+  });
+};
+
+function calculateNeighbors() {
+  if(renderer.options["debugprint"]) console.log("        Computing neighbors.");
+  graph.spec.nodes.forEach(function(node) {
+    node.neighbors = node.neighbors || graph.getNeighbors(node);
+  });
+};
+
+function calculateDegree() {
+  if(renderer.options["debugprint"]) console.log("        Computing degree.");
+  graph.spec.nodes.forEach(function(node) {
+    node.degree = node.degree || graph.getDegree(node);
+  });
+};
+
+function calculateFirstChild() {
+  if(renderer.options["debugprint"]) console.log("        Computing first child.");
+  graph.spec.nodes.forEach(function(node) {
+    node.firstchild = node.firstchild || graph.getFirstChild(node);
+  });
+};
+
+/********************* Set Node Properties *********************/
 
 graph.setSize = function(node) {
   node.width = node.width || renderer.options["nodesize"];
@@ -41,10 +83,6 @@ graph.setID = function(node) {
   node._id = node._id || graph.spec.nodes.indexOf(node);
 };
 
-graph.getLabel = function(node) {
-  return node[renderer.options["labelprop"]] || node.name || node._id;
-};
-
 graph.setColor = function(node) {
   var value = node[renderer.options["fillprop"]] || 0.5;
   if(typeof value == "number") {
@@ -53,6 +91,12 @@ graph.setColor = function(node) {
   } else {
     node.color = node.color || graph.color(value);
   }
+};
+
+/********************* Get Node Properties *********************/
+
+graph.getLabel = function(node) {
+  return node[renderer.options["labelprop"]] || node.name || node._id;
 };
 
 graph.getColor = function(node) {
@@ -87,4 +131,35 @@ graph.getParent = function(node) {
     console.error("getParent(node): " + node + " has more than one parent.");
   }
   return parent;
+};
+
+graph.getIncoming = function(node) {
+  var index = node._id;
+  var incoming = graph.spec.links.filter(function(link) { return link.target == index; });
+  return incoming;
+};
+
+graph.getOutgoing = function(node) {
+  var index = node._id;
+  var outgoing = graph.spec.links.filter(function(link) { return link.source == index; });
+  return outgoing;
+};
+
+graph.getNeighbors = function(node) {
+  var incoming = node.incoming || graph.getIncoming(node);
+  var outgoing = node.outgoing || graph.getOutgoing(node);
+  return incoming.concat(outgoing);
+};
+
+graph.getDegree = function(node) {
+  var incoming = node.incoming || graph.getIncoming(node);
+  var outgoing = node.outgoing || graph.getOutgoing(node);
+  return incoming.length + outgoing.length;
+};
+
+graph.getFirstChild = function(node) {
+  var outgoing = node.outgoing || graph.getOutgoing(node);
+  outgoing = outgoing.sort(function(a,b) { return a._id - b._id; });
+  if(outgoing.length == 0) return null;
+  return graph.spec.nodes[outgoing[0].target];
 };

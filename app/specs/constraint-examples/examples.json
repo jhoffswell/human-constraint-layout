@@ -156,3 +156,43 @@
     ]
   }
 ]
+
+//
+
+"constraints": [
+  {
+    "name": "cluster",
+    "set": [{"expr": "datum.incoming.length == 0"}],
+    "constraints": [
+        {"type": "align", "axis": "x"}
+    ]
+  },
+  {
+    "name": "cluster",
+    "set": [{"expr": "datum.incoming.length == 0"}, {"expr": "datum.incoming.length >= 1"}],
+    "constraints": [
+        {"type": "order", "axis": "y", "by": "degree"}
+    ]
+  }
+]
+
+// aligned Tree
+"constraints": [
+    {
+      "name": "layer",
+      "set": {"property": "depth"},
+      "constraints": [{ "type": "align", "axis": "x" }]
+    },
+    {
+      "name": "position",
+      "set": {"property": "firstchild"},
+      "constraints": [
+        { "type": "align", "axis": "x" }
+      ]
+    },
+    {
+      "name": "ordered",
+      "from": ["layer"],
+      "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+    }
+  ]
