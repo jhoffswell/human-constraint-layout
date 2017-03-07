@@ -155,13 +155,7 @@
   margin: 5px;
 }
 
-.temp-region.help .label {
-  display: inline-block;
-  width: 175px;
-}
-
 .temp-region.help h1 {
-  display: inline-block;
   margin: 0px 0px 5px 0px;
   font-size: 20px;
   color: #78c801;
@@ -169,7 +163,7 @@
 
 .temp-region.help h2 {
   display: inline-block;
-  margin: 0px 0px 5px 0px;
+  margin: 5px 0px 10px 0px;
   font-family: monospace;
   font-weight: normal;
   font-size: 18px;
@@ -177,39 +171,42 @@
   cursor: default;
 }
 
-.temp-region.help h3 {
-  display: inline;
-  float: right;
+.temp-region.help .label, .temp-region.help .def {
+  display: inline-block;
+  height: 12px;
+}
+
+.temp-region.help .label {
+  width: 175px;
+}
+
+.temp-region.help span {
+  font-size: 10pt;
+  font-family: monospace;
+  font-weight: normal;
+} 
+
+.temp-region.help .explanation {
+  display: inline-block;
+  margin: 0px 2px;
   margin: 0px;
   font-size: 10pt;
   font-family: monospace;
   font-weight: normal;
-}
-
-.temp-region.help h4 {
-  display: inline;
-  margin: 0px 0px 5px 0px;
-  font-size: 10pt;
-  font-family: monospace;
-  font-weight: normal;
-}
-
-.temp-region.help .sep {
-  display: inline;
-  margin: 2px 0px 2px 5px;
-  font-size: 10pt;
-  font-family: monospace;
-  font-weight: normal;
+  font-style: italic;
   color: lightgray;
+} 
+
+.temp-region.help .label span {
+  float: right;
 }
 
 .temp-region.help .type {
-  display: inline;
-  margin: 2px 0px 2px 5px;
-  font-size: 10pt;
-  font-family: monospace;
-  font-weight: normal;
   color: blue;
+}
+
+.temp-region.help .sep {
+  color: lightgray;
 }
 
 .temp-region.help .error, 

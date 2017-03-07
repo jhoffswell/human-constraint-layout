@@ -80,42 +80,164 @@
       <h1>Constraint Debugging</h1><br>
     </div>
     <div class="help">
-      <h1>User Constraint Schema</h1><br>
-      <div class="label"><h3>"name":</h3></div>
-        <span class="type">String</span><br>
-      <div class="label"><h3>"set":</h3></div>
-        <h4>{"property": </h4> <span class="type">String</span> <h4>}</h4>
-        <span class="sep">||</span>
-        <h4><span class="type">[</span> {"expr": </h4> <span class="type">String</span> <h4>}<span class="type">]</span></h4><br>
-      <div class="label"><h3>"from":</h3></div>
-        <span class="type">[String]</span><br>
-      <div class="label"><h3>"constraints":</h3></div>
-        <span class="type">[Constraint]</span><br>
-      <h2>Alignment Constraints</h2><br>
-        <div class="label"><h3>"type":</h3></div>
-          <h4>"align"</h4><br>
-        <div class="label"><h3>"axis":</h3></div>
-          <h4>"x"</h4> <span class="sep">||</span> <h4>"y"</h4><br>
-      <h2>Order Constraints</h2><br>
-        <div class="label"><h3>"type":</h3></div>
-          <h4>"order"</h4><br>
-        <div class="label"><h3>"axis":</h3></div> 
-          <h4>"x"</h4> <span class="sep">||</span> <h4>"y"</h4><br>
-        <div class="label"><h3>"by":</h3></div> 
-          <span class="type">String</span><br>
-        <div class="label"><h3>"order":</h3></div> 
-          <span class="type">[String]</span><br>
-        <div class="label"><h3>"reverse":</h3></div> 
-          <span class="type">Boolean</span><br>
-      <h2>Position Constraints</h2><br>
-        <div class="label"><h3>"type":</h3></div>
-          <h4>"position"</h4><br>
-        <div class="label"><h3>"position":</h3></div> 
-          <h4>"left"</h4> <span class="sep">||</span> <h4>"right"</h4>
+      <h1>User Constraint Schema</h1>
+      <div>
+        <div class="label"><span>"name":</span></div>
+        <div class="def">
+          <span class="type">String</span>
+        </div>
+      </div>
+      <div>
+        <div class="label" style="margin-bottom: 17px">
+          <span>"set":</span>
+        </div>
+        <div class="def">
+          <span>{</span>
+          <span>"partition":</span>
+          <span class="type">String</span>
+          <span>, "include":</span>
+          <span class="type">Node</span>
+          <span>}</span>
+
+          <br>
+
           <span class="sep">||</span>
-          <h4>"above"</h4> <span class="sep">||</span> <h4>"below"</h4><br>
-        <div class="label"><h3>"of":</h3></div> 
-          <h4>"parent"</h4> <span class="sep">||</span> <span class="type">Point</span><br>
+
+          <span class="type">[</span>
+          <span>{</span>
+          <span>"expr": </span> 
+          <span class="type">String</span>
+          <span>, "name": </span> 
+          <span class="type">String</span>
+          <span>}</span>
+          <span class="type">]</span> 
+
+        </div>
+      </div>
+      <div>
+        <div class="label"><span>"from":</span></div>
+        <div class="def">
+          <span class="type">[String]</span>
+        </div>
+      </div>
+      <div>
+        <div class="label"><span>"constraints":</span></div>
+        <div class="def">
+          <span class="type">[Constraint]</span>
+        </div>
+      </div>
+      <h2>Constraint: Alignment</h2>
+        <div>
+          <div class="label"><span>"type":</span></div>
+          <div class="def"><span>"align"</span></div>
+        </div>
+        <div>
+          <div class="label"><span>"axis":</span></div>
+          <div class="def">
+            <span>"x"</span>
+            <span class="sep">||</span>
+            <span>"y"</span>
+          </div>
+        </div>
+      <h2>Constraint: Order</h2>
+        <div>
+          <div class="label"><span>"type":</span></div>
+          <div class="def"><span>"order"</span></div>
+        </div>
+        <div>
+          <div class="label"><span>"axis":</span></div>
+          <div class="def">
+            <span>"x"</span>
+            <span class="sep">||</span>
+            <span>"y"</span>
+          </div>
+        </div>
+        <div>
+          <div class="label"><span>"by":</span></div>
+          <div class="def">
+            <span class="type">String</span>
+          </div>
+        </div>
+        <div>
+          <div class="label"><span>"order":</span></div>
+          <div class="def">
+            <span class="type">[String]</span>
+          </div>
+        </div>
+        <div>
+          <div class="label"><span>"order":</span></div>
+          <div class="def">
+            <span class="type">Boolean</span>
+          </div>
+        </div>
+      <h2>Constraint: Position</h2>
+        <div>
+          <div class="label"><span>"type":</span></div>
+          <div class="def"><span>"position"</span></div>
+        </div>
+        <div>
+          <div class="label"><span>"axis":</span></div>
+          <div class="def">
+            <span>"right"</span>
+            <span class="sep">||</span>
+            <span>"left"</span>
+            <span class="sep">||</span>
+            <span>"above"</span>
+            <span class="sep">||</span>
+            <span>"below"</span>
+          </div>
+        </div>
+        <div>
+          <div class="label"><span>"of":</span></div>
+          <div class="def">
+            <span class="type">Node</span>
+            <span class="sep">||</span>
+            <span class="type">Point</span>
+          </div>
+        </div>
+      <h2>Node</h2>
+        <p class="explanation">
+          (Built in node properties referring to other nodes in the graph.)
+        </p> 
+        <div>
+          <div class="label"><span>"parent":</span></div>
+          <span class="type">Node</span>
+          <p class="explanation"> -- The parent of a node (it can only have one.)</p> 
+        </div>
+        <div>
+          <div class="label"><span>"firstchild":</span></div>
+          <span class="type">Node</span>
+          <p class="explanation"> -- The first child of a node.</p> 
+        </div>
+      <h2>Built-In Node Properties</h2>
+        <p class="explanation">
+          (Other built in node properties.)
+        </p>
+        <div>
+          <div class="label"><span>"depth":</span></div>
+          <span class="type">Number</span>
+          <p class="explanation"> -- The node depth. Only for acylcic graphs.</p> 
+        </div>
+        <div>
+          <div class="label"><span>"incoming":</span></div>
+          <span class="type">[Node]</span>
+          <p class="explanation"> -- The set of nodes with edges entering the current node.</p> 
+        </div>
+        <div>
+          <div class="label"><span>"outgoing":</span></div>
+          <span class="type">[Node]</span>
+          <p class="explanation"> -- The set of nodes with edges exiting the current node.</p> 
+        </div>
+        <div>
+          <div class="label"><span>"neighbors":</span></div>
+          <span class="type">[Node]</span>
+          <p class="explanation"> -- The set of nodes connected to the current node.</p> 
+        </div>
+        <div>
+          <div class="label"><span>"degree":</span></div>
+          <span class="type">Number</span>
+          <p class="explanation"> -- The number of nodes connected to the current node.</p> 
+        </div>
     </div>
   </div>
 </div>
