@@ -8,7 +8,7 @@
   },
   {
     "name": "ordered",
-    "from": "layer",
+    "from": ["layer"],
     "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
   }
 ]
@@ -26,7 +26,7 @@
   },
   {
     "name": "ordered",
-    "from": "layer",
+    "from": ["layer"],
     "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
   }
 ]
@@ -82,7 +82,7 @@
   },
   {
     "name": "layer",
-    "from": "cluster",
+    "from": ["cluster"],
     "constraints": [
       { 
         "type": "order", 
@@ -93,8 +93,66 @@
     ]
   },
   {
-    "name": "plant",
-    "set": {"expr": "datum.type == 'plant'"},
+    "name": "outer",
+    "set": [
+      {"expr": "datum.type == 'plant'", "name": "plant"},
+      {"expr": "datum.type == 'carnivore'", "name": "carnivore"}
+    ],
     "constraints": [{ "type": "align", "axis": "x" }]
+  }
+]
+
+// 
+
+"constraints": [
+  {
+    "name": "clusters",
+    "set": [
+      {"expr": "datum.type == 'orange'"},
+      {"expr": "datum.type =='green'"}
+    ]
+  },
+  {
+    "name": "cold",
+    "set": [
+      {"expr": "datum.type =='green'"}, 
+      {"expr": "datum.type == 'blue'"}, 
+      {"expr": "datum.type == 'purple'"}
+    ]
+  },
+  {
+    "name": "warm",
+    "set": [{"expr": "datum.type == 'red'"}, {"expr": "datum.type == 'orange'"}]
+  },
+  {
+    "name": "redorange",
+    "from": ["warm"],
+    "constraints": [
+      {"type": "order", "axis": "x", "by": "type", "order": ["orange", "red"]}
+    ]
+  },
+  {
+    "name": "layer",
+    "from": ["cold"],
+    "constraints": [
+      { 
+        "type": "order", 
+        "axis": "x", 
+        "by": "type", 
+        "order": ["green", "blue", "purple"]
+      }
+    ]
+  },
+  {
+    "name": "layer",
+    "from": ["clusters"],
+    "constraints": [
+      { 
+        "type": "order", 
+        "axis": "y", 
+        "by": "type", 
+        "order": ["orange", "green"]
+      }
+    ]
   }
 ]

@@ -190,7 +190,7 @@
     },
     {
       "name": "layer",
-      "from": "cluster",
+      "from": ["cluster"],
       "constraints": [
         { 
           "type": "order", 

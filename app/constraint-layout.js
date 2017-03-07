@@ -30,8 +30,12 @@ function processConstraint(constraint) {
   if(constraint.from && !constraint.set) {
 
     // Handle "between" (aka "from") constraints
-    var sets = Object.keys(layout.sets[constraint.from]).map(function(key) { 
-      return layout.sets[constraint.from][key]; 
+    var sets = [];
+    constraint.from.forEach(function(constraintName) {
+      var newSets = Object.keys(layout.sets[constraintName]).map(function(key) { 
+        return layout.sets[constraintName][key]; 
+      });
+      sets = sets.concat(newSets);
     });
     layout.sets[constraint.name] = generatePairs(sets);
 
@@ -78,6 +82,8 @@ function generateConstraints(nodes, constraints, cid) {
 
   return results;
 };
+
+/************** Process User Defined Constraints ***************/
 
 function alignmentConstraint(nodes, constraint, cid) {
   var results = [];
@@ -141,6 +147,8 @@ function positionConstraint(nodes, constraint, cid) {
   return results;
 };
 
+/********************* Determine Node Sets *********************/
+
 function generateOrderFunc(def) {
   var order;
   if(def.order) {
@@ -164,22 +172,32 @@ function generateInSetFunc(def) {
   var inSet;
 
   if(!def) {
+
+    // Create a function to include all nodes in one set.
     inSet = function(node) { return true; };
-  // } else if(def.type == "==") {
-  //   // TODO: this is never used right now...
-  //   inSet = function(node) {
-  //     return node[def.property] == def.value;
-  //   };
+  
+  } else if(!def.property) { 
+
+    // Create a function to partition nodes into the user defined sets
+    inSet = function(node) {
+      var sets = [];
+      def.forEach(function(obj) {
+        var value = evaluate(obj.expr, node);
+        if(value) sets.push(obj.name || obj.expr);
+      });
+      if(sets.length > 1) console.error("Node '" + node + "' is included in multiple sets. Nodes can only be in one set per constraint definition.");
+      return sets[0] || -1;
+    };
+
   } else if(def.property) {
+
+    // Create a function to partition nodes based on "def.property".
     inSet = function(node) {
       var value = node[def.property];
       if(value != null && typeof value == "object") value = value._id;
       return value;
     };
-  } else if(def.expr) { 
-    inSet = function(node) {
-      return evaluate(def.expr, node) ? true : -1;
-    };
+
   } else {
     console.error("Unknown set definition: " + def);
   }
@@ -219,32 +237,6 @@ function generateSets(nodes, inSet) {
   });
   
   return sets;
-};
-
-// Create a cola alignment constraint
-function createColaAlignment(nodes, axis, cid) {
-  var constraint = {
-    "type": "alignment",
-    "axis": (axis == "x") ? "y" : "x",
-    "offsets": [],
-    "_type": cid
-  };
-  nodes.forEach(function(node) {
-    constraint.offsets.push({"node": node._id, "offset": 0});
-  });
-  return constraint;
-};
-
-// Create a cola position constraint
-function createColaPosition(left, right, axis, cid) {
-  var constraint = {
-    "axis": axis,
-    "left": graph.spec.nodes.indexOf(left),
-    "right": graph.spec.nodes.indexOf(right),
-    "gap": GAP,
-    "_type": cid
-  };
-  return constraint;
 };
 
 function value(expr, node) {
@@ -291,6 +283,7 @@ function value(expr, node) {
 };
 
 function evaluate(expr, node) {
+  if(renderer.options["debugprint"]) console.log("        Evaluating expr ('" + expr + "') on node ('" + node + "')");
   var andor = expr.split(/(\|\||&&)/g);
   var comp = expr.split(/(==|<=|>=|<|>|!=)/g);
 
@@ -326,14 +319,14 @@ function evaluate(expr, node) {
 
   } else if(andor.length > 1) {
 
-    result = evaluate(andor[0]);
+    result = evaluate(andor[0], node);
     for (var i = 1; i < andor.length; i=i+2) {
       switch(andor[i]) {
         case "&&":
-          result = result && evaluate(andor[i+1]);
+          result = result && evaluate(andor[i+1], node);
           break;
         case "||":
-          result = result || evaluate(andor[i+1]);
+          result = result || evaluate(andor[i+1], node);
           break;
         default:
           console.error("Unknown conjunction in evaluate: " + andor[i]);
@@ -346,4 +339,32 @@ function evaluate(expr, node) {
   }
 
   return result;
+};
+
+/****************** Generate Cola Constraints ******************/
+
+// Create a cola alignment constraint
+function createColaAlignment(nodes, axis, cid) {
+  var constraint = {
+    "type": "alignment",
+    "axis": (axis == "x") ? "y" : "x",
+    "offsets": [],
+    "_type": cid
+  };
+  nodes.forEach(function(node) {
+    constraint.offsets.push({"node": node._id, "offset": 0});
+  });
+  return constraint;
+};
+
+// Create a cola position constraint
+function createColaPosition(left, right, axis, cid) {
+  var constraint = {
+    "axis": axis,
+    "left": graph.spec.nodes.indexOf(left),
+    "right": graph.spec.nodes.indexOf(right),
+    "gap": GAP,
+    "_type": cid
+  };
+  return constraint;
 };

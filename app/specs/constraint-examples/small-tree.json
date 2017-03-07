@@ -22,7 +22,7 @@
     },
     {
       "name": "ordered",
-      "from": "layer",
+      "from": ["layer"],
       "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
     }
   ]

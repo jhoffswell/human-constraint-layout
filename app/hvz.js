@@ -79,7 +79,7 @@ hvz.start = function() {
 };
 
 hvz.restart = function() {
-  graph.draw();
+  renderer.draw();
 };
 
 hvz.load = function() {
@@ -87,6 +87,7 @@ hvz.load = function() {
   var example = exampleSel.options[exampleSel.selectedIndex].value;
   var type = exampleSel.options[exampleSel.selectedIndex].parentNode.label;
   var PATH = "app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
+  PATH = PATH.toLowerCase();
 
   d3.text(PATH, function(spec) {
     graph.spec = spec;
