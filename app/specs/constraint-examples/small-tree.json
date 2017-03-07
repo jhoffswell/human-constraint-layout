@@ -17,7 +17,7 @@
   "constraints": [
     {
       "name": "layer",
-      "set": {"property": "depth"},
+      "set": {"partition": "depth"},
       "constraints": [{ "type": "align", "axis": "x" }]
     },
     {

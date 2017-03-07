@@ -186,7 +186,7 @@
   "constraints": [
     {
       "name": "cluster",
-      "set": {"property": "type"}
+      "set": {"partition": "type"}
     },
     {
       "name": "layer",

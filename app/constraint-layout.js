@@ -177,7 +177,7 @@ function generateInSetFunc(def) {
     // Create a function to include all nodes in one set.
     inSet = function(node) { return true; };
   
-  } else if(!def.property) { 
+  } else if(!def.partition) { 
 
     // Create a function to partition nodes into the user defined sets
     inSet = function(node) {
@@ -190,11 +190,11 @@ function generateInSetFunc(def) {
       return sets[0] || -1;
     };
 
-  } else if(def.property) {
+  } else if(def.partition) {
 
-    // Create a function to partition nodes based on "def.property".
+    // Create a function to partition nodes based on "def.partition".
     inSet = function(node) {
-      var value = node[def.property];
+      var value = node[def.partition];
       if(value != null && typeof value == "object") value = value._id;
       return value;
     };

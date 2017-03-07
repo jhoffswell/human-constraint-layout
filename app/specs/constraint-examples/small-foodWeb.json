@@ -52,7 +52,7 @@
   "constraints": [
     {
       "name": "cluster",
-      "set": {"property": "type"},
+      "set": {"partition": "type"},
       "constraints": [
         { "type": "order", "axis": "x", "by": "id" },
         { "type": "align", "axis": "x" }
