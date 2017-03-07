@@ -24,7 +24,7 @@ layout.getConstraints = function() {
 function processConstraint(constraint) {
   if(renderer.options["debugprint"]) console.log("    Processing constraint '" + constraint.name + "'...");
 
-  if(constraint.from && !constraint.set) {
+  if(constraint.name && constraint.from && !constraint.set) {
 
     // Handle "between" (aka "from") constraints
     var sets = [];
@@ -36,10 +36,14 @@ function processConstraint(constraint) {
     });
     layout.sets[constraint.name] = generatePairs(sets);
 
-  } else if(!constraint.from && constraint.set) {
+  } else if(constraint.name && !constraint.from && constraint.set) {
 
     // Handle "within" (aka "set") constraints
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(constraint.set));
+
+  } else if(constraint.name) {
+    
+    layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(null));
 
   } else {
     console.error("Unknown constraint behavior for: ", constraint);

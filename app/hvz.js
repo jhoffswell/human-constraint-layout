@@ -92,6 +92,7 @@ hvz.load = function() {
   d3.text(PATH, function(spec) {
     graph.spec = spec;
     document.getElementsByClassName("spec")[0].value = graph.spec;
+    hvz.start();
   });
 };
 

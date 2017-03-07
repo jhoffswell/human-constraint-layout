@@ -1,11 +1,15 @@
 {
   "nodes": [
-
+    {"name": "a"},
+    {"name": "b"}
   ],
   "links": [
-
+    {"source": 0, "target": 1}
   ],
   "constraints": [
-
+    {
+      "name": "sample",
+      "constraints": [{"type": "align", "axis": "x"}]
+    }
   ]
 }
