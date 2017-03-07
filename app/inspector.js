@@ -70,6 +70,22 @@ inspector.showConfig = function() {
   }
 };
 
+/******************** Update Config Options ********************/
+
+function updateRange(type) {
+  var value = document.getElementById("range-" + type).value;
+  renderer.options[type] = Number(value);
+  d3.select("#value-" + type).html(value);
+};
+
+function updateCheck(type) {
+  renderer.options[type] = document.getElementById("check-" + type).checked;
+};
+
+function updateText(type) {
+  renderer.options[type] = document.getElementById("text-" + type).value;
+};
+
 /***************************************************************/
 /************************** Debug Pane *************************/
 /***************************************************************/

@@ -1,4 +1,6 @@
 var renderer = {};
+var GAP = 50;
+var WIDTH = 20;
 
 /***************************************************************/
 /************************ GRAPH DRAWING ************************/
@@ -12,10 +14,12 @@ renderer.init = function() {
   document.getElementById("range-linkdist").value = 60;
   document.getElementById("range-symmetric").value = 0;
 
+  document.getElementById("check-arrows").checked = true;
+
   document.getElementById("text-fillprop").value = "_id";
 
   ["noconst", "userconst", "layoutconst", "linkdist", "symmetric"].map(updateRange);
-  ["debugprint", "overlaps"].map(updateCheck);
+  ["debugprint", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
 
@@ -72,12 +76,32 @@ renderer.draw = function() {
 };
 
 renderer.drawLinks = function() {
+  
   renderer.links = renderer.svg.selectAll(".link")
       .data(graph.spec.links)
     .enter().append("line")
       .attr("class", "link")
       .style("stroke-width", 1)
       .style("stroke", "#ddd");
+
+  if(renderer.options["arrows"]) {
+    renderer.svg.append("defs").selectAll("marker")
+        .data(["suit", "licensing", "resolved"])
+      .enter().append("marker")
+        .attr("id", function(d) { return d; })
+        .attr("viewBox", "0 -5 10 10")
+        .attr("refX", 25)
+        .attr("refY", 0)
+        .attr("markerWidth", 6)
+        .attr("markerHeight", 6)
+        .attr("orient", "auto")
+      .append("path")
+        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+        .style("stroke", "#ddd")
+        .style("stroke-width", "1.5px");
+    renderer.links.style("marker-end",  "url(#suit)");
+  }    
+  
 };
 
 renderer.drawCircleNodes = function() {
@@ -131,8 +155,8 @@ renderer.tick = function() {
     .attr("y2", function (d) { return d.target.y; });
 
   renderer.nodes
-      .attr("x", function (d) { return d.x - d.width / 2 + PAD; })
-      .attr("y", function (d) { return d.y - d.height / 2 + PAD; });
+      .attr("x", function (d) { return d.x - d.width / 2; })
+      .attr("y", function (d) { return d.y - d.height / 2; });
 
   if(!renderer.groups) return;
   renderer.groups

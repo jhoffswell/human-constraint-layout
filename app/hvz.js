@@ -127,17 +127,3 @@ function prettyJSON() {
       .replace(/\]\}/g, "\n\t]\n}");
   return spec;
 };
-
-function updateRange(type) {
-  var value = document.getElementById("range-" + type).value;
-  renderer.options[type] = value;
-  d3.select("#value-" + type).html(value);
-};
-
-function updateCheck(type) {
-  renderer.options[type] = document.getElementById("check-" + type).checked;
-};
-
-function updateText(type) {
-  renderer.options[type] = document.getElementById("text-" + type).value;
-};

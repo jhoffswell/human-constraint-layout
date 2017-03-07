@@ -36,7 +36,7 @@
     <div class="options">
       <h1>Config Options</h1><br>
         <div class="label"><span>Print Debugging Log:</span></div>
-        <input type="checkbox" id="check-debugprint" onchange="updateCheck('debugprint')"><br>
+          <input type="checkbox" id="check-debugprint" onchange="updateCheck('debugprint')"><br>
       
       <h2>Start</h2>
         <span class="explanation">(The number of iterations for each step of the cola layout engine.)</span><br>
@@ -63,6 +63,8 @@
 
       <h2>Graph Options</h2>
         <span class="explanation">(Graph drawing options.)</span><br>
+        <div class="label"><span>Show Arrowheads:</span></div>
+          <input type="checkbox" id="check-arrows" onchange="updateCheck('arrows')"><br>
         <div class="label"><span>Fill Property:</span></div>
           <input type="text" id="text-fillprop" onchange="updateText('fillprop')"><br>
         <div class="label"><span>Label Property:</span></div>
