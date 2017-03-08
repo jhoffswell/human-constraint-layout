@@ -210,6 +210,23 @@ function createDebugContents() {
 
   g.append("span").text(function(d) { return d + ": "; });
   g.append("span").html(getSubConstraintsCountString).style("font-style", "italic");
+
+  // ----------------------------------------------
+  // Add a search box for finding nodes
+  // ----------------------------------------------
+
+  var group = div.append("div").attr("class", "const");
+  group.append("span").text("Search for node _id: ")
+      .style("font-size", "18px")
+      .attr("class", "name");
+  group.append("input")
+      .attr("type", "text")
+      .on("input", function(d) {
+        var ids = this.value.replace(" ", "").split(",").filter(function(val) { return val != ""; });
+        var nodes = ids.map(function(val) { return {"_id": Number(val)}; });
+        d3.selectAll(".node").style("stroke-width", 0);
+        renderer.highlight(nodes);
+      });
 };
 
 /********************** Get Debug Contents  ********************/

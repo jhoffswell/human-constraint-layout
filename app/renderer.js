@@ -6,9 +6,9 @@ var renderer = {};
 
 renderer.init = function() {
   renderer.options = {};
-  document.getElementById("range-noconst").value =  25;
-  document.getElementById("range-userconst").value = 50;
-  document.getElementById("range-layoutconst").value = 25;
+  document.getElementById("range-noconst").value =  50;
+  document.getElementById("range-userconst").value = 100;
+  document.getElementById("range-layoutconst").value = 200;
   document.getElementById("range-linkdist").value = 60;
   document.getElementById("range-symmetric").value = 0;
   document.getElementById("range-constgap").value = 50;
@@ -33,7 +33,7 @@ renderer.draw = function() {
   // Setup Cola
   var width = d3.select("svg").style("width").replace("px", ""),
       height = d3.select("svg").style("height").replace("px", "");
-  renderer.colajs = cola.d3adaptor().size([width, height]);
+  renderer.colajs = cola.d3adaptor(d3).size([width, height]);
 
   // Update the graph nodes with style properties
   graph.spec.nodes.map(graph.setSize);
@@ -46,20 +46,22 @@ renderer.draw = function() {
 
   // Start the cola.js layout
   renderer.colajs
-      .linkDistance(renderer.options["linkdist"])
-      .avoidOverlaps(renderer.options["overlaps"]);
+      .linkDistance(function(d) {
+        return d.length || renderer.options["linkdist"]
+      })
+      .avoidOverlaps(renderer.options["overlaps"])
+      .convergenceThreshold(1e-3);
   if(renderer.options["symmetric"] != 0) renderer.colajs.symmetricDiffLinkLengths(renderer.options["symmetric"]);
+  
+  // Start the layout engine.
   renderer.colajs.start(renderer.options["noconst"],renderer.options["userconst"],renderer.options["layoutconst"]);
-
   renderer.colajs.on("tick", renderer.tick);
 
   // Set up zoom behavior on the graph svg.
-  var zoom = d3.behavior.zoom()
-      .scaleExtent([0.25, 2])
-    .on("zoom", zoomed);
+  var zoom = d3.behavior.zoom().scaleExtent([0.25, 2]).on("zoom", zoomed);
 
-  var svg = d3.select(".graph")
-    .append("g").attr("transform", "translate(0,0)")
+  var svg = d3.select(".graph").append("g")
+      .attr("transform", "translate(0,0)")
     .call(zoom);
 
   // Draw an invisible background to capture zoom events
