@@ -10,6 +10,7 @@ renderer.init = function() {
   document.getElementById("range-userconst").value = 100;
   document.getElementById("range-layoutconst").value = 200;
   document.getElementById("range-linkdist").value = 60;
+  document.getElementById("range-jaccard").value = 0;
   document.getElementById("range-symmetric").value = 0;
   document.getElementById("range-constgap").value = 50;
   document.getElementById("range-nodesize").value = 20;
@@ -18,7 +19,7 @@ renderer.init = function() {
 
   document.getElementById("text-fillprop").value = "_id";
 
-  ["noconst", "userconst", "layoutconst", "linkdist", "symmetric", "constgap", "nodesize"].map(updateRange);
+  ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize"].map(updateRange);
   ["debugprint", "layoutnode", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
@@ -46,11 +47,10 @@ renderer.draw = function() {
 
   // Start the cola.js layout
   renderer.colajs
-      .linkDistance(function(d) {
-        return d.length || renderer.options["linkdist"]
-      })
       .avoidOverlaps(renderer.options["overlaps"])
       .convergenceThreshold(1e-3);
+  if(renderer.options["linkdist"] != 0 ) renderer.colajs.linkDistance(renderer.options["linkdist"]);
+  if(renderer.options["jaccard"] != 0) renderer.colajs.jaccardLinkLengths(renderer.options["jaccard"]);
   if(renderer.options["symmetric"] != 0) renderer.colajs.symmetricDiffLinkLengths(renderer.options["symmetric"]);
   
   // Start the layout engine.
