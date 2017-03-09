@@ -274,7 +274,7 @@ function generateSets(nodes, inSet, include, exclude) {
 function value(expr, node) {
   var result = node;
   if(expr.indexOf("datum") != -1) {
-    expr = expr.replace(" ", "");
+    expr = expr.replace(/ /g, "");
     var props = expr.split(".");
     for (var i = 1; i < props.length; i++) {
       result = result[props[i]];
@@ -298,7 +298,7 @@ function value(expr, node) {
     result = split[index+1];
 
   } else {
-    expr = expr.replace(" ", "");
+    expr = expr.replace(/ /g, "");
 
     if(expr == "true") {
       result = true;
