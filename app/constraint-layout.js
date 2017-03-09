@@ -40,7 +40,7 @@ function processConstraint(constraint) {
 
     // Handle "within" (aka "set") constraints
     var inSet = generateInSetFunc(constraint.set);
-    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.include, constraint.set.null);
+    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.include, constraint.set.exclude);
 
   } else if(constraint.name) {
     
@@ -209,9 +209,10 @@ function generateInSetFunc(def) {
 
 function generatePairs(sets) {
   if(renderer.options["debugprint"]) console.log("      Computing pairs...");
+  if(renderer.options["debugprint"]) console.log("      Sets are: ", sets);
   var pairs = {};
   for(var i=0; i<sets.length; i++) {
-    for(var j=i; j<sets.length; j++) {
+    for(var j=i+1; j<sets.length; j++) {
         
       for(var n1=0; n1<sets[i].length; n1++) {
         for(var n2=0; n2<sets[j].length; n2++) {
@@ -226,13 +227,13 @@ function generatePairs(sets) {
 };
 
 // Partition nodes into sets based on inSet
-function generateSets(nodes, inSet, include, include_null) {
+function generateSets(nodes, inSet, include, exclude) {
   if(renderer.options["debugprint"]) console.log("      Computing sets...");
 
   var sets = {};
   nodes.forEach(function(node) {
     var set = inSet(node);
-    if(set == -1 || (set == null && !include_null)) return;
+    if(set == -1 || (exclude && exclude.indexOf(set) != -1)) return;
     var current = sets[set] || [];
     current.push(node);
 
