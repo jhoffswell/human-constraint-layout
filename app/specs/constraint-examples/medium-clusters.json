@@ -186,7 +186,18 @@
   "constraints": [
     {
       "name": "cluster",
-      "set": {"partition": "type"}
+      "set": [
+        {"expr": "datum.type == 'green'"}, 
+        {"expr": "datum.type == 'blue'"},
+        {"expr": "datum.type == 'purple'"}
+      ],
+      "constraints": [
+        {
+          "type": "position",
+          "position": "below",
+          "of": {"x": 0, "y": 200, "name": "y"}
+        }
+      ]
     },
     {
       "name": "layer",
@@ -194,9 +205,20 @@
       "constraints": [
         { 
           "type": "order", 
-          "axis": "y", 
+          "axis": "x", 
           "by": "type", 
           "order": ["green", "blue", "purple"]
+        }
+      ]
+    },
+    {
+      "name": "orangered",
+      "set": [{"expr": "datum.type == 'orange' || datum.type == 'red'"}],
+      "constraints": [
+        {
+          "type": "position",
+          "position": "above",
+          "of": {"x": 0, "y":200, "name": "y"}
         }
       ]
     }

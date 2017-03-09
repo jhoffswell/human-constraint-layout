@@ -14,6 +14,7 @@ layout.getConstraints = function() {
   layout.index = -1;
   graph.spec.nodes.map(graph.setID);
   graph.computeBuiltInProperties(graph.spec.constraints);
+  graph.removeTempNodes();
 
   // Process the constraints
   var constraints = [].concat.apply([], graph.spec.constraints.map(processConstraint));
@@ -112,19 +113,42 @@ function positionConstraint(nodes, constraint, cid) {
   var results = [];
 
   // Create the temporary node
-  var node = nodes[0].parent;
-  if(node == null) return []; // There is no parent, so return;
-  // var x, y;
-  // if(constraint.position == "above" || constraint.position == "below") {
-  //   x = 0;
-  //   y = node;
-  // } else {
-  //   x = node;
-  //   y = 0;
-  // }
-  // var node = {"x": x, "y": y, "temp": true}
-  // graph.spec.nodes.push(node);
-  // node._id = graph.spec.nodes.indexOf(node);
+  var node;
+  switch(constraint.of) {
+    case "parent":
+      node = nodes[0].parent;
+      break;
+    case "firstchild":
+      node = nodes[0].firstchild;
+      break;
+    default:
+      if(constraint.of) {
+
+        // Extract the node by the name if it already exists
+        if(constraint.of.name) {
+          node = graph.spec.nodes.filter(function(node) { 
+            return node.temp_name == constraint.of.name; 
+          })[0];
+        }
+
+        // Create a new node if need be.
+        if(node == null) {
+          node = {
+            "x": constraint.of.x || 0,
+            "y": constraint.of.y || 0,
+            "temp": true,
+            "fixed": true 
+          };
+          if(constraint.of.name) node.temp_name = constraint.of.name;
+          graph.spec.nodes.push(node);
+          node._id = graph.spec.nodes.indexOf(node);
+        }
+
+      } else {
+        console.error("Unknown 'of' on position constraint: '" + constraint.of + "'");
+      }
+  }
+  if(node == null) return []; // There is no node with which to compute the constraint.
 
   // Create the position constraints relative to the temp node
   for(var i=0; i<nodes.length; i++) {

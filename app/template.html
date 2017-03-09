@@ -37,7 +37,9 @@
       <h1>Config Options</h1><br>
         <div class="label"><span>Print Debugging Log:</span></div>
           <input type="checkbox" id="check-debugprint" onchange="updateCheck('debugprint')"><br>
-      
+        <div class="label"><span>Show Layout Nodes:</span></div>
+          <input type="checkbox" id="check-layoutnode" onchange="updateCheck('layoutnode')"><br>
+
       <h2>Start</h2>
         <span class="explanation">(The number of iterations for each step of the cola layout engine.)</span><br>
         <div class="label"><span>No Constraints:</span></div>
@@ -178,7 +180,7 @@
           <div class="def"><span>"position"</span></div>
         </div>
         <div>
-          <div class="label"><span>"axis":</span></div>
+          <div class="label"><span>"position":</span></div>
           <div class="def">
             <span>"right"</span>
             <span class="sep">||</span>
@@ -194,7 +196,14 @@
           <div class="def">
             <span class="type">Node</span>
             <span class="sep">||</span>
-            <span class="type">Point</span>
+            <span>{</span>
+              <span>"name":</span>
+              <span class="type">String</span>
+              <span>, "x":</span>
+              <span class="type">Number</span>
+              <span>, "y":</span>
+              <span class="type">Number</span>
+            <span>}</span>
           </div>
         </div>
       <h2>Node</h2>

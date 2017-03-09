@@ -23,6 +23,12 @@ graph.computeBuiltInProperties = function(constraint) {
   if(JSON.stringify(constraint).indexOf("firstchild") != -1) calculateFirstChild();
 };
 
+graph.removeTempNodes = function() {
+  graph.spec.nodes = graph.spec.nodes.filter(function(node) {
+    return node.temp == null;
+  });
+};
+
 function calculateDepths() {
   if(renderer.options["debugprint"]) console.log("        Computing depths.");
   graph.spec.nodes.forEach(function(node) {

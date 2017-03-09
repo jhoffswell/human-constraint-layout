@@ -19,7 +19,7 @@ renderer.init = function() {
   document.getElementById("text-fillprop").value = "_id";
 
   ["noconst", "userconst", "layoutconst", "linkdist", "symmetric", "constgap", "nodesize"].map(updateRange);
-  ["debugprint", "overlaps", "arrows"].map(updateCheck);
+  ["debugprint", "layoutnode", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
 
@@ -114,15 +114,21 @@ renderer.drawCircleNodes = function() {
 
 renderer.drawNodes = function() {
   renderer.nodes = renderer.svg.selectAll(".node")
-        .data(graph.spec.nodes)
-      .enter().append("rect")
-        .attr("class", "node")
-        .attr("width", function(d) { return d.width; })
-        .attr("height", function(d) { return d.height; })
-        .attr("rx", renderer.options["nodesize"])
-        .attr("ry", renderer.options["nodesize"])
-        .style("fill", graph.getColor)
-      .call(renderer.colajs.drag);
+      .data(graph.spec.nodes)
+    .enter().append("rect")
+      .attr("class", function(d) {
+        var className = "node";
+        if(d.temp) {
+          className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
+        }
+        return className;
+      })
+      .attr("width", function(d) { return d.width; })
+      .attr("height", function(d) { return d.height; })
+      .attr("rx", renderer.options["nodesize"])
+      .attr("ry", renderer.options["nodesize"])
+      .style("fill", graph.getColor)
+    .call(renderer.colajs.drag);
 
   // Prevent interaction with nodes from causing pan on background.
   renderer.nodes
@@ -151,8 +157,8 @@ renderer.tick = function() {
     .attr("y2", function (d) { return d.target.y; });
 
   renderer.nodes
-      .attr("x", function (d) { return d.x - d.width / 2; })
-      .attr("y", function (d) { return d.y - d.height / 2; });
+      .attr("x", function (d) { return (d.fixed) ? d.x : d.x - d.width / 2; })
+      .attr("y", function (d) { return (d.fixed) ? d.y : d.y - d.height / 2; });
 
   if(!renderer.groups) return;
   renderer.groups
