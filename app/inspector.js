@@ -76,17 +76,17 @@ function updateRange(type) {
   var value = document.getElementById("range-" + type).value;
   renderer.options[type] = Number(value);
   d3.select("#value-" + type).html(value);
-  if(graph.spec && graph.spec.nodes) hvz.start();
+  // if(graph.spec && graph.spec.nodes) hvz.start();
 };
 
 function updateCheck(type) {
   renderer.options[type] = document.getElementById("check-" + type).checked;
-  if(graph.spec && graph.spec.nodes) hvz.start();
+  // if(graph.spec && graph.spec.nodes) hvz.start();
 };
 
 function updateText(type) {
   renderer.options[type] = document.getElementById("text-" + type).value;
-  if(graph.spec && graph.spec.nodes) hvz.start();
+  // if(graph.spec && graph.spec.nodes) hvz.start();
 };
 
 /***************************************************************/
