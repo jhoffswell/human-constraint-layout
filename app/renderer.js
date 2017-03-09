@@ -81,9 +81,7 @@ renderer.drawLinks = function() {
   renderer.links = renderer.svg.selectAll(".link")
       .data(graph.spec.links)
     .enter().append("line")
-      .attr("class", "link")
-      .style("stroke-width", 1)
-      .style("stroke", "#ddd");
+      .attr("class", "link");
 
   if(renderer.options["arrows"]) {
     renderer.svg.append("defs").selectAll("marker")
@@ -97,9 +95,7 @@ renderer.drawLinks = function() {
         .attr("markerHeight", 6)
         .attr("orient", "auto")
       .append("path")
-        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
-        .style("stroke", "#ddd")
-        .style("stroke-width", "1.5px");
+        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5");
     renderer.links.style("marker-end",  "url(#suit)");
   }    
 };
