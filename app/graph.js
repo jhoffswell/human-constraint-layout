@@ -81,8 +81,10 @@ function calculateFirstChild() {
 /********************* Set Node Properties *********************/
 
 graph.setSize = function(node) {
-  node.width = node.width || renderer.options["nodesize"];
-  node.height = node.height || renderer.options["nodesize"];
+  var pad = renderer.options["nodepad"];
+  node.width = renderer.options["nodesize"] + 2*pad;
+  node.height = renderer.options["nodesize"] + 2*pad;
+  node.padding = pad;
 };
 
 graph.setID = function(node) {

@@ -14,12 +14,14 @@ renderer.init = function() {
   document.getElementById("range-symmetric").value = 0;
   document.getElementById("range-constgap").value = 50;
   document.getElementById("range-nodesize").value = 20;
+  document.getElementById("range-nodepad").value = 10;
 
+  document.getElementById("check-layoutnode").checked = true;
   document.getElementById("check-arrows").checked = true;
 
   document.getElementById("text-fillprop").value = "_id";
 
-  ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize"].map(updateRange);
+  ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize", "nodepad"].map(updateRange);
   ["debugprint", "layoutnode", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
@@ -123,8 +125,8 @@ renderer.drawNodes = function() {
         }
         return className;
       })
-      .attr("width", function(d) { return d.width; })
-      .attr("height", function(d) { return d.height; })
+      .attr("width", function(d) { return d.width - 2 * d.padding; })
+      .attr("height", function(d) { return d.height - 2 * d.padding; })
       .attr("rx", renderer.options["nodesize"])
       .attr("ry", renderer.options["nodesize"])
       .style("fill", graph.getColor)
@@ -157,8 +159,8 @@ renderer.tick = function() {
     .attr("y2", function (d) { return d.target.y; });
 
   renderer.nodes
-      .attr("x", function (d) { return (d.fixed) ? d.x : d.x - d.width / 2; })
-      .attr("y", function (d) { return (d.fixed) ? d.y : d.y - d.height / 2; });
+      .attr("x", function (d) { return (d.fixed) ? d.x : d.x - d.width / 2 + d.padding; })
+      .attr("y", function (d) { return (d.fixed) ? d.y : d.y - d.height / 2 + d.padding; });
 
   if(!renderer.groups) return;
   renderer.groups
