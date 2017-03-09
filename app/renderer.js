@@ -171,6 +171,7 @@ function zoomed() {
 };
 
 renderer.highlight = function(nodes) {
+  if(renderer.options["debugprint"]) console.log("  Highlighting: ", nodes);
   var ids = nodes.map(function(n) { return n._id; });
   d3.selectAll(".node")
       .filter(function(rect) { return ids.indexOf(rect._id) != -1; })

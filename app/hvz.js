@@ -35,6 +35,14 @@ hvz.init = function() {
       .enter().append("option")
         .text(function(d) { return d.name; });
 
+    d3.selectAll(".specs textarea")
+      .on("click", function() {
+        d3.event.stopPropagation();
+        d3.selectAll(".node").style("stroke-width", 0);
+        var selection = document.getSelection().toString();
+        highlightNodeInSelection(selection);
+      });
+
     // Load the graph
     hvz.load();
 
@@ -115,6 +123,14 @@ hvz.visibility = function() {
 
 hvz.isUserConstraintGraph = function() {
   return graph.spec.constraints && graph.spec.constraints[0].name != undefined;
+};
+
+function highlightNodeInSelection(selection) {
+  var found = selection.match(/("source":\d+|"target":\d+|"_id":\d+|"left":\d+|"right":\d+)/g) || [];
+  var nodes = found.map(function(value) {
+    return {"_id": Number(value.replace(/[^\d]+/g, ""))};
+  });
+  renderer.highlight(nodes);
 };
 
 function prettyJSON() {
