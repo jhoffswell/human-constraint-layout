@@ -111,8 +111,9 @@ h1 {
 .node.visible {
   stroke-width: 2;
   stroke: #bbb;
+  stroke-dasharray: 3 3;
+  fill: white !important;
   opacity: 1;
-  fill-opacity: 0;
   cursor: pointer;
 }
 
@@ -124,6 +125,16 @@ h1 {
 .link {
   stroke-width: 1;
   stroke: #bbb;
+}
+
+.link.visible {
+  stroke: #ddd;
+  stroke-dasharray: 3 3;
+  opacity: 1;
+}
+
+.link.hidden {
+  opacity: 0;
 }
 
 marker path {

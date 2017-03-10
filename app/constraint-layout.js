@@ -268,7 +268,26 @@ function generateSets(nodes, inSet, include, exclude) {
     sets[set] = current;
   });
   
+  if(renderer.options["setnode"]) createSetNode(sets);
   return sets;
+};
+
+function createSetNode(sets) {
+  Object.keys(sets).forEach(function(setName) {
+    var node = {
+      "temp": true,
+      "temp_type": "setNode"
+    };
+    graph.spec.nodes = graph.spec.nodes.concat([node]);
+    node._id = graph.spec.nodes.indexOf(node);
+
+    sets[setName].forEach(function(n) {
+      if(n.temp) return;
+      var link = {"source": n._id, "target": node._id, "temp": true};
+      graph.spec.links = graph.spec.links.concat([link]);
+    });
+
+  });
 };
 
 function value(expr, node) {

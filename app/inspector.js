@@ -171,9 +171,7 @@ function createDebugContents() {
       var constraintName = d3.select(this.parentNode.parentNode).datum();
       renderer.highlight(layout.sets[constraintName][setName]);
     })
-    .on("mouseout", function() {
-      d3.selectAll(".node").style("stroke-width", 0);
-    });
+    .on("mouseout", renderer.removeHighlight);
 
   // ----------------------------------------------
   // Show information about the sub constraints

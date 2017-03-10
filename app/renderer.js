@@ -17,12 +17,13 @@ renderer.init = function() {
   document.getElementById("range-nodepad").value = 10;
 
   document.getElementById("check-layoutnode").checked = true;
+  document.getElementById("check-setnode").checked = false;
   document.getElementById("check-arrows").checked = true;
 
   document.getElementById("text-fillprop").value = "_id";
 
   ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize", "nodepad"].map(updateRange);
-  ["debugprint", "layoutnode", "overlaps", "arrows"].map(updateCheck);
+  ["debugprint", "layoutnode", "setnode", "overlaps", "arrows"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
 
@@ -51,7 +52,12 @@ renderer.draw = function() {
   renderer.colajs
       .avoidOverlaps(renderer.options["overlaps"])
       .convergenceThreshold(1e-3);
-  if(renderer.options["linkdist"] != 0 ) renderer.colajs.linkDistance(renderer.options["linkdist"]);
+  if(renderer.options["linkdist"] != 0 ) {
+    renderer.colajs.linkDistance(function(d) {
+      if(d.temp) return 1;
+      return renderer.options["linkdist"];
+    });
+  };
   if(renderer.options["jaccard"] != 0) renderer.colajs.jaccardLinkLengths(renderer.options["jaccard"]);
   if(renderer.options["symmetric"] != 0) renderer.colajs.symmetricDiffLinkLengths(renderer.options["symmetric"]);
   
@@ -83,7 +89,13 @@ renderer.drawLinks = function() {
   renderer.links = renderer.svg.selectAll(".link")
       .data(graph.spec.links)
     .enter().append("line")
-      .attr("class", "link");
+      .attr("class", function(d) {
+        var className = "link";
+        if(d.temp) {
+          className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
+        }
+        return className;
+      });
 
   if(renderer.options["arrows"]) {
     renderer.svg.append("defs").selectAll("marker")
@@ -98,7 +110,10 @@ renderer.drawLinks = function() {
         .attr("orient", "auto")
       .append("path")
         .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5");
-    renderer.links.style("marker-end",  "url(#suit)");
+    renderer.links.style("marker-end", function(d) {
+      if(d.temp) return "none";
+      return "url(#suit)";
+    });
   }    
 };
 
@@ -178,7 +193,13 @@ renderer.highlight = function(nodes) {
   if(renderer.options["debugprint"]) console.log("  Highlighting: ", nodes);
   var ids = nodes.map(function(n) { return n._id; });
   d3.selectAll(".node")
-      .filter(function(rect) { return ids.indexOf(rect._id) != -1; })
+      .filter(function(node) { return ids.indexOf(node._id) != -1; })
       .style("stroke", "red")
       .style("stroke-width", 3);
+};
+
+renderer.removeHighlight = function(nodes) {
+  d3.selectAll(".node")
+      .filter(function(node) { return node.temp == null; })
+      .style("stroke-width", 0);
 };
