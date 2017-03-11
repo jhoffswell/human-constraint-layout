@@ -5,7 +5,6 @@ var hvz = {};
 /***************************************************************/
 
 hvz.init = function() {
-
   d3.text("app/template.html", function(err, text) { 
 
     d3.select("body").html(text); 
@@ -38,7 +37,7 @@ hvz.init = function() {
     d3.selectAll(".specs textarea")
       .on("click", function() {
         d3.event.stopPropagation();
-        d3.selectAll(".node").style("stroke-width", 0);
+        renderer.removeHighlight();
         var selection = document.getSelection().toString();
         highlightNodeInSelection(selection);
       });
