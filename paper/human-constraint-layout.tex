@@ -38,6 +38,26 @@
 \newcommand{\green}[1]{\textcolor{lightgreen}{\emph{#1}}}
 \newcommand{\purple}[1]{\textcolor{lightpurple}{\emph{#1}}}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Commands to help specify inline figures in the paper. %
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{graphicx,calc}
+\newlength\myheight
+\newlength\mydepth
+\settototalheight\myheight{Xygp}
+\settodepth\mydepth{Xygp}
+\setlength\fboxsep{0pt}
+\newcommand*\inline[1]{
+  \settototalheight\myheight{Xygp}
+  \settodepth\mydepth{Xygp}
+  \raisebox{-\mydepth}{\includegraphics[height=\myheight]{#1}}
+}
+\newcommand*\inlineTall[1]{
+  \settototalheight\myheight{Xygp}
+  \settodepth\mydepth{Xygp}
+  \raisebox{-\mydepth}{\includegraphics[height=12pt]{#1}}
+}
+
 
 \makeatletter\if@ACM@journal\makeatother
 %% Journal information (used by PACMPL format)
@@ -215,7 +235,7 @@
 \maketitle
 
 % Styling
-\hyphenpenalty=10000
+%\hyphenpenalty=10000 %% TODO: I added this, but it isn't playing well with this layout.
 
 \input{figures.tex}
 \input{introduction.tex}
