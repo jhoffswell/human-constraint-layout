@@ -5,27 +5,37 @@ We implemented our constraint language in a system named \texttt{HvZ Constraint 
 The user begins by providing a specification for a graph and high-level constraints. The system then analyzes the user's high-level constraints and computes any necessary built-in properties before proceeding to the constraint generation. The system works through each high-level constraint, first computing the sets of nodes then using those sets to generate the necessary WebCoLa constraints. Once all of the constraints have been generated, the new graph specification with WebCoLa constraints is passed to WebCoLa, which computes the final layout. The user can then interact with the various options provided by the \texttt{HvZ} help features to tune the behavior and display of the layout.
 
 \subsection{Generating Constraints}
-The constraint generation is the main feature of this system. We will briefly describe the process for computing the WebCoLa constraints for each of our high-level constraints.
+The constraint generation is the main feature of this system. We will briefly describe the process for computing the WebCoLa constraints for each of our high-level constraints. The number of WebCoLa constraints generated for each high-level constraint is shown in Table \ref{tab:numConstraints}.
 
+\newcommand{\nodePairs}{$\sum\limits_{i=1}^s n_i * \sum\limits_{j=i+1}^s n_j$}
+\newcommand{\nodeInSets}{$\sum\limits_{i=1}^s n_i$}
+\newcommand{\inSetPairs}{$\sum\limits_{i=1}^s {n_i \choose 2}$}
+
+\setlength{\tabcolsep}{0.5em} % for the horizontal padding
+{\renewcommand{\arraystretch}{1.6} % for the vertical padding
 \begin{table}[]
 \centering
-\caption{The number of constraints prodcued for a single high-level, user-defined constraint where $n$ is the number of nodes in all the sets and $s$ is the number of sets.}
 \begin{tabular}{r|c|c}
-          & Within Set & Between Set        \\ \cline{1-3}
-Alignment Constraint & $s$        & $n \choose 2$      \\ \cline{1-3}
-Order Constraint     &            &                    \\ \cline{1-3}
-Position Constraint  &            &            
+                     & Within Set  & Between Set        \\ \hline
+Alignment Constraint & $s$         & \nodePairs         \\ \hline
+Order Constraint     & \inSetPairs & \nodePairs         \\ \hline
+Position Constraint  & \nodeInSets & $2 * $ \nodePairs
 \end{tabular}
+\caption{The number of constraints prodcued for a single high-level, user-defined constraint where $s$ is the number of sets and $n_i$ is the number of nodes in set $i$.}
+\label{tab:numConstraints}
+\vspace{-30px}
 \end{table}
 
 \subsubsection{Alignment Constraints}
 Generating WebCoLa alignment constraints from our alignment constraints is easy for \emph{within set} constraints. Since the sets have already been computed we simply define a new WebCoLa alignment constraint to align the nodes in the set. \blue{If the set contains only one node, we do not generate a WebCoLa alignment constraint.} We produce one alignment constraint per set for within set constraints.
 
-While the user can theoretically define a \emph{between set} alignment constraint, the system will currently generate an alignment constraint for each pair of nodes such that their set is not equal. In other words, we produce ${n \choose 2}$ alignment constraints for each \emph{between set} alignment constraint. If all the nodes in the graph are contained in at most one set, this will cause all the nodes in the graph to be aligned on the same axis. Future work is required to determine how to best specify \emph{between set} alignment constraints; the expectation for such a constraint would be for the center of mass of each set of nodes to be aligned.
+While the user can theoretically define a \emph{between set} alignment constraint, the system will currently generate an alignment constraint for each pair of nodes where their set is not equal. If all the nodes in the graph are contained in a set, this will cause all the nodes in the graph to be aligned on the same axis. Future work is required to determine how to best specify \emph{between set} alignment constraints; one potential expectation for such a constraint would be for the center of mass of each set of nodes to be aligned.
 
 \subsubsection{Order Constraints}
+To generate our high-level order constraints, we produce WebCoLa position constraints that enforce the desired ordering of nodes. For \emph{within set} constraints, we generate one position constraint for each pair of nodes in the set. We use a similar strategy to generate \emph{between set} constraints in which we generate one constraint for each pair of nodes where their set is not equal. The large number of constraints currently required for \emph{between set} order constraints is highly suboptimal; for future work, we will modify the creation of \emph{between set} constraints to take advantage of the ordering and set nature of constraints to reduce the number of WebCoLa constraints required for this behavior.
 
 \subsubsection{Position Constraints}
+To generate our high-level position constraints, we start by creating a new point with the desired properties. If a new point with the desired name has already been created, we reuse that point, otherwise we insert a new \texttt{"temp"} node into the graph. We then generate WebCoLa position constraints with respect to this new point. As seen in Table \ref{tab:numConstraints}, this process is highly suboptimal for \emph{between set} constraints. Similar to the other \emph{between set} constraints, we start by generating pairs of nodes for which their set does not match. We then produce one WebCoLa constraint for each node in each set, which leads to a large number of repeated constraints. Future work will explore better constraint generation strategies.
 
 \subsection{Help Features}
 In order to help users understand and modify the graph layout, we include three panels in our development environment to provide different levels of support and customization. A \emph{configuration} panel allows the user to modify aspects of the development environment, constraint generation, and graph rendering. A \emph{debugging} panel provides users with insight into the sets defined in their constraint specification and the number of constraints produced. A \emph{schema} panel provides a description of our constraint language.
