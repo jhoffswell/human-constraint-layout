@@ -1,0 +1,35 @@
+%!TEX root = human-constraint-layout.tex
+\section{Results}
+Now that we have described the design and implementation of our high-level constraint language, we will demonstrate the utility of this technique through a number of example use cases. These examples were chosen to highlight both common layout techniques and highly domain specific layouts. We show the results of our layouts \blue{and provide runtime information for each phase of the process.}
+
+% \setlength{\tabcolsep}{0.5em} % for the horizontal padding
+% {\renewcommand{\arraystretch}{1.6} % for the vertical padding
+% \begin{table*}[]
+% \centering
+% \begin{tabular}{r|c|c|c|c}
+%                      & Figure                                      & Nodes & HvZ & WebCoLa     \\ \hline
+% Small Tree           & \ref{fig:small-tree}, \ref{fig:tree-layout} & 6     & 2   & 14      \\ \hline
+% Medium Tree          & \ref{fig:tree-layout}                       & 47    & 2   & 801      \\ \hline
+% Large Tree           & \ref{fig:tree-layout}                       & 80    & 2   & 2736
+
+% \end{tabular}
+% \caption{\orange{Fill this in!}}
+% \label{tab:numConstraints}
+% \vspace{-20px}
+% \end{table*}
+
+\subsection{Tree Layouts}
+\treeLayout
+\tlrFourLayout
+Trees are one example of a common layout technique that is often addressed in visualization tools \blue{cite D3, graphviz, etc.}. The basic tree layout from Figure \ref{fig:small-tree} is shown on three trees of varying sizes in Figure \ref{fig:tree-layout}.
+
+While our constraint language can produce highly customized layouts, the layouts are also reusable across specifications allowing users to easily reapply the same layout to multiple graphs.
+
+\subsection{Food Webs}
+\smallFoodWebLayout
+Food webs visualize complex producer-consumer relationships in ecological systems and are a common presentation strategy for this information despite the challenge of creating an informative visualization \blue{citations}. There are many examples of small food webs, which could easily be created by hand, but we show a simple constraint specification in Figure \ref{fig:small-foodweb-layout}. However, this is just a small example of a food web, whereas the webs are often much more complex. \green{Include a larger example of a food web layout that we can compare to.}
+
+\subsection{Biological Networks}
+Cerebral \cite{barsky2007cerebral} is a system for the layout and analysis of biological systems. The authors note that existing ``tools did not fully meet the needs of our immunologist collaborators'' as motivation for the design of their system. In order to examine the feasibility of our constraint language for highly domain specific tasks, we recreated the TLR4 graph shown in \cite{barsky2007cerebral} using our language. The constraint specification, layout, and Cerebral graph are shown in Figure \ref{fig:tlr4-layout}.
+
+This constraint specification demonstrates a number of the techniques supported by our constraint language. In particular, the user adds an \texttt{"exclude"} statement to remove the nodes with an \texttt{"unknown"} type from the layout (these are the gray nodes in teh graph). To produce the hierarhical layout that reflects the underlying biological system, the user simply applies a custom ordering on the types of the nodes for this graph. The main difference between our layout and the one prodcued by Cerebral is that our layout more strongly penalizes vertical distance which causes the graph to compress into thinner layers. Future work will explore how to better tune these properties to provide unconstrainted movement of nodes within the bounds provided by our constraints.
