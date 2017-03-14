@@ -4,6 +4,7 @@
 In this section we describe our constraint language for high-level, user-defined constraints. This languages includes support for specifying sets of nodes over which to run the constraints and three types of constraints over the nodes: \emph{alignment}, \emph{order}, and \emph{position}. Figure \ref{fig:small-tree} shows a small example specification for a tree layout and the resulting six node tree. Every high-level constraint must include a \texttt{"name"} property and specify sets over which to apply the layout constraints. Layout constraints for a high-level constraint are optional.
 
 \subsection{Specifying Sets}
+\label{sec:sets}
 Every high-level constraint must specify a group of sets over which the layout constraints are defined. There are two types of high-level constraints that can be specified: \emph{within set} constraints and \emph{between set} constraints. \emph{Within set} constraints describe constraints that are applied to all of the nodes within a given set whereas \emph{between set} constraints describe constraints that are between larger sets. We describe how to define each type of constraint and show examples of how these constraints are applied.
 
 \subsubsection{Within Set Constraints}

@@ -1,0 +1,31 @@
+%!TEX root = human-constraint-layout.tex
+\section{Discussion and Future Work}
+In the previous section we showed a few example use cases of our constraint language for various types of graph layout. In this section we talk about some of the lessons learned from this process and our current implementation.
+
+\subsection{Domain Specific Layouts}
+Creating a domain specific layout requires both a domain expert and individual with programming expertise. The domain expert provides knowledge about the underlying graph in how it should relate to the layout whereas the programmer provides the expertise to actually compute the desired layout. In some cases, the domain expert may also strive to act as the programmer, but taking on such a role may require large amounts of time and effort on behalf of the expert.
+
+The goal of our layout is to provide a compact language in which to specify the domain specific layout information. In the previous section, we showed that we can feasibly recreate complex domain specific layouts with a compact layout specification. However, As is evident from the comparisons (Figure \ref{fig:serengeti-layout}, \ref{fig:tlr4-layout}), the user may want to incorporate additional information via node labeling, group labeling, or other annotations on the visualization. Our system does not currently provide support for such customizations. Future work may want to examine how to incorporate customizations to the display of information in the layout.
+
+\subsection{Specifying Constraints}
+We identified two styles of high-level constraints, \emph{within set} constraints and \emph{between set} constraints, which represent different techniques for applying constraints over the sets (see Section \ref{sec:sets}). In an earlier iteration of our constraint language, we defined a high-level constraint as follows:
+
+\begin{verbatim}
+        {
+          "name": NAME,
+          "set": SET,
+          "within": [CONSTRAINTS...],
+          "between": [CONSTRAINTS...]
+        }
+\end{verbatim}
+
+In our final constraint language, we decided to standardize the specification of layout constraints using the \texttt{"constraint"} syntax rather than \texttt{"within"} and \texttt{"between"} in order to support more customizable constraint specifications, instead varying the type of constraints via the \texttt{"set"} or \texttt{"from"} definition for the high-level constraint. However, in all of the examples shown in this paper, there is a tight relationship between the sets used for \emph{within set} and \emph{between set} constraints (Figure \ref{fig:small-tree}, \ref{fig:tree-layout}, \ref{fig:serengeti-layout}, \ref{fig:small-foodweb-layout}, \ref{fig:tlr4-layout}). Future work is required to understand if standardization is appropriate or if a syntax like the one shown here would be more understandable.
+
+\subsection{Generating Constraints and Optimizations}
+The current process of generating WebCoLa constraints from our high-level constraints is unoptimized (Table \ref{tab:numConstraints}). There are a few optimizations that can be made in particular that can help to reduce the number of WebCoLa constraints.
+
+\emph{Between set alignment} constraints currently force all the nodes across all the sets to become aligned. An improvement would be to use an iterative layout that produces the inter-set layout before positioning the set as a whole. This strategy would significantly reduce the number of constraints that need to be solved by the underlying system and produce a more expected layout for the specified constraint.
+
+\emph{Order} constraints currently produce constraints between pairs of nodes, ignorant of the desired ordering. One optimization is to reflect the ordering in the constraint generation process to only produce constraints for neighboring nodes. For \emph{within set} constraints, this strategy would only apply constraints between adjacent nodes in the final order. For \emph{between set} constraints, we could include an optimization to use temporary nodes to enforce the order rather than combinatorially producing constraints between pairs of nodes.
+
+\emph{Between set position} constraints will produce many redundant constraints because of the current constraint generation in which the layout first partitions pairs of nodes that require a constraint, and then applies the constraint to each node in the pair. \emph{Position} constraints currently produce the same effect for both \emph{within set} and \emph{between set} constraints since the position is relative to a particular node. However, because of the underlying set generation procedure, \emph{between set} constraints are significantly less optimal than \emph{within set} constraints (Table \ref{tab:numConstraints}). Future work is required to examine how to optimize this process and what distinctions should be expected between these two types of the constraint.
