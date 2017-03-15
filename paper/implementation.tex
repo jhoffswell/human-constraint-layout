@@ -1,6 +1,6 @@
 %!TEX root = human-constraint-layout.tex
 \section{Implementation}
-We implemented our constraint language in a system named \texttt{HvZ Constraint Layout}\footnote{\texttt{HvZ Constraint Layout} is available online at:\\ \texttt{https://jhoffswell.github.io/human-constraint-layout/}}, which converts the high-level, user-defined constraints to WebCoLa \cite{WebCoLa} and renders the graph using WebCoLa and D3 \cite{bostock:d3}. First, we talk about the overall pipeline for specifying and rendering graphs. We then briefly describe three help features included in our system: \emph{configuration}, \emph{debugging}, and \emph{schema} description.
+We implemented our constraint language in a system named \texttt{HvZ Constraint Layout}\footnote{\texttt{HvZ Constraint Layout} is available online at:\\ \texttt{https://jhoffswell.github.io/human-constraint-layout/}}, which converts the high-level, user-defined constraints to WebCoLa \cite{WebCoLa} and renders the graph using WebCoLa and D3 \cite{bostock:d3}. First, we talk about the overall pipeline for specifying and rendering graphs. We then briefly describe three help features included in our system: \emph{schema} description, \emph{configuration}, and \emph{debugging}.
 
 The user begins by providing a specification for a graph and high-level constraints. The system then analyzes the user's high-level constraints and computes any necessary built-in properties before proceeding to the constraint generation. The system works through each high-level constraint, first computing the sets of nodes then using those sets to generate the necessary WebCoLa constraints. Once all of the constraints have been generated, the new graph specification with WebCoLa constraints is passed to WebCoLa, which computes the final layout. The user can then interact with the various options provided by the \texttt{HvZ} help features to tune the behavior and display of the layout.
 
@@ -38,17 +38,17 @@ To generate our high-level order constraints, we produce WebCoLa position constr
 To generate our high-level position constraints, we start by creating a new point with the desired properties. If a new point with the desired name has already been created, we reuse that point, otherwise we insert a new \texttt{"temp"} node into the graph. We then generate WebCoLa position constraints with respect to this new point. As seen in Table \ref{tab:numConstraints}, this process is highly suboptimal for \emph{between set} constraints. Similar to the other \emph{between set} constraints, we start by generating pairs of nodes for which their set does not match. We then produce one WebCoLa constraint for each node in each set, which leads to a large number of repeated constraints. Future work will explore better constraint generation strategies.
 
 \subsection{Help Features}
-In order to help users understand and modify the graph layout, we include three panels in our development environment to provide different levels of support and customization. A \emph{configuration} panel allows the user to modify aspects of the development environment, constraint generation, and graph rendering. A \emph{debugging} panel provides users with insight into the sets defined in their constraint specification and the number of constraints produced. A \emph{schema} panel provides a description of our constraint language.
+In order to help users understand and modify the graph layout, we include three panels in our development environment to provide different levels of support and customization. A \emph{schema} panel provides a description of our constraint language. A \emph{configuration} panel allows the user to modify aspects of the development environment, constraint generation, and graph rendering. A \emph{debugging} panel provides users with insight into the sets defined in their constraint specification and the number of constraints produced. 
+
+\subsubsection{Schema}
+Selecting the \mbox{question icon (\kern-1.25ex\inline{figures/question.png}\kern-0.5ex)} opens the schema panel, which shows the schema for our high-level constraint language. A snapshot of the schema panel is shown in Figure \ref{fig:schema-panel}.
 
 \subsubsection{Configuration}
+\schemaPanel
 \configurationPanel
+\debuggingPanel
 Selecting the \mbox{gear icon (\kern-1.25ex\inline{figures/gear.png}\kern-0.5ex)} opens the configuration panel. The configuration panel provides options for interacting with the development environment and rendering the graph. A snapshot of the configuration panel is shown in Figure \ref{fig:config-panel}.
 
 \subsubsection{Debugging}
 \label{sec:debugging}
-\debuggingPanel
 Selecting the \mbox{bug icon (\kern-1.25ex\inline{figures/bug.png}\kern-0.5ex)} opens the debugging panel. The debugging panel provides insight into the underlying constraint generation system. The debugging panel shows the sets created for each high-level, user-defined constraint. Mousing over the name of the set highlights all nodes in the set in red. Highlighting text in either the original or generated graph specification highlights all nodes referenced in the highlighted text region. Users can also enter a node \texttt{"\_id"} into the search box to highlight particular nodes of interest. The debugging panel also shows all of the layout constraints specified for each high-level constraint. Selecting the checkbox removes the WebCoLa constraints corresponding to the constraint from the layout. A snapshot of the debugging panel is shown in Figure \ref{fig:debug-panel}.
-
-\subsubsection{Schema}
-\schemaPanel
-Selecting the \mbox{question icon (\kern-1.25ex\inline{figures/question.png}\kern-0.5ex)} opens the schema panel, which shows the schema for our high-level constraint language. A snapshot of the schema panel is shown in Figure \ref{fig:schema-panel}.
