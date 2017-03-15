@@ -235,7 +235,7 @@
   "constraints": [
     {
       "name": "layer",
-      "set": {"partition": "type", "exclude": ["unknown"]}
+      "set": {"partition": "type", "ignore": ["unknown"]}
     },
     {
       "name": "order",

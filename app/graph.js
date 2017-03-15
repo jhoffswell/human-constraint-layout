@@ -15,9 +15,9 @@ graph.init = function(spec) {
 
 graph.computeBuiltInProperties = function(constraint) {
   if(JSON.stringify(constraint).indexOf("depth") != -1) calculateDepths();
+  if(JSON.stringify(constraint).indexOf("parents") != -1) calculateIncoming();
   if(JSON.stringify(constraint).indexOf("parent") != -1) calculateParents();
-  if(JSON.stringify(constraint).indexOf("incoming") != -1) calculateIncoming();
-  if(JSON.stringify(constraint).indexOf("outgoing") != -1) calculateOutgoing();
+  if(JSON.stringify(constraint).indexOf("children") != -1) calculateOutgoing();
   if(JSON.stringify(constraint).indexOf("neighbors") != -1) calculateNeighbors();
   if(JSON.stringify(constraint).indexOf("degree") != -1) calculateDegree();
   if(JSON.stringify(constraint).indexOf("firstchild") != -1) calculateFirstChild();
