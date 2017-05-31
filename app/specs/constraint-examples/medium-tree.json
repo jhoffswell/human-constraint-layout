@@ -110,7 +110,7 @@
     },
     {
       "name": "alignChildren",
-      "set": {"partition": "firstchild", "include": "firstchild", "ignore": [null]},
+      "set": {"relation": "firstchild", "ignore": [null]},
       "within": [{ "type": "align", "axis": "y" }]
     }
   ]

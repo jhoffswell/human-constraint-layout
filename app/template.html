@@ -99,15 +99,24 @@
         </div>
       </div>
       <div>
-        <div class="label" style="margin-bottom: 17px">
+        <div class="label" style="margin-bottom: 36px">
           <span>"set":</span>
         </div>
         <div class="def">
           <span>{</span>
           <span>"partition":</span>
           <span class="type">String</span>
-          <span>, "include":</span>
-          <span class="type">Node</span>
+          <span>, "ignore":</span>
+          <span class="type">[String]</span>
+          <span>}</span>
+
+          <br>
+
+          <span class="sep">||</span>
+
+          <span>{</span>
+          <span>"relation":</span>
+          <span class="type">String</span>
           <span>, "ignore":</span>
           <span class="type">[String]</span>
           <span>}</span>
@@ -179,7 +188,7 @@
           </div>
         </div>
         <div>
-          <div class="label"><span>"order":</span></div>
+          <div class="label"><span>"reverse":</span></div>
           <div class="def">
             <span class="type">Boolean</span>
           </div>

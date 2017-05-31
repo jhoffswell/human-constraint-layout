@@ -29,7 +29,7 @@ function processConstraint(constraint) {
   // Create the sets
   if(constraint.name && constraint.set) {
     var inSet = generateInSetFunc(constraint.set);
-    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.include, constraint.set.ignore);
+    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.relation, constraint.set.ignore);
   } else if(constraint.name) {
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(null));
   } else {
@@ -205,7 +205,7 @@ function generateInSetFunc(def) {
     // Create a function to include all nodes in one set.
     inSet = function(node) { return true; };
   
-  } else if(!def.partition) { 
+  } else if(!def.partition && !def.relation) { 
 
     // Create a function to partition nodes into the user defined sets
     inSet = function(node) {
@@ -223,6 +223,16 @@ function generateInSetFunc(def) {
     // Create a function to partition nodes based on "def.partition".
     inSet = function(node) {
       var value = node[def.partition];
+      if(value != null && typeof value == "object") value = value._id;
+      return value;
+    };
+
+  } else if(def.relation) {
+
+    // Create a function to partition nodes based on "def.relation".
+    // TODO: this is a little weird
+    inSet = function(node) {
+      var value = node[def.relation];
       if(value != null && typeof value == "object") value = value._id;
       return value;
     };
