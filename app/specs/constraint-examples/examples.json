@@ -3,7 +3,7 @@
 "constraints": [
   {
     "name": "layer",
-    "set": {"property": "depth"},
+    "set": {"partition": "depth"},
     "constraints": [{ "type": "align", "axis": "x" }]
   },
   {
@@ -18,7 +18,7 @@
 "constraints": [
   {
     "name": "layer",
-    "set": {"property": "depth"},
+    "set": {"partition": "depth"},
     "constraints": [
       { "type": "align", "axis": "x" },
       { "type": "order", "axis": "x", "by": "_id" }
@@ -36,7 +36,7 @@
 "constraints": [
   {
     "name": "cluster",
-    "set": {"property": "type"},
+    "set": {"partition": "type"},
     "constraints": [
       { "type": "order", "axis": "x", "by": "_id" },
       { "type": "align", "axis": "x" }
@@ -61,7 +61,7 @@
 "constraints": [
   {
     "name": "layer",
-    "set": {"property": "parent"},
+    "set": {"partition": "parent"},
     "constraints": [
       { "type": "position", "position": "right", "of": "parent.x" }
     ]
@@ -78,7 +78,7 @@
 "constraints": [
   {
     "name": "cluster",
-    "set": {"property": "type"}
+    "set": {"partition": "type"}
   },
   {
     "name": "layer",
@@ -160,39 +160,42 @@
 //
 
 "constraints": [
-  {
-    "name": "cluster",
-    "set": [{"expr": "datum.incoming.length == 0"}],
-    "constraints": [
-        {"type": "align", "axis": "x"}
-    ]
-  },
-  {
-    "name": "cluster",
-    "set": [{"expr": "datum.incoming.length == 0"}, {"expr": "datum.incoming.length >= 1"}],
-    "constraints": [
-        {"type": "order", "axis": "y", "by": "degree"}
-    ]
-  }
-]
+    {
+      "name": "cluster",
+      "set": [{"expr": "datum.incoming.length == 0"}],
+      "constraints": [
+          {"type": "align", "axis": "x"}
+      ]
+    },
+    {
+      "name": "cluster",
+      "set": [{"expr": "datum.incoming.length == 0"}, {"expr": "datum.incoming.length >= 1"}],
+      "constraints": [
+          {"type": "order", "axis": "y", "by": "degree"}
+      ]
+    }
+  ]
 
 // aligned Tree
 "constraints": [
     {
       "name": "layer",
-      "set": {"property": "depth"},
+      "set": {"partition": "depth"},
       "constraints": [{ "type": "align", "axis": "x" }]
     },
     {
-      "name": "position",
-      "set": {"property": "firstchild"},
-      "constraints": [
-        { "type": "align", "axis": "x" }
-      ]
-    },
-    {
-      "name": "ordered",
+      "name": "sortLayers",
       "from": ["layer"],
       "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+    },
+    {
+      "name": "sortFirstLayer",
+      "set": [{"expr": "datum.depth == 1"}],
+      "constraints": [{"type": "order", "axis": "x", "by": "_id"}]
+    },
+    {
+      "name": "alignChildren",
+      "set": {"partition": "firstchild", "include": "firstchild"},
+      "constraints": [{ "type": "align", "axis": "y" }]
     }
   ]

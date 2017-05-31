@@ -9,7 +9,7 @@
   "constraints": [
     {
       "name": "sample",
-      "constraints": [{"type": "align", "axis": "x"}]
+      "within": [{"type": "align", "axis": "x"}]
     }
   ]
 }

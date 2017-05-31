@@ -53,15 +53,11 @@
     {
       "name": "cluster",
       "set": {"partition": "type"},
-      "constraints": [
+      "within": [
         { "type": "order", "axis": "x", "by": "id" },
         { "type": "align", "axis": "x" }
-      ]
-    },
-    {
-      "name": "layer",
-      "from": ["cluster"],
-      "constraints": [
+      ],
+      "between": [
         { 
           "type": "order", 
           "axis": "y", 

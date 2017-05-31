@@ -186,12 +186,8 @@
   "constraints": [
     {
       "name": "cluster",
-      "set": {"partition": "type"}
-    },
-    {
-      "name": "layer",
-      "from": ["cluster"],
-      "constraints": [
+      "set": {"partition": "type"},
+      "between": [
         { 
           "type": "order", 
           "axis": "y", 

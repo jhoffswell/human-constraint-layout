@@ -98,21 +98,20 @@
   ],
   "constraints": [
     {
-      "name": "layer",
+      "name": "alignLayer",
       "set": {"partition": "depth"},
-      "constraints": [{ "type": "align", "axis": "x" }]
+      "within": [{ "type": "align", "axis": "x" }],
+      "between": [{ "type": "order", "axis": "y", "by": "depth" }]
     },
     {
-      "name": "position",
-      "set": {"partition": "parent"},
-      "constraints": [
-        { "type": "position", "position": "right", "of": "parent" }
-      ]
+      "name": "orderNodes",
+      "set": {"partition": "parent", "ignore": [null]},
+      "within": [{ "type": "order", "axis": "x", "by": "_id" }]
     },
     {
-      "name": "ordered",
-      "from": ["layer"],
-      "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+      "name": "alignChildren",
+      "set": {"partition": "firstchild", "include": "firstchild", "ignore": [null]},
+      "within": [{ "type": "align", "axis": "y" }]
     }
   ]
 }

@@ -26,38 +26,40 @@ layout.getConstraints = function() {
 function processConstraint(constraint) {
   if(renderer.options["debugprint"]) console.log("    Processing constraint '" + constraint.name + "'...");
 
-  if(constraint.name && constraint.from && !constraint.set) {
-
-    // Handle "between" (aka "from") constraints
-    var sets = [];
-    constraint.from.forEach(function(constraintName) {
-      var newSets = Object.keys(layout.sets[constraintName]).map(function(key) { 
-        return layout.sets[constraintName][key]; 
-      });
-      sets = sets.concat(newSets);
-    });
-    layout.sets[constraint.name] = generatePairs(sets);
-
-  } else if(constraint.name && !constraint.from && constraint.set) {
-
-    // Handle "within" (aka "set") constraints
+  // Create the sets
+  if(constraint.name && constraint.set) {
     var inSet = generateInSetFunc(constraint.set);
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.include, constraint.set.ignore);
-
   } else if(constraint.name) {
-    
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(null));
-
   } else {
     console.error("Unknown constraint behavior for: ", constraint);
     return;
   }
-  
+
   var constraints = [];
-  Object.keys(layout.sets[constraint.name]).forEach(function(setName) {
-    var nodes = layout.sets[constraint.name][setName];
-    constraints = constraints.concat(generateConstraints(nodes, constraint.constraints, constraint.name));
-  });
+
+  // Handle "within set" constraints
+  if(constraint.name && constraint.within) {
+    Object.keys(layout.sets[constraint.name]).forEach(function(setName) {
+      var nodes = layout.sets[constraint.name][setName];
+      constraints = constraints.concat(generateConstraints(nodes, constraint.within, constraint.name));
+    });
+  }
+
+  // Handle "between set" constraints
+  if(constraint.name && constraint.between) {
+    var sets = Object.keys(layout.sets[constraint.name]).map(function(key) { 
+      return layout.sets[constraint.name][key]; 
+    });
+    var pairs = generatePairs(sets);
+
+    Object.keys(pairs).forEach(function(setName) {
+      var nodes = pairs[setName];
+      constraints = constraints.concat(generateConstraints(nodes, constraint.between, constraint.name));
+    });
+  }
+
   return constraints;
 };
 

@@ -3,6 +3,7 @@ var EXAMPLES = {
     {"name": "small-tree"},
     {"name": "medium-tree"},
     {"name": "large-tree"},
+    {"name": "contradiction"},
     {"name": "small-foodWeb"},
     {"name": "large-foodWeb"},
     {"name": "serengeti-foodWeb"},

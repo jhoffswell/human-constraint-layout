@@ -1,0 +1,34 @@
+{
+  "nodes": [
+    {"rank": 10, "level": 1},
+    {"rank": 5, "level": 2},
+    {"rank": 5, "level": 2},
+    {"rank": 5, "level": 2},
+    {"rank": 5, "level": 2},
+    {"rank": 1, "level": 3},
+    {"rank": 1, "level": 3},
+    {"rank": 10, "level": 3}
+  ],
+  "links": [
+    {"source": 0, "target": 1},
+    {"source": 0, "target": 2},
+    {"source": 0, "target": 3},
+    {"source": 0, "target": 4},
+    {"source": 0, "target": 5},
+    {"source": 0, "target": 6},
+    {"source": 0, "target": 7}
+  ],
+  "constraints": [
+    {
+      "name": "level",
+      "set": {"partition": "level"},
+      "within": [{"type": "align", "axis": "x"}],
+      "between": [{"type": "order", "axis": "y", "by": "level"}]
+    },
+    {
+      "name": "rank",
+      "set": {"partition": "rank"},
+      "between": [{"type": "order", "axis": "y", "by": "rank", "reverse": true}]
+    }
+  ]
+}

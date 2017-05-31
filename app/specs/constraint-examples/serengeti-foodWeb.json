@@ -769,15 +769,11 @@
         {"expr": "datum.group1 == 13"},
         {"expr": "datum.group1 == 14"}
       ],
-      "constraints": [
+      "within": [
         {"type": "position", "position": "left", "of": {"name": "b2", "x": 100}},
         {"type": "position", "position": "left", "of": {"name": "b3", "x": 0}}
-      ]
-    },
-    {
-      "name": "orderPlants",
-      "from": ["plants"],
-      "constraints": [
+      ],
+      "between": [
         {"type": "order", "axis": "y", "by": "group1"}
       ]
     },
@@ -789,16 +785,12 @@
         {"expr": "datum.group1 == 5"},
         {"expr": "datum.group1 == 6"}
       ],
-      "constraints": [
+      "within": [
         {"type": "align", "axis": "y"},
         {"type": "position", "position": "left", "of": {"name": "b1", "x": 300}},
         {"type": "position", "position": "right", "of": {"name": "b2"}}
-      ]
-    },
-    {
-      "name": "orderHerbivores",
-      "from": ["herbivores"],
-      "constraints": [
+      ],
+      "between": [
         {"type": "order", "axis": "y", "by": "group1"}
       ]
     },
@@ -808,15 +800,11 @@
         {"expr": "datum.group1 == 1"},
         {"expr": "datum.group1 == 2"}
       ],
-      "constraints": [
+      "within": [
         {"type": "align", "axis": "y"},
         {"type": "position", "position": "right", "of": {"name": "b1"}}
-      ]
-    },
-    {
-      "name": "orderCarnivores",
-      "from": ["carnivores"],
-      "constraints": [
+      ],
+      "between": [
         {"type": "order", "axis": "x", "by": "group1", "reverse": true}
       ]
     }

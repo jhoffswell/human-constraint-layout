@@ -18,12 +18,8 @@
     {
       "name": "layer",
       "set": {"partition": "depth"},
-      "constraints": [{ "type": "align", "axis": "x" }]
-    },
-    {
-      "name": "ordered",
-      "from": ["layer"],
-      "constraints": [{ "type": "order", "axis": "y", "by": "depth" }]
+      "within": [{ "type": "align", "axis": "x" }],
+      "between": [{ "type": "order", "axis": "y", "by": "depth" }]
     }
   ]
 }
