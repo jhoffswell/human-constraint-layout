@@ -63,7 +63,7 @@ h1 {
   margin: 2px;
 }
 
-.specs textarea {
+.specs .spec, .specs .cola-spec {
   flex: 1 0 auto;
   outline: none;
 }

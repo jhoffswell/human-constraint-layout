@@ -5,6 +5,7 @@ var hvz = {};
 /***************************************************************/
 
 hvz.init = function() {
+
   d3.text("app/template.html", function(err, text) { 
 
     d3.select("body").html(text); 
@@ -12,6 +13,7 @@ hvz.init = function() {
     // Start up the inspector and renderer
     inspector.init();
     renderer.init();
+    hvz.ace();
 
     // Set up interactions in environment
     d3.select("#submit").on("click", hvz.start);
@@ -34,7 +36,7 @@ hvz.init = function() {
       .enter().append("option")
         .text(function(d) { return d.name; });
 
-    d3.selectAll(".specs textarea")
+    d3.selectAll(".specs .spec")
       .on("click", function() {
         d3.event.stopPropagation();
         renderer.removeHighlight();
@@ -55,7 +57,7 @@ hvz.start = function() {
   try {
     hvz.error = null;
     if(inspector.errorVisible) inspector.showError();
-    var spec = JSON.parse(document.getElementsByClassName("spec")[0].value);
+    var spec = JSON.parse(hvz.editor.getValue());
     graph.init(spec);
   } catch (error) {
     hvz.error = error;
@@ -74,7 +76,8 @@ hvz.start = function() {
       console.error(error);
     }
   }
-  document.getElementsByClassName("cola-spec")[0].value = prettyJSON();
+  hvz.colaEditor.setValue(prettyJSON());
+  hvz.colaEditor.session.selection.clearSelection();
 
   // Draw the graph
   renderer.draw();
@@ -98,7 +101,8 @@ hvz.load = function() {
 
   d3.text(PATH, function(spec) {
     graph.spec = spec;
-    document.getElementsByClassName("spec")[0].value = graph.spec;
+    hvz.editor.setValue(graph.spec);
+    hvz.editor.session.selection.clearSelection();
     hvz.start();
   });
 };
@@ -124,6 +128,16 @@ hvz.isUserConstraintGraph = function() {
   return graph.spec.constraints && graph.spec.constraints[0].name != undefined;
 };
 
+hvz.ace = function() {
+  hvz.editor = ace.edit("editor");
+  hvz.editor.getSession().setMode("ace/mode/json");
+  hvz.editor.$blockScrolling = Infinity;
+
+  hvz.colaEditor = ace.edit("cola-editor");
+  hvz.colaEditor.getSession().setMode("ace/mode/json");
+  hvz.colaEditor.$blockScrolling = Infinity;
+};
+
 function highlightNodeInSelection(selection) {
   var found = selection.match(/("source":\d+|"target":\d+|"_id":\d+|"left":\d+|"right":\d+)/g) || [];
   var nodes = found.map(function(value) {
@@ -133,13 +147,20 @@ function highlightNodeInSelection(selection) {
 };
 
 function prettyJSON() {
-  var spec = JSON.stringify(graph.spec)
-      .replace("\"nodes\":[", "\n\t\"nodes\":[\n")
-      .replace("\"links\":[", "\n\t\"links\":[\n")
-      .replace("\"constraints\":[", "\n\t\"constraints\":[\n")
-      .replace(/\],/g, "\n\t],")
-      .replace(/\{\"/g, "\t\t{\"")
-      .replace(/\},/g, "},\n")
-      .replace(/\]\}/g, "\n\t]\n}");
+  var simplified = graph.spec;
+  simplified.nodes.forEach(function(node) {
+    if(node.parent) node.parent = graph.spec.nodes.indexOf(node.parent);
+    if(node.firstchild) node.firstchild = graph.spec.nodes.indexOf(node.firstchild);
+  });
+
+  // var spec = JSON.stringify(simplified)
+  //     .replace("\"nodes\":[", "\n\t\"nodes\":[\n")
+  //     .replace("\"links\":[", "\n\t\"links\":[\n")
+  //     .replace("\"constraints\":[", "\n\t\"constraints\":[\n")
+  //     .replace(/\],/g, "\n\t],")
+  //     .replace(/\{\"/g, "\t\t{\"")
+  //     .replace(/\},/g, "},\n")
+  //     .replace(/\]\}/g, "\n\t]\n}");
+  var spec = JSON.stringify(simplified, null, 2);
   return spec;
 };
