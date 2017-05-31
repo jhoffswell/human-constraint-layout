@@ -203,3 +203,15 @@ renderer.removeHighlight = function(nodes) {
       .filter(function(node) { return node.temp == null; })
       .style("stroke-width", 0);
 };
+
+renderer.showError = function() {
+  var color = d3.scaleSequential(d3.interpolateYlOrRd);
+  renderer.nodes.style("fill", function(d) { 
+        var err = layout.errors[d._id] / layout.maxError || 0;
+        return color(err); 
+      })
+    .on("click", function(d) {
+      var invalid = layout.getInvalidConstraints(d);
+      console.log("Node " + d._id + " has " + layout.errors[d._id] + " invalid constraints: ", invalid);
+    });
+};

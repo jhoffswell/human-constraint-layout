@@ -31,8 +31,28 @@ graph.removeTempNodes = function() {
 
 function calculateDepths() {
   if(renderer.options["debugprint"]) console.log("        Computing depths.");
-  graph.spec.nodes.forEach(function(node) {
-    node.depth = node.depth || graph.getDepth(node);
+  // graph.spec.nodes.forEach(function(node) {
+  //   node.depth = node.depth || graph.getDepth(node);
+  // });
+  var root = graph.spec.nodes[0];
+  root.depth = 0;
+  calculateDepthFromRoot(root);
+};
+
+// Note: This can ignore cycles (because it gets the depth)
+// as a min based on when it was visited. It currently does not
+// do disconnected graphs.
+function calculateDepthFromRoot(root) {
+  // Find the nodes that are outgoing from this node.
+  var index = root._id;
+  var outgoing = graph.spec.links.filter(function(link) { return link.source == index; });
+  var calculate = outgoing.map(function(link) { return graph.spec.nodes[link.target]; })
+      .filter(function(node) { return !node.depth; });
+
+  // Compute the depth and recurse
+  calculate.forEach(function(node) {
+    node.depth = node.depth || root.depth + 1;
+    calculateDepthFromRoot(node);
   });
 };
 
@@ -114,6 +134,9 @@ graph.getColor = function(node) {
 
 // TODO: This will not work on cyclic graphs!!
 graph.getDepth = function(node) {
+  if(node.depth) return node.depth;
+
+  // Calculate the depth
   var index = node._id;
   var incoming = graph.spec.links.filter(function(link) { return link.target == index; });
   var depth = 0;
@@ -121,8 +144,9 @@ graph.getDepth = function(node) {
     var parentDepths = incoming.map(function(link) { 
       var parent = graph.spec.nodes[link.source];
       return parent.depth || graph.getDepth(parent);
-    });
-    depth = Math.max(parentDepths) + 1;
+    }).filter(function(d) { return !isNaN(d); });
+
+    depth = Math.min(parentDepths) + 1;
   }
   return depth;
 };
