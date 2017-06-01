@@ -1,0 +1,125 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": " ... ",
+  "description": " ... ",
+  "$ref": "#/defs/spec",
+  "defs": {
+    "spec": {
+      "description": "A graph specification",
+      "type": "object",
+      "properties": {
+        "nodes": {"type": "array"},
+        "links": {"type": "array"},
+        "constraints": {
+          "type": "array",
+          "items": {"$ref": "#/defs/constraints"}
+        }
+      }
+    },
+    "constraints": {
+      "description": "A high level constraint specification",
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {"type": "string"},
+        "set": {"$ref": "#/defs/set"},
+        "within": {
+          "type": "array", 
+          "items": {"$ref": "#/defs/constraint"}
+        }, 
+        "between": {
+          "type": "array", 
+          "items": {"$ref": "#/defs/constraint"}
+        }
+      }
+    },
+    "set": {
+      "oneof": [
+        {
+          "type": "object",
+          "required": ["partition"],
+          "properties": {
+            "partition": {"type": "string"},
+            "ignore": {"$ref": "#/defs/ignore"}
+          }
+        },
+        {
+          "type": "object",
+          "required": ["relation"],
+          "properties": {
+            "relation": {"type": "string"},
+            "ignore": {"$ref": "#/defs/ignore"}
+          }
+        },
+        {
+          "type": "array",
+          "items": {"$ref": "#/defs/expr"}
+        }
+      ]
+    },
+    "constraint": {
+      "type": "object",
+      "oneOf": [
+        {"$ref": "#/defs/alignment"},
+        {"$ref": "#/defs/order"},
+        {"$ref": "#/defs/position"}
+      ]
+    },
+    "alignment": {
+      "type": "object",
+      "required": ["type", "axis"],
+      "properties": {
+        "type": {"enum": ["align"]},
+        "axis": {"enum": ["x", "y"]}
+      }
+    }, 
+    "order": {
+      "type": "object",
+      "required": ["type", "axis", "by"],
+      "properties": {
+        "type": {"enum": ["order"]},
+        "axis": {"enum": ["x", "y"]},
+        "by": {"type": "string"},
+        "order": {"type": "array", "items": {"type": "string"}},
+        "reverse": {"type": "boolean"}
+      }
+    },
+    "position": {
+      "type": "object",
+      "required": ["type", "position", "of"],
+      "properties": {
+        "type": {"enum": ["position"]},
+        "position": {"enum": ["right", "left", "above", "below"]},
+        "of": {
+          "oneof": [
+            {"$ref": "#/defs/node"},
+            {
+              "type": "object",
+              "required": ["name"],
+              "properties": {
+                "name": {"type": "string"},
+                "x": {"type": "number"},
+                "y": {"type": "number"}
+              }
+            }
+          ]
+        }
+      }
+    },
+    "expr": {
+      "type": "object",
+      "required": ["name", "expr"],
+      "properties": {
+        "name": {"type": "string"},
+        "expr": {"type": "string"}
+      }
+    },
+    "node": {
+      "enum": ["parent", "firstchild"]
+    },
+    "ignore": {
+      "type": "array",
+      "items": {"type": "string"}
+    }
+  }
+}

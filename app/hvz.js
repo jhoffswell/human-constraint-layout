@@ -129,9 +129,17 @@ hvz.isUserConstraintGraph = function() {
 };
 
 hvz.ace = function() {
+  ace.require("ace/ext/language_tools");
   hvz.editor = ace.edit("editor");
   hvz.editor.getSession().setMode("ace/mode/json");
   hvz.editor.$blockScrolling = Infinity;
+
+  hvz.editor.setOptions({
+    tabSize: 2,
+    enableBasicAutocompletion: true,
+    enableSnippets: true,
+    enableLiveAutocompletion: true
+  });
 
   hvz.colaEditor = ace.edit("cola-editor");
   hvz.colaEditor.getSession().setMode("ace/mode/json");
