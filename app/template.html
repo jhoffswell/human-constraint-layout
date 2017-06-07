@@ -1,6 +1,6 @@
 <div class="mod_spec">
   <div class="header noselect">
-    <h1>HvZ Constraint Layout</h1>
+    <h1>SetCoLa</h1>
     <div class="controls">
       <select class="sel_examples"></select>
       <input type="submit" id="submit" value="Update">
@@ -24,6 +24,7 @@
       <span class="fa fa-exclamation-circle" title="Error Pane"></span>
       <span class="fa fa-gear" title="Config Pane"></span>
       <span class="fa fa-bug" title="Debug Pane"></span>
+      <span class="fa fa-check" title="Validation Pane"></span>
       <span class="fa fa-question-circle" title="Information Pane"></span>
     </div>
   </div>
@@ -87,8 +88,19 @@
           <input type="text" id="text-labelprop" onchange="updateText('labelprop')"><br>
     </div>
     <div class="debug">
-      <h1>Constraint Debugging</h1>
-      <button onclick='layout.validate()'>Validate Constraints</button><br>
+      <h1>Constraint Debugging</h1><br>
+    </div>
+    <div class="validate">
+      <h1>Constraint Validation</h1><br>
+      <div class="label" onclick="validator.validate()"><span>Count</span></div>
+        <label class="switch">
+          <input id="check-validtype" type="checkbox" onchange="validator.validate()">
+          <div class="slider"></div>
+        </label>
+        <div class="label left" onclick="validator.validate()"><span>Difference</span></div><br>
+      <div class="label"><span>Epsilon:</span></div>
+        <input type="range" id="range-epsilon" min="0" max="1" step="0.05" onchange="updateEpsilon()">
+        <span class="value" id="value-epsilon"></span><br>
     </div>
     <div class="help">
       <h1>User Constraint Schema</h1>

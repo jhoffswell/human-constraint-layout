@@ -8,6 +8,7 @@ inspector.init = function() {
   inspector.errorVisible = false;
   inspector.configVisible = false;
   inspector.debugVisible = false;
+  inspector.validateVisible = false;
   inspector.helpVisible = false;
 };
 
@@ -24,6 +25,11 @@ function clearInspector(mode) {
   if(mode != "debug") {
     inspector.debugVisible = false;
     d3.select(".fa.fa-bug").style("color", "white");
+  }
+  if(mode != "validate") {
+    inspector.validateVisible = false;
+    d3.select(".fa.fa-check").style("color", "white");
+    d3.selectAll(".legend").remove();
   }
   if(mode != "help") {
     inspector.helpVisible = false;
@@ -181,7 +187,9 @@ function createDebugContents() {
   header.append("span").html(getSubConstraintsString);
   header.append("span")
       .attr("class", function(d) {
-        var constraints = graph.user_constraints.filter(function(c) { return c.name == d; })[0].constraints;
+        var within = graph.user_constraints.filter(function(c) { return c.name == d; })[0].within;
+        var between = graph.user_constraints.filter(function(c) { return c.name == d; })[0].between;
+        var constraints = within.concat(between);
         if(!constraints) return "";
         return "fa fa-caret-down";
       })
@@ -207,7 +215,10 @@ function createDebugContents() {
     .on("change", changeAppliedConstraints);
 
   g.append("span").text(function(d) { return d + ": "; });
-  g.append("span").html(getSubConstraintsCountString).style("font-style", "italic");
+
+  g.append("span")
+      .html(getSubConstraintsCountString)
+      .style("font-style", "italic");
 
   // ----------------------------------------------
   // Add a search box for finding nodes
@@ -236,13 +247,17 @@ function getNumSetsString(d) {
 };
 
 function getSubConstraints(d) {
-  var constraints = graph.user_constraints.filter(function(c) { return c.name == d; })[0].constraints;
+  var within = graph.user_constraints.filter(function(c) { return c.name == d; })[0].within || [];
+  var between = graph.user_constraints.filter(function(c) { return c.name == d; })[0].between || [];
+  var constraints = within.concat(between);
   if(!constraints) return [];
   return constraints.map(function(c) { return c.type; }); 
 };
 
 function getSubConstraintsString(d) {
-  var constraints = graph.user_constraints.filter(function(c) { return c.name == d; })[0].constraints;
+  var within = graph.user_constraints.filter(function(c) { return c.name == d; })[0].within || [];
+  var between = graph.user_constraints.filter(function(c) { return c.name == d; })[0].between || [];
+  var constraints = within.concat(between);
   if(!constraints) constraints = [];
 
   var number = "<span class='number'>" + constraints.length + "</span>";  
@@ -259,9 +274,27 @@ function getSubConstraintsCountString(typeName) {
   });
   number = "<span class='number'>" + constraints.length + "</span>";
     
-  var s = constraints.length == 1 ? " constraint " : " constraints ";
+  var s = constraints.length == 1 ? " constraint" : " constraints";
 
-  return "This constraint creates " + number + " cola.js" + s;
+  var string = "This constraint creates " + number + " cola.js" + s + ".";
+
+  if(validator.errors) {
+    var constraintName = d3.select(this.parentNode.parentNode).datum();
+    var constraints = graph.spec.constraints.filter(function(c) { 
+      return c._type ==  constraintName + "_" + typeName && c.unsat; 
+    });
+    number = "<span class='number' style='color: #b86fdc'>" + constraints.length + "</span>";
+    
+    if(constraints.length == 0) {
+      // DO NOTHING.
+    } else if(constraints.length == 1) {
+      string += " <span class='number' style='color: #b86fdc'>One</span> of these constraints is unsatisfied."
+    } else {
+      string += " " + number + " of these constraints are unsatisfied.";
+    }
+  }
+
+  return string;
 };
 
 /********************** Debug Interactions *********************/
@@ -318,6 +351,83 @@ function changeAppliedConstraints(typeName) {
     });
   }
   hvz.restart();
+};
+
+/***************************************************************/
+/*********************** Validation Pane ***********************/
+/***************************************************************/
+
+inspector.showValidate = function() {
+  clearInspector("validate");
+
+  inspector.validateVisible = !inspector.validateVisible;
+  if(inspector.validateVisible) {
+    d3.select(".fa.fa-check").style("color", "#b86fdc");
+    var div = d3.select(".temp-region")
+        .attr("class", "temp-region validate")
+        .style("display", "flex");
+    validationLegend();
+  } else {
+    d3.select(".fa.fa-check").style("color", "white");
+    d3.select(".temp-region").style("display", "none");
+  }
+};
+
+function updateEpsilon() {
+  var value = document.getElementById("range-epsilon").value;
+  validator.EPSILON = Number(value);
+  d3.select("#value-epsilon").html(value);
+
+  validator.validate();
+};
+
+function validationLegend() {
+
+  var svg = d3.select(".temp-region").append("div")
+      .attr("class", "legend")
+    .append("svg");
+
+  var color = d3.scaleSequential(d3.interpolateYlOrRd);
+  var domain = [0, 0.25, 0.5, 0.75, 1];
+  var size = 20;
+  
+  svg.selectAll("rect")
+      .data(domain)
+    .enter().append("rect")
+      .style("width", size)
+      .style("height", size)
+      .style("x", function(d, i) { return (i + 1)*size; })
+      .style("fill", function(d) { return color(d); });
+
+  svg.selectAll("text")
+      .data([0,1])
+    .enter().append("text")
+      .text(function(d) {
+        var text;          
+        if(d == 0) {
+          text = d;
+        } else if(d == 1) {
+          text = validator.maxError && validator.maxError != 0 ? validator.maxError : "-";
+        }
+        return text;
+      })
+      .attr("x", function(d) { return d == 0 ? 0 : 125; })
+      .attr("y", 15);
+};
+
+function updateLegend() {
+  d3.select(".legend svg").selectAll("text")
+      .text(function(d) {
+        var text;          
+        if(d == 0) {
+          text = d;
+        } else if(d == 1) {
+          text = validator.maxError && validator.maxError != 0 ? validator.maxError : "-";
+        }
+        return text;
+      })
+      .attr("x", function(d) { return d == 0 ? 0 : 125; })
+      .attr("y", 15);
 };
 
 /***************************************************************/

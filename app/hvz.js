@@ -12,6 +12,7 @@ hvz.init = function() {
 
     // Start up the inspector and renderer
     inspector.init();
+    validator.init();
     renderer.init();
     hvz.ace();
 
@@ -22,6 +23,7 @@ hvz.init = function() {
     d3.select(".fa.fa-exclamation-circle").on("click", inspector.showError);
     d3.select(".fa.fa-gear").on("click", inspector.showConfig);
     d3.select(".fa.fa-bug").on("click", inspector.showDebug);
+    d3.select(".fa.fa-check").on("click", inspector.showValidate);
     d3.select(".fa.fa-question-circle").on("click", inspector.showHelp);
 
     var exampleSel = d3.select('.sel_examples');
@@ -137,7 +139,7 @@ hvz.ace = function() {
   hvz.editor.setOptions({
     tabSize: 2,
     enableBasicAutocompletion: true,
-    enableSnippets: true,
+    enableSnippets: false,
     enableLiveAutocompletion: true
   });
 
