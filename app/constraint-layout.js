@@ -9,6 +9,7 @@ layout.getConstraints = function() {
   if(renderer.options["debugprint"]) console.log("  Computing cola constraints...");
 
   layout.sets = {};
+  layout.groups = [];
   
   // Add an _id to the nodes
   layout.index = -1;
@@ -18,7 +19,7 @@ layout.getConstraints = function() {
 
   // Process the constraints
   var constraints = [].concat.apply([], graph.spec.constraints.map(processConstraint));
-  return constraints;
+  return {"constraints": constraints, "groups": layout.groups};
 };
 
 // Process each user defined constraint.
@@ -53,9 +54,25 @@ function processConstraint(constraint) {
     });
     var pairs = generatePairs(sets);
 
+    // Identify any group constraints and compute the group constraints
+    constraint.between.filter(function(c) { return c.type == 'group'; }).forEach(function(c) {
+      var groups = [];
+      sets.forEach(function(set) {
+        var ids = set.map(function(node) { return node._id; });
+        var group = {"leaves": ids};
+        if(layout.groups.indexOf(group) == -1) {
+          layout.groups.push(group);
+        }
+        groups.push(layout.groups.indexOf(group));
+      });
+      layout.groups.push({"groups": groups});
+    });
+    var filtered = constraint.between.filter(function(c) { return c.type != 'group'; });
+
+    // Generate pairs and apply constraints between sets
     Object.keys(pairs).forEach(function(setName) {
       var nodes = pairs[setName];
-      constraints = constraints.concat(generateConstraints(nodes, constraint.between, constraint.name));
+      constraints = constraints.concat(generateConstraints(nodes, filtered, constraint.name));
     });
   }
 
@@ -78,6 +95,9 @@ function generateConstraints(nodes, constraints, cid) {
         break;
       case "position":
         results = results.concat(positionConstraint(nodes, constraint, ID));
+        break;
+      case "group":
+        groupConstraint(nodes, constraint, ID);
         break;
       default:
         console.error("Unknown constraint type '" + constraint.type + "'");
@@ -173,6 +193,14 @@ function positionConstraint(nodes, constraint, cid) {
   };
 
   return results;
+};
+
+function groupConstraint(nodes, constraint, cid) {
+
+  var ids = nodes.map(function(node) { return node._id; });
+  var group = {"leaves": ids};
+  layout.groups.push(group);
+
 };
 
 /********************* Determine Node Sets *********************/

@@ -9,16 +9,16 @@ renderer.init = function() {
   document.getElementById("range-noconst").value =  50;
   document.getElementById("range-userconst").value = 100;
   document.getElementById("range-layoutconst").value = 200;
-  document.getElementById("range-linkdist").value = 60;
+  document.getElementById("range-linkdist").value = 0;
   document.getElementById("range-jaccard").value = 0;
   document.getElementById("range-symmetric").value = 0;
   document.getElementById("range-constgap").value = 50;
   document.getElementById("range-nodesize").value = 20;
-  document.getElementById("range-nodepad").value = 10;
+  document.getElementById("range-nodepad").value = 2;
 
   document.getElementById("check-layoutnode").checked = true;
   document.getElementById("check-setnode").checked = false;
-  document.getElementById("check-arrows").checked = true;
+  document.getElementById("check-arrows").checked = false;
 
   document.getElementById("text-fillprop").value = "_id";
 
@@ -207,11 +207,11 @@ renderer.removeHighlight = function(nodes) {
 renderer.showError = function() {
   var color = d3.scaleSequential(d3.interpolateYlOrRd);
   renderer.nodes.style("fill", function(d) { 
-        var err = layout.errors[d._id] / layout.maxError || 0;
+        var err = validator.errors[d._id] / validator.maxError || 0;
         return color(err); 
       })
     .on("click", function(d) {
-      var invalid = layout.getInvalidConstraints(d);
-      console.log("Node " + d._id + " has " + layout.errors[d._id] + " invalid constraints: ", invalid);
+      var invalid = validator.getInvalidConstraints(d);
+      console.log("Node " + d._id + " has " + validator.errors[d._id] + " invalid constraints: ", invalid);
     });
 };

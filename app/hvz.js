@@ -72,7 +72,9 @@ hvz.start = function() {
   if(hvz.isUserConstraintGraph()) {
     try {
       graph.user_constraints = graph.spec.constraints;
-      graph.spec.constraints = layout.getConstraints();
+      var result = layout.getConstraints();
+      graph.spec.constraints = result.constraints;
+      graph.spec.groups = (graph.spec.groups || []).concat(result.groups);
     } catch(error) {
       inspector.showError(error);
       console.error(error);
