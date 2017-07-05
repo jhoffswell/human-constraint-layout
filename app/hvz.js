@@ -1,4 +1,5 @@
 var hvz = {};
+var timing = {};
 
 /***************************************************************/
 /*********************** HVZ ENVIRONMENT ***********************/
@@ -72,7 +73,10 @@ hvz.start = function() {
   if(hvz.isUserConstraintGraph()) {
     try {
       graph.user_constraints = graph.spec.constraints;
+      var t0 = performance.now();
       var result = layout.getConstraints();
+      var t1 = performance.now();
+      timing.setcola = t1 - t0;
       graph.spec.constraints = result.constraints;
       graph.spec.groups = (graph.spec.groups || []).concat(result.groups);
     } catch(error) {
@@ -84,7 +88,10 @@ hvz.start = function() {
   hvz.colaEditor.session.selection.clearSelection();
 
   // Draw the graph
+  var t0 = performance.now();
   renderer.draw();
+  var t1 = performance.now();
+  timing.webcola = t1 - t0;
 
   if(inspector.debugVisible) {
     inspector.debugVisible = false;

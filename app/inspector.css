@@ -11,7 +11,7 @@
 
 .temp-region.error {
   border: 1px solid #c80101;
-  flex: 0 1 5%;
+  flex: 0 1 10%;
 }
 
 .temp-region.config .error {
@@ -19,7 +19,7 @@
   margin: 5px;
 }
 
-.temp-region.error .error p, .temp-region.error .error span {
+.temp-region.error .error p, .temp-region.error .error .fa {
   display: inline-block;
   padding: 0px 5px;
   margin: 13px 0px;
@@ -29,6 +29,16 @@
 
 .temp-region.error .error p {
   font-family: sans-serif;
+}
+
+.temp-region.error .label {
+  color: #c80101;
+  font-family: monospace;
+  padding: 0px 0px 0px 5px;
+}
+
+.temp-region.error .value {
+  font-family: monospace;
 }
 
 .temp-region.error .options, 

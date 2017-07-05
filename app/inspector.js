@@ -51,10 +51,17 @@ inspector.showError = function() {
         .attr("class", "temp-region error")
         .style("display", "flex");
     div.select(".error p").text(hvz.error);
+    createErrorContents();
   } else {
     d3.select(".fa.fa-exclamation-circle").style("color", "white");
     d3.select(".temp-region").style("display", "none");
   }
+};
+
+function createErrorContents() {
+  var div = d3.select(".temp-region .error");
+  d3.select("#time-setcola").html(timing.setcola + " ms");
+  d3.select("#time-webcola").html(timing.webcola + " ms");
 };
 
 /***************************************************************/
