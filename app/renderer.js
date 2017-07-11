@@ -116,7 +116,8 @@ renderer.draw = function() {
 
   var svg = d3.select(".graph").append("g")
       .attr("transform", "translate(0,0)")
-    .call(zoom);
+    .call(zoom)
+    .on("click", renderer.opacity);
 
   // Draw an invisible background to capture zoom events
   var rect = d3.select(".graph").select("g").append("rect")
@@ -245,6 +246,7 @@ renderer.drawNodes = function() {
 
   // Prevent interaction with nodes from causing pan on background.
   renderer.nodes
+    .on("click", renderer.opacity)
     .on("mousedown", function() { d3.event.stopPropagation(); })
     .on("mousemove", function() { d3.event.stopPropagation(); });
 
@@ -295,6 +297,34 @@ renderer.tick = function() {
 
 function zoomed() {
   renderer.svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+};
+
+renderer.opacity = function(node) {
+  d3.event.stopPropagation();
+  var neighbors = [];
+  d3.selectAll(".link")
+      .style("opacity", function(d) {
+        if(node && ((node._id != d.source._id && node._id != d.target._id) || d._temp)) {
+          return 0.15;
+        } else if(d3.select(this).attr("class").indexOf("hidden") != -1) {
+          return 0;
+        } else {
+          if(neighbors.indexOf(d.source._id) == -1) neighbors.push(d.source._id);
+          if(neighbors.indexOf(d.target._id) == -1) neighbors.push(d.target._id);
+          return 1;
+        }
+      });
+
+  d3.selectAll(".node")
+      .style("opacity", function(d) {
+        if(node && neighbors.indexOf(d._id) == -1) {
+          return 0.15;
+        } else if(d3.select(this).attr("class").indexOf("hidden") != -1) {
+          return 0;
+        } else {
+          return 1;
+        }
+      });
 };
 
 renderer.highlight = function(nodes) {
