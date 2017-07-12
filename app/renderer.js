@@ -50,23 +50,6 @@ renderer.draw = function() {
   // Update the graph nodes with style properties
   graph.spec.nodes.map(graph.setSize);
 
-  // Add nodes/edges to create curved edges
-  if(renderer.options["curved"]) {
-    var nodeById = d3.map(graph.spec.nodes, function(d) { return d._id; });
-    renderer.bilinks = [];
-    graph.spec.links.forEach(function(link) {
-      var s = nodeById.get(link.source);
-      var t = nodeById.get(link.target);
-      var i = Node();
-      i._curved = i.temp = true;
-      graph.spec.nodes.push(i);
-      i._id = graph.spec.nodes.indexOf(i);
-
-      graph.spec.links.push({source: s._id, target: i._id, _temp: true}, {source: i._id, target: t._id, _temp: true});
-      renderer.bilinks.push([s, i, t]);
-    });
-  }
-
   // Add the graph to the layout
   if(graph.spec.nodes) renderer.colajs.nodes(graph.spec.nodes);
   if(graph.spec.links) {
@@ -169,27 +152,23 @@ renderer.drawLinks = function() {
 };
 
 renderer.drawCurvedLinks = function() {
-  renderer.links = renderer.svg.selectAll(".clink")
-      .data(renderer.bilinks)
+  renderer.diagonal = d3.svg.diagonal()
+        .source(function(d) { return {"x":d.source.x, "y":d.source.y}; })            
+        .target(function(d) { return {"x":d.target.x, "y":d.target.y}; })
+        .projection(function(d) { return [d.x, d.y]; });
+
+  renderer.links = renderer.svg.selectAll(".link")
+      .data(graph.spec.links)
     .enter().append("path")
       .attr("class", function(d) {
-        var className = "clink";
+        var className = "link";
         if(d._temp) {
           className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
         }
         return className;
       })
-      .attr("d", function(d) {
-        return "M" + d[0].x + "," + d[0].y
-             + "S" + d[1].x + "," + d[1].y
-             + " " + d[2].x + "," + d[2].y;
-      })
-      .style("stroke", function(d) { 
-        var link = graph.spec.links.filter(function(link) {
-          return link.source._id == d[0]._id && link.target._id == d[2]._id;
-        })[0];
-        return link.color || "lightgray"; 
-      })
+      .attr("d", renderer.diagonal)
+      .style("stroke", function(d) { return d.color; })
       .style("fill", "transparent");
 
   if(renderer.options["arrows"]) {
@@ -225,10 +204,8 @@ renderer.drawCircleNodes = function() {
 };
 
 renderer.drawNodes = function() {
-  var nodes = graph.spec.nodes.filter(function(node) { return !node._curved; });
-
   renderer.nodes = renderer.svg.selectAll(".node")
-      .data(nodes)
+      .data(graph.spec.nodes)
     .enter().append("rect")
       .attr("class", function(d) {
         var className = "node";
@@ -267,12 +244,7 @@ renderer.drawGroups = function() {
 renderer.tick = function() {
   // Update the links
   if(renderer.options["curved"]) {
-    renderer.links
-        .attr("d", function(d) {
-          return "M" + d[0].x + "," + d[0].y
-               + "S" + d[1].x + "," + d[1].y
-               + " " + d[2].x + "," + d[2].y;
-        });
+    renderer.links.attr("d", renderer.diagonal);
   } else {
     renderer.links
         .attr("x1", function (d) { return d.source.x; })
