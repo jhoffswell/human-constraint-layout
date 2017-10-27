@@ -14,6 +14,7 @@ graph.init = function(spec) {
 };
 
 graph.computeBuiltInProperties = function(constraint) {
+  graph.spec.nodes.forEach(graph.setID);
   if(JSON.stringify(constraint).indexOf("depth") != -1) calculateDepths();
   if(JSON.stringify(constraint).indexOf("parents") != -1) calculateIncoming();
   if(JSON.stringify(constraint).indexOf("parent") != -1) calculateParents();
@@ -29,7 +30,44 @@ graph.removeTempNodes = function() {
   });
 };
 
+// TODO: this won't work with cycles
 function calculateDepths() {
+  if(renderer.options["debugprint"]) console.log("        Computing depths.");
+  graph.spec.nodes.forEach(graph.setID);
+  var roots = graph.sources();
+  var depth = 0;
+  while(roots.length > 0) {
+    var nextLevel = [];
+    roots.forEach(function(root) { 
+      root.depth = depth;
+      var links = graph.getOutgoing(root);
+      var children = links.map(function(link) { return graph.spec.nodes[link.target]; });
+      nextLevel = nextLevel.concat(children);
+    });
+    depth += 1;
+    roots = nextLevel;
+  }
+}
+
+function calculateDepthsMin() {
+  if(renderer.options["debugprint"]) console.log("        Computing depths.");
+  graph.spec.nodes.forEach(graph.setID);
+  var roots = graph.sources();
+  var depth = 0;
+  while(roots.length > 0) {
+    var nextLevel = [];
+    roots.forEach(function(root) { 
+      root.depth = depth;
+      var links = graph.getOutgoing(root);
+      var children = links.map(function(link) { return graph.spec.nodes[link.target]; }).filter(function(node) { return !node.depth; });
+      nextLevel = nextLevel.concat(children);
+    });
+    depth += 1;
+    roots = nextLevel;
+  }
+}
+
+function calculateDepthsOLD() {
   if(renderer.options["debugprint"]) console.log("        Computing depths.");
   // graph.spec.nodes.forEach(function(node) {
   //   node.depth = node.depth || graph.getDepth(node);
@@ -98,12 +136,25 @@ function calculateFirstChild() {
   });
 };
 
+graph.sources = function() {
+  return graph.spec.nodes.filter(function(node) {
+    return graph.getIncoming(node).length === 0;
+  });
+};
+
+graph.sinks = function() {
+  return graph.spec.nodes.filter(function(node) {
+    return graph.getOutgoing(node).length === 0;
+  });
+};
+
 /********************* Set Node Properties *********************/
 
 graph.setSize = function(node) {
-  var pad = renderer.options["nodepad"];
-  node.width = renderer.options["nodesize"] + 2*pad;
-  node.height = renderer.options["nodesize"] + 2*pad;
+  var pad = node.pad ? node.pad : renderer.options["nodepad"];
+  var size = node.size ? node.size : renderer.options["nodesize"];
+  node.width = size + 2*pad;
+  node.height = size + 2*pad;
   node.padding = pad;
 };
 
@@ -167,13 +218,19 @@ graph.getParent = function(node) {
 
 graph.getIncoming = function(node) {
   var index = node._id;
-  var incoming = graph.spec.links.filter(function(link) { return link.target == index; });
+  var incoming = graph.spec.links.filter(function(link) { 
+    var target = (typeof link.target === 'object') ? link.target._id : link.target;
+    return target == index; 
+  });
   return incoming;
 };
 
 graph.getOutgoing = function(node) {
   var index = node._id;
-  var outgoing = graph.spec.links.filter(function(link) { return link.source == index; });
+  var outgoing = graph.spec.links.filter(function(link) { 
+    var source = (typeof link.source === 'object') ? link.source._id : link.source;
+    return source == index; 
+  });
   return outgoing;
 };
 

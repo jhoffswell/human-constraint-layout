@@ -56,12 +56,17 @@ hvz.init = function() {
 hvz.start = function() {
   if(renderer.options["debugprint"]) console.log("Starting layout...");
 
+  d3.select("#status").html("Rendering...");
+
   // Load the graph from the editor.
   try {
     hvz.error = null;
     if(inspector.errorVisible) inspector.showError();
     var spec = JSON.parse(hvz.editor.getValue());
+    var t0 = performance.now();
     graph.init(spec);
+    var t1 = performance.now();
+    timing.init = t1 - t0;
   } catch (error) {
     hvz.error = error;
     inspector.showError();
@@ -76,7 +81,7 @@ hvz.start = function() {
       var t0 = performance.now();
       var result = layout.getConstraints();
       var t1 = performance.now();
-      timing.setcola = t1 - t0;
+      timing.hvz = (t1 - t0) + " milliseconds.";
       graph.spec.constraints = result.constraints;
       graph.spec.groups = (graph.spec.groups || []).concat(result.groups);
     } catch(error) {
@@ -91,7 +96,7 @@ hvz.start = function() {
   var t0 = performance.now();
   renderer.draw();
   var t1 = performance.now();
-  timing.webcola = t1 - t0;
+  console.log("Rendering took " + (t1 - t0) + " milliseconds.");
 
   if(inspector.debugVisible) {
     inspector.debugVisible = false;

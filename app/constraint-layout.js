@@ -29,7 +29,7 @@ function processConstraint(constraint) {
   // Create the sets
   if(constraint.name && constraint.set) {
     var inSet = generateInSetFunc(constraint.set);
-    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set.relation, constraint.set.ignore);
+    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set);
   } else if(constraint.name) {
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(null));
   } else {
@@ -52,10 +52,9 @@ function processConstraint(constraint) {
     var sets = Object.keys(layout.sets[constraint.name]).map(function(key) { 
       return layout.sets[constraint.name][key]; 
     });
-    var pairs = generatePairs(sets);
-
+    
     // Identify any group constraints and compute the group constraints
-    constraint.between.filter(function(c) { return c.type == 'group'; }).forEach(function(c) {
+    constraint.between.filter(function(c) { return c.type == "group"; }).forEach(function(c) {
       var groups = [];
       sets.forEach(function(set) {
         var ids = set.map(function(node) { return node._id; });
@@ -67,9 +66,16 @@ function processConstraint(constraint) {
       });
       layout.groups.push({"groups": groups});
     });
-    var filtered = constraint.between.filter(function(c) { return c.type != 'group'; });
+    var filtered = constraint.between.filter(function(c) { return c.type != "group"; });
+
+    //TODO TEMP: trying to optimize order constraint
+    // filtered.forEach(function(c) { 
+    //   var cid = constraint.name + "_" + c.type;
+    //   if(c.type == "order") constraints = constraints.concat(orderConstraintFromSets(sets, c, cid)); 
+    // });
 
     // Generate pairs and apply constraints between sets
+    var pairs = generatePairs(sets);
     Object.keys(pairs).forEach(function(setName) {
       var nodes = pairs[setName];
       constraints = constraints.concat(generateConstraints(nodes, filtered, constraint.name));
@@ -96,11 +102,15 @@ function generateConstraints(nodes, constraints, cid) {
       case "position":
         results = results.concat(positionConstraint(nodes, constraint, ID));
         break;
+      case "circle":
+        circleConstraint(nodes, constraint, ID);
+        break;
       case "group":
+        console.log("don\"t want this anymore...")
         groupConstraint(nodes, constraint, ID);
         break;
       default:
-        console.error("Unknown constraint type '" + constraint.type + "'");
+        console.error("Unknown constraint type \"" + constraint.type + "\"");
     };
 
   });
@@ -110,6 +120,29 @@ function generateConstraints(nodes, constraints, cid) {
 
 /************** Process User Defined Constraints ***************/
 
+function boundaryConstraint(nodes, constraint, cid) {
+  var results = [];
+
+  // Create the boundary nodes.
+  var topLeft = {"temp": true, "fixed": true, "boundary": "xy"};
+  graph.spec.nodes.push(topLeft);
+  topLeft._id = graph.spec.nodes.indexOf(topLeft);
+
+  var bottomRight = {"temp": true, "fixed": true, "boundary": "xy"};
+  graph.spec.nodes.push(bottomRight);
+  bottomRight._id = graph.spec.nodes.indexOf(bottomRight);
+
+  // Create the separation constraints.
+  var gap = renderer.options["nodesize"] / 2;
+  for(var i=0; i<nodes.length-1; i++) {
+    if(nodes[i].width) gap = nodes[i].width / 2;
+    results.push(createColaSeparation(topLeft, nodes[i], "x", cid, gap));
+    results.push(createColaSeparation(topLeft, nodes[i], "y", cid, gap));
+    results.push(createColaSeparation(nodes[i], bottomRight, "x", cid, gap));
+    results.push(createColaSeparation(nodes[i], bottomRight, "y", cid, gap));
+  }
+};
+
 function alignmentConstraint(nodes, constraint, cid) {
   var results = [];
   results = results.concat(createColaAlignment(nodes, constraint.axis, cid));
@@ -117,6 +150,105 @@ function alignmentConstraint(nodes, constraint, cid) {
 };
 
 function orderConstraint(nodes, constraint, cid) {
+  var results = [];
+  var order = generateOrderFunc(constraint);
+
+  // Sort the nodes into groups
+  nodes = nodes.sort(order);
+
+  // Compute the band for the nodes
+  if(constraint.band) {
+
+  }
+
+  // Generate the constraints
+  for(var i=0; i<nodes.length-1; i++) {
+    results.push(createColaPosition(nodes[i+1], nodes[i], constraint.axis, cid, constraint.gap));
+  };
+  return results;
+};
+
+function orderConstraintFromSets(sets, constraint, cid) {
+
+  var results = [];
+
+  // Compute the order of the sets
+  var order = generateOrderFuncSort(constraint);
+  var represent = sets.map(function(set) { return set[0]; }).sort(order);
+
+  if(constraint.band) {
+
+    // Create a new node at the barrier of each band
+    var barriers = [];
+    for(var i = 0; i <= sets.length; i++) {
+      var node = {"temp": true, "fixed": true,"cid":cid};
+      node.name = i;
+
+      var other = constraint.axis == "x" ? "y" : "x";
+      node.boundary = constraint.axis;
+      node[constraint.axis] = i*constraint.band;
+      node[other] = 0;
+      
+      barriers.push(node);
+      graph.spec.nodes.push(node);
+      node._id = graph.spec.nodes.indexOf(node);
+    };
+
+    // Compute the constraints to order the nodes
+    sets.forEach(function(set) {
+      var index = represent.indexOf(set[0]);
+      var left = barriers[index];
+      var right = barriers[index+1];
+      var gap = constraint.gap ? constraint.gap : renderer.options["constgap"];
+
+      set.forEach(function(node) {
+        results.push(createColaPosition(left, node, constraint.axis, cid, gap));
+        results.push(createColaPosition(node, right, constraint.axis, cid, gap));
+      });
+    });
+
+  } else {
+
+    // Create a new node at the barrier of each band
+    var barriers = [];
+    for(var i = 0; i < sets.length-1; i++) {
+      var node = {"temp": true,"fixed": true,"cid":cid};
+      node.name = i;
+
+      var other = constraint.axis == "x" ? "y" : "x";
+      node.boundary = constraint.axis;
+      node[constraint.axis] = i*renderer.options["constgap"];
+      node[other] = 0;
+      
+      barriers.push(node);
+      graph.spec.nodes.push(node);
+      node._id = graph.spec.nodes.indexOf(node);
+    };
+
+    // Compute the constraints to order the nodes
+    sets.forEach(function(set) {
+      var index = represent.indexOf(set[0]);
+      var left = barriers[index-1];
+      var right = barriers[index];
+      var gap = constraint.gap ? constraint.gap : renderer.options["constgap"];
+
+      set.forEach(function(node) {
+        if(index != 0) {
+          results.push(createColaPosition(left, node, constraint.axis, cid, gap));
+        }
+        if(index != sets.length-1) {
+          results.push(createColaPosition(node, right, constraint.axis, cid, gap));
+        }
+      });
+    });
+
+  }
+
+  return results;
+
+};
+
+function orderConstraint2(nodes, constraint, cid) {
   var results = [];
   var order = generateOrderFunc(constraint);
   for(var i=0; i<nodes.length; i++) {
@@ -153,13 +285,25 @@ function positionConstraint(nodes, constraint, cid) {
           })[0];
         }
 
+        var direction;
+        if(constraint.position === "left" || constraint.position === "right") {
+          direction = "x";
+        } else {
+          direction = "y";
+        }
+
+        if(node && node.boundary && node.boundary != direction) {
+          node.boundary = "xy";
+        }
+
         // Create a new node if need be.
         if(node == null) {
           node = {
             "x": constraint.of.x || 0,
             "y": constraint.of.y || 0,
             "temp": true,
-            "fixed": true 
+            "fixed": true,
+            "boundary": direction
           };
           if(constraint.of.name) node.temp_name = constraint.of.name;
           graph.spec.nodes.push(node);
@@ -167,25 +311,26 @@ function positionConstraint(nodes, constraint, cid) {
         }
 
       } else {
-        console.error("Unknown 'of' on position constraint: '" + constraint.of + "'");
+        console.error("Unknown \"of\" on position constraint: '" + constraint.of + "'");
       }
   }
   if(node == null) return []; // There is no node with which to compute the constraint.
 
   // Create the position constraints relative to the temp node
+  var gap = constraint.gap || renderer.options["constgap"];
   for(var i=0; i<nodes.length; i++) {
     switch(constraint.position) {
       case "left":
-        results.push(createColaPosition(nodes[i], node, "x", cid));
+        results.push(createColaPosition(nodes[i], node, "x", cid, gap));
         break;
       case "right":
-        results.push(createColaPosition(node, nodes[i], "x", cid));
+        results.push(createColaPosition(node, nodes[i], "x", cid, gap));
         break;
       case "above":
-        results.push(createColaPosition(nodes[i], node, "y", cid));
+        results.push(createColaPosition(nodes[i], node, "y", cid, gap));
         break;
       case "below":
-        results.push(createColaPosition(node, nodes[i], "y", cid));
+        results.push(createColaPosition(node, nodes[i], "y", cid, gap));
         break;
       default:
         console.error("Unknown constraint.position: '" + constraint.position + "'");
@@ -193,6 +338,78 @@ function positionConstraint(nodes, constraint, cid) {
   };
 
   return results;
+};
+
+function circleConstraint(nodes, constraint, cid) {
+
+  // Constants for computing edge length
+  var gap = constraint.gap || renderer.options["constgap"];
+  var angle = 360/nodes.length;
+  var edge = Math.sqrt(2*(gap**2) - 2*(gap**2)*Math.cos(angle/180*Math.PI));
+
+  // Label links that have at least one node in the circle layout
+  graph.spec.links.forEach(function(link) {
+    var source = graph.spec.nodes[link.source];
+    var target = graph.spec.nodes[link.target];
+    if(nodes.indexOf(source) != -1 || nodes.indexOf(target) != -1) {
+      link.circle = true;
+    }
+  });
+
+  // Create links for every node in the circle
+  var links = [];
+  if(constraint.sort) {
+    nodes = nodes.sort(function(a,b) { return a[constraint.sort] - b[constraint.sort]; });
+  }
+  for (var i = 0; i < nodes.length; i++) {
+    var index = i==0 ? nodes.length - 1 : i-1;
+    var node = graph.spec.nodes.indexOf(nodes[index]);
+    var next = graph.spec.nodes.indexOf(nodes[i]);
+    links.push({"source": node, "target": next, "_temp": true, "length": edge});
+  };
+
+  var node;
+  if(constraint.around) {
+    // Extract the node by the name/id if it already exists
+    if(constraint.around.name) {
+      node = graph.spec.nodes.filter(function(node) { 
+        return node.name == constraint.around.name; 
+      })[0];
+    } else if (constraint.around._id) {
+      node = graph.spec.nodes.filter(function(node) { 
+        return node._id == constraint.around._id; 
+      })[0];
+    } 
+
+    // Create a node if one is not found
+    if(node == null) {
+      node = {
+        "x": constraint.around.x || 200,
+        "y": constraint.around.y || 200,
+        "temp": true
+      };
+      if(constraint.around.name) node.name = constraint.around.name;
+      graph.spec.nodes.push(node);
+      node._id = graph.spec.nodes.indexOf(node);
+    }
+
+    // Create a new link from the center to all nodes in the circle
+    nodes.forEach(function(n) {
+      links.push({"source": node._id, "target": n._id, "_temp": true, "length": gap});
+    });
+  }
+
+  graph.spec.links = graph.spec.links.concat(links);
+
+};
+
+function circleConstraint2(nodes, constraint, cid) {
+
+  var linear = d3.scaleLinear()
+      .domain(nodes.map(function(node) { return node.x; }))
+      .range([0,360])
+  var point = d3.pointRadial();
+
 };
 
 function groupConstraint(nodes, constraint, cid) {
@@ -204,6 +421,25 @@ function groupConstraint(nodes, constraint, cid) {
 };
 
 /********************* Determine Node Sets *********************/
+
+function generateOrderFuncSort(def) {
+  var order;
+  if(def.order) {
+    if(def.reverse) def.order.reverse();
+    order = function(n1,n2) {
+      return def.order.indexOf(n1[def.by]) - def.order.indexOf(n2[def.by]);
+    };
+  } else if(def.reverse) {
+    order = function(n1,n2) {
+      return n2[def.by] - n1[def.by];
+    };
+  } else {
+    order = function(n1,n2) {
+      return n1[def.by] - n2[def.by];
+    };
+  }
+  return order;
+};
 
 function generateOrderFunc(def) {
   var order;
@@ -257,7 +493,7 @@ function generateInSetFunc(def) {
   } else if(def.relation) {
 
     // Create a function to partition nodes based on "def.relation".
-    // TODO: this is a little weird
+    // TODO: this is a little weird --> this is not working
     inSet = function(node) {
       var value = node[def.relation];
       if(value != null && typeof value == "object") value = value._id;
@@ -291,8 +527,12 @@ function generatePairs(sets) {
 };
 
 // Partition nodes into sets based on inSet
-function generateSets(nodes, inSet, include, ignore) {
+function generateSets(nodes, inSet, constraint) {
   if(renderer.options["debugprint"]) console.log("      Computing sets...");
+
+  var ignore, include, group;
+  if(constraint && constraint.ignore) ignore = constraint.ignore;
+  if(constraint && constraint.include) include = constraint.include;
 
   var sets = {};
   nodes.forEach(function(node) {
@@ -308,26 +548,67 @@ function generateSets(nodes, inSet, include, ignore) {
     sets[set] = current;
   });
   
-  if(renderer.options["setnode"]) createSetNode(sets);
+  if(renderer.options["setnode"]) {
+    // TODO! We want to add the set nodes to the sets. 
+    // We don"t want set nodes in the sets, we want them in the groups?
+    // createSetNode(sets);
+  }
+
+  if(constraint instanceof Array) {
+    constraint.forEach(function(test) {
+      if(test.group) {
+        var id = test.name || test.expr;
+        var set = sets[id];
+
+        if(renderer.options["setnode"]) {
+          var node = createSetNode(set);
+          set = set.concat([node]);
+        }
+
+        groupConstraint(set);
+      }
+    });
+  } else if(constraint && constraint.group) {
+    Object.keys(sets).forEach(function(setName) {
+      var set = sets[setName];
+
+      if(renderer.options["setnode"]) {
+        var node = createSetNode(set);
+        set = set.concat([node]);
+      }
+
+      groupConstraint(set);
+    });
+  } else if(renderer.options["setnode"]) {
+    createSetNodes(sets);
+  }
+
   return sets;
 };
 
-function createSetNode(sets) {
+function createSetNodes(sets) {
+  console.log("sets are", sets)
   Object.keys(sets).forEach(function(setName) {
-    var node = {
-      "temp": true,
-      "temp_type": "setNode"
-    };
-    graph.spec.nodes = graph.spec.nodes.concat([node]);
-    node._id = graph.spec.nodes.indexOf(node);
-
-    sets[setName].forEach(function(n) {
-      if(n.temp) return;
-      var link = {"source": n._id, "target": node._id, "temp": true};
-      graph.spec.links = graph.spec.links.concat([link]);
-    });
-
+    createSetNode(sets[setName]);
   });
+};
+
+function createSetNode(set) {
+  var node = {
+    "temp": true,
+    "temp_type": "setNode"
+  };
+  graph.spec.nodes = graph.spec.nodes.concat([node]);
+  node._id = graph.spec.nodes.indexOf(node);
+
+  //sets[setName] = sets[setName].concat([node]);
+
+  set.forEach(function(n) {
+    if(n.temp) return;
+    var link = {"source": n._id, "target": node._id, "temp": true};
+    graph.spec.links = graph.spec.links.concat([link]);
+  });
+  return node;
 };
 
 function value(expr, node) {
@@ -338,18 +619,18 @@ function value(expr, node) {
     for (var i = 1; i < props.length; i++) {
       result = result[props[i]];
     };
-  } else if(expr.indexOf("'") != -1) {
+  } else if(expr.indexOf("\"") != -1) {
     
-    var split = expr.split(/(')/g);
+    var split = expr.split(/(")/g);
     var index = 0;
-    while(split[index] != "'") {
+    while(split[index] != "\"") {
       index += 1;
     }
     result = split[index+1];
 
   } else if(expr.indexOf("\"") != -1) {
 
-    var split = expr.split(/(\")/g);
+    var split = expr.split(/(\"")/g);
     var index = 0;
     while(split[index] != "\"") {
       index += 1;
@@ -426,7 +707,7 @@ function evaluate(expr, node) {
     };
 
   } else {
-    if(comp.length != 3) console.error("Invalid expr: '" + expr + "'");
+    if(comp.length != 3) console.error("Invalid expr: \"" + expr + "\"");
   }
 
   return result;
@@ -449,13 +730,28 @@ function createColaAlignment(nodes, axis, cid) {
 };
 
 // Create a cola position constraint
-function createColaPosition(left, right, axis, cid) {
+function createColaPosition(left, right, axis, cid, gap) {
+  if(!gap) gap = renderer.options["constgap"];
   var constraint = {
     "axis": axis,
     "left": graph.spec.nodes.indexOf(left),
     "right": graph.spec.nodes.indexOf(right),
-    "gap": renderer.options["constgap"],
+    "gap": gap,
     "_type": cid
   };
   return constraint;
 };
+
+// TODO: is the separation constraint different from the position?
+function createColaSeparation(left, right, axis, cid, gap) {
+  if(!gap) gap = renderer.options["constgap"];
+  var constraint = { 
+    "type": "separation", 
+    "axis": axis, 
+    "left": graph.spec.nodes.indexOf(left),
+    "right": graph.spec.nodes.indexOf(right),
+    "gap": gap,
+    "_type": cid
+  };
+  return constraint;
+}

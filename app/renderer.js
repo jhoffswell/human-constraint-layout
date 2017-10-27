@@ -17,14 +17,16 @@ renderer.init = function() {
   document.getElementById("range-nodepad").value = 2;
 
   document.getElementById("check-layoutnode").checked = true;
+  document.getElementById("check-layoutboundary").checked = true;
   document.getElementById("check-setnode").checked = false;
+  document.getElementById("check-overlaps").checked = true;
   document.getElementById("check-arrows").checked = false;
   document.getElementById("check-curved").checked = false;
 
   document.getElementById("text-fillprop").value = "_id";
 
   ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize", "nodepad"].map(updateRange);
-  ["debugprint", "layoutnode", "setnode", "overlaps", "arrows", "curved"].map(updateCheck);
+  ["debugprint", "layoutnode", "layoutboundary", "setnode", "overlaps", "arrows", "curved"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
 
@@ -80,11 +82,16 @@ renderer.draw = function() {
   // Start the cola.js layout
   renderer.colajs
       .avoidOverlaps(renderer.options["overlaps"])
-      .convergenceThreshold(1e-3);
+      .convergenceThreshold(1e-3)
+      .handleDisconnected(false);
+
   if(renderer.options["linkdist"] != 0 ) {
     renderer.colajs.linkDistance(function(d) {
-      if(d.temp) return 1;
-      return renderer.options["linkdist"];
+      var linkDistance = renderer.options["linkdist"];
+      if(d.temp) linkDistance = renderer.options["nodesize"]/2;
+      if(d.length) linkDistance = d.length;
+      console.log("distance", linkDistance, d)
+      return linkDistance;
     });
   };
   if(renderer.options["jaccard"] != 0) renderer.colajs.jaccardLinkLengths(renderer.options["jaccard"]);
@@ -113,6 +120,9 @@ renderer.draw = function() {
   renderer.options["curved"] ? renderer.drawCurvedLinks() : renderer.drawLinks();
   if(graph.spec.groups) renderer.drawGroups();
   renderer.drawNodes();
+
+  // Draw the boundaries
+  if(renderer.options["layoutboundary"]) renderer.showLayoutBoundaries();
 };
 
 renderer.drawLinks = function() {
@@ -124,8 +134,9 @@ renderer.drawLinks = function() {
     .enter().append("line")
       .attr("class", function(d) {
         var className = "link";
-        if(d._temp) {
-          className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
+        if(d.temp) {
+          if(renderer.options["layoutnode"]) className += " visible";
+          if(!renderer.options["layoutnode"]) className += " hidden";
         }
         return className;
       })
@@ -162,8 +173,9 @@ renderer.drawCurvedLinks = function() {
     .enter().append("path")
       .attr("class", function(d) {
         var className = "link";
-        if(d._temp) {
-          className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
+        if(d.temp) {
+          if(renderer.options["layoutnode"]) className += " visible";
+          if(!renderer.options["layoutnode"]) className += " hidden";
         }
         return className;
       })
@@ -196,17 +208,25 @@ renderer.drawCircleNodes = function() {
         .data(graph.spec.nodes)
       .enter().append("circle")
         .attr("class", "node")
-        .attr("r", renderer.options["nodesize"] / 2)
+        .attr("r", function(d) {
+          if(d.size) return d.size/2;
+          return renderer.options["nodesize"] / 2
+        })
         .style("fill", graph.getColor)
       .call(renderer.colajs.drag);
 
   renderer.nodes.append("title").text(graph.getLabel);
 };
 
+var style = serengeti;
 renderer.drawNodes = function() {
   renderer.nodes = renderer.svg.selectAll(".node")
       .data(graph.spec.nodes)
-    .enter().append("rect")
+    .enter().append("g")
+      .attr("class", "node")
+    .call(renderer.colajs.drag);
+
+  renderer.nodes.append("rect")
       .attr("class", function(d) {
         var className = "node";
         if(d.temp) {
@@ -216,10 +236,13 @@ renderer.drawNodes = function() {
       })
       .attr("width", function(d) { return d.width - 2 * d.padding; })
       .attr("height", function(d) { return d.height - 2 * d.padding; })
-      .attr("rx", renderer.options["nodesize"])
-      .attr("ry", renderer.options["nodesize"])
-      .style("fill", graph.getColor)
-    .call(renderer.colajs.drag);
+      .attr("rx", function(d) {
+        return d.size ? d.size : renderer.options["nodesize"];
+      })
+      .attr("ry", function(d) {
+        return d.size ? d.size : renderer.options["nodesize"];
+      })
+      .style("fill", graph.getColor);
 
   // Prevent interaction with nodes from causing pan on background.
   renderer.nodes
@@ -228,6 +251,18 @@ renderer.drawNodes = function() {
     .on("mousemove", function() { d3.event.stopPropagation(); });
 
   renderer.nodes.append("title").text(graph.getLabel);
+
+  var showLabels = true;
+  if(showLabels) {
+    renderer.nodes.append("text")
+        .attr("class", "text-label")
+        .attr("dx", style.x)
+        .attr("dy", style.y)
+        .text(style.label)
+        .style("font-size", style.size)
+        .style("font-style", style.style);
+  }
+  
 };
 
 renderer.drawGroups = function() {
@@ -241,7 +276,11 @@ renderer.drawGroups = function() {
       .call(renderer.colajs.drag);
 };
 
+var CIRCLE = false;
 renderer.tick = function() {
+
+  if(CIRCLE) renderer.circle();
+
   // Update the links
   if(renderer.options["curved"]) {
     renderer.links.attr("d", renderer.diagonal);
@@ -254,9 +293,19 @@ renderer.tick = function() {
   }
 
   // Update the nodes
-  renderer.nodes
-      .attr("x", function (d) { return (d.fixed) ? d.x : d.x - d.width / 2 + d.padding; })
-      .attr("y", function (d) { return (d.fixed) ? d.y : d.y - d.height / 2 + d.padding; });
+  // TODO: This is what we had before changing the node to a group with text.
+  // renderer.nodes
+  //     .attr("x", function (d) { return d.fixed ? d.x : d.x - d.width / 2 + d.padding; })
+  //     .attr("y", function (d) { return d.fixed ? d.y : d.y - d.height / 2 + d.padding; });
+
+  renderer.nodes.attr("transform", function(d) { 
+    if(d.fixed) return "translate(" + d.x + "," + d.y + ")";
+    var x = d.x - d.width / 2 + d.padding;
+    var y = d.y - d.height / 2 + d.padding;
+    return "translate(" + x + "," + y + ")"; 
+  })
+
+  if(renderer.options["layoutboundary"]) renderer.showLayoutBoundaries();
 
   // Update the groups
   if(!renderer.groups) return;
@@ -267,12 +316,57 @@ renderer.tick = function() {
       .attr("height", function (d) { return d.bounds.height(); });
 };
 
+function lock() {
+  var nodes = graph.spec.nodes.map(function(node) {
+    node.fixed = true;
+    return node;
+  });
+  renderer.colajs.nodes(nodes);
+};
+
 function zoomed() {
+  renderer.colajs.stop();
   renderer.svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+
+  // Modify the visual boundaries
+  var width = d3.select("svg").style("width").replace("px", "");
+  var height = d3.select("svg").style("height").replace("px", "");
+  var newWidth = width / d3.event.scale;
+  var newHeight = height / d3.event.scale;
+  var padding = 50;
+  d3.selectAll(".boundary")
+      .attr("x1", function(d) { return d.boundary === "x" ? d.x : padding; })
+      .attr("x2", function(d) { return d.boundary === "x" ? d.x : newWidth-padding*2; })
+      .attr("y1", function(d) { return d.boundary === "y" ? d.y : padding; })
+      .attr("y2", function(d) { return d.boundary === "y" ? d.y : newHeight-padding*2; })
+      .attr("transform", function(d) {
+        var translate;
+        if(d.boundary === "x") {
+          translate = d3.event.translate[0] + ",0";
+        } else {
+          translate = "0," + d3.event.translate[1];
+        }
+        return "translate(" + translate  + ")scale(" + d3.event.scale + ")";
+      });
+  d3.selectAll(".boundary-text")
+      .attr("transform", function(d) {
+        var translate;
+        if(d.boundary === "x") {
+          translate = d3.event.translate[0] + ",0";
+        } else {
+          translate = "0," + d3.event.translate[1];
+        }
+        return "translate(" + translate  + ")scale(" + d3.event.scale + ")";
+      })
+      .style("font-size", function(d) { 
+        return 12/d3.event.scale + "px";
+      });
+
 };
 
 renderer.opacity = function(node) {
   d3.event.stopPropagation();
+  if(node && node.temp) return;
   var neighbors = [];
   d3.selectAll(".link")
       .style("opacity", function(d) {
@@ -316,7 +410,7 @@ renderer.removeHighlight = function(nodes) {
 
 renderer.showError = function() {
   var color = d3.scaleSequential(d3.interpolateYlOrRd);
-  renderer.nodes.style("fill", function(d) { 
+  renderer.nodes.selectAll("rect").style("fill", function(d) { 
         var err = validator.errors[d._id] / validator.maxError || 0;
         return color(err); 
       })
@@ -324,4 +418,115 @@ renderer.showError = function() {
       var invalid = validator.getInvalidConstraints(d);
       console.log("Node " + d._id + " has " + validator.errors[d._id] + " invalid constraints: ", invalid);
     });
+};
+
+renderer.showLayoutBoundaries = function() {
+  var boundaries = graph.spec.nodes.filter(function(node) { return node.boundary; });
+  if(boundaries.length === 0) return;
+
+  // Process the boundaries to split the x and y.
+  for (var i = 0; i < boundaries.length; i++) {
+    if(boundaries[i].boundary === "xy") {
+      console.log("found xy boundary!")
+      var duplicate = Object.assign({}, boundaries[i]);
+      boundaries[i].boundary = "x";
+      duplicate.boundary = "y";
+      boundaries.push(duplicate);
+    }
+  };
+
+  // Draw the boundaries.
+  var width = d3.select("svg").style("width").replace("px", ""),
+      height = d3.select("svg").style("height").replace("px", "");
+  var padding = 50;
+  var boundary_line = d3.select(".graph").selectAll(".boundary")
+      .data(boundaries)
+      .attr("x1", function(d) {
+        return d.boundary === "x" ? d.x : padding;
+      })
+      .attr("x2", function(d) {
+        return d.boundary === "x" ? d.x : width-padding*2;
+      })
+      .attr("y1", function(d) {
+        return d.boundary === "y" ? d.y : padding;
+      })
+      .attr("y2", function(d) {
+        return d.boundary === "y" ? d.y : height-padding*2;
+      });
+  
+  boundary_line.enter().append("line").attr("class", "boundary");
+
+  var boundary_text = d3.select(".graph").selectAll(".boundary-text")
+      .data(boundaries)
+      .attr("x", function(d) { return position = d.boundary === "x" ? d.x + 10 : padding; })
+      .attr("y", function(d) { return position = d.boundary === "y" ? d.y - 10 : padding + 10; });
+  
+  boundary_text.enter().append("text")
+      .attr("class", "boundary-text")
+      .text(function(d) { 
+        console.log(d)
+        var string = d.temp_name;
+        if(!string && d._type) string = d._type + " position " + Math.round(d[d.boundary]);
+        if(!string) string = "position ~" + Math.round(d[d.boundary]);
+        return string;
+      });
+};
+
+renderer.circle = function() {
+  var root = graph.spec.nodes.filter(function(node) { return node.depth == 0; })[0];
+  var position = graph.spec.nodes.map(function(node) { return node.x; });
+  for (var depth = 0; depth < 5; depth++) {
+    var nodes = graph.spec.nodes.filter(function(node) { return node.depth == depth; });
+
+    var linear = d3.scaleLinear()
+        //.domain(d3.extent(nodes.map(function(node) { return node.x; })))
+        .domain(d3.extent(position))
+        .range([0,2*Math.PI]);
+
+    nodes.forEach(function(node) {
+      var p = d3.pointRadial(linear(node.x), node.y - root.y);
+      node.x = p[0];
+      node.y = p[1];
+    });
+  };
+
+  d3.selectAll(".node")
+      .attr("x", function(d) { return d.x; })
+      .attr("y", function(d) { return d.y; });
+};
+
+// A function to remove overlaps from the graph.
+// NOTE: This does not work with the layout, so it is not all that helpful.
+renderer.removeOverlaps = function() {
+  renderer.colajs.stop();
+  var rs = new Array(renderer.nodes[0].length);
+  renderer.nodes[0].forEach(function (r, i) {
+    var node = d3.select(r);
+    var x = Number(node.attr("x"));
+    var y = Number(node.attr("y"));
+    var w = Number(node.attr("width"));
+    var h = Number(node.attr("height"));
+    rs[i] = new cola.Rectangle(x, x + w, y, y + h);
+  });
+  console.log("rects", rs)
+  cola.removeOverlaps(rs);
+  var animate = false;
+
+  var nodes = renderer.colajs.nodes();
+  renderer.nodes
+      .attr("x", function(d,i) {
+        var t = rs[i];
+        d.x = t.x;
+        nodes[i].x = d.x;
+        console.log(nodes[i].x == t.x, nodes[i].x, d.x, t.x)
+        return d.x;
+      })
+      .attr("y", function(d,i) {
+        var t = rs[i];
+        d.y = t.y;
+        nodes[i].y = d.y;
+        return d.y;
+      });
+  renderer.colajs.nodes(nodes);
+  renderer.tick();
 };
