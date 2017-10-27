@@ -5,10 +5,20 @@ var EXAMPLES = {
     {"name": "large-tree"},
     {"name": "contradiction"},
     {"name": "small-foodWeb"},
+    {"name": "small-circular-foodWeb"},
     {"name": "large-foodWeb"},
+    {"name": "large-circular-foodWeb"},
     {"name": "serengeti-foodWeb"},
     {"name": "medium-clusters"},
-    {"name": "tlr4"}
+    {"name": "tlr4"},
+    {"name": "small-order-wineAndCheese"},
+    {"name": "small-position-wineAndCheese"},
+    {"name": "wineAndCheese"},
+    {"name": "small-flavorConnection"},
+    {"name": "flavorConnection"},
+    {"name": "flare"},
+    {"name": "flare-tree"},
+    {"name": "narrative"}
   ],
   'Graph': [
     {"name": "small-tree"},
@@ -17,7 +27,9 @@ var EXAMPLES = {
     {"name": "small-foodWeb"},
     {"name": "large-foodWeb"},
     {"name": "florida-foodWeb"},
-    {"name": "tlr4"}
+    {"name": "tlr4"},
+    {"name": "wineAndCheese"},
+    {"name": "flavorConnection"}
   ],
   'Cola': [
     {"name": "small-alignment"},

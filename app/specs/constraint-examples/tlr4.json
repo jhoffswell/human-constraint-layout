@@ -234,6 +234,13 @@
   ],
   "constraints": [
     {
+      "name": "boundary",
+      "within": [
+        {"type": "position", "position": "right", "of":{"name": "left", "x": 0}, "gap": 10},
+        {"type": "position", "position": "left", "of":{"name": "right", "x": 500}, "gap": 10}
+      ]
+    },
+    {
       "name": "layer",
       "set": {"partition": "type", "ignore": ["unknown"]},
       "between": [

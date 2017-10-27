@@ -1,0 +1,75 @@
+{
+  "nodes": [
+    {"id": 0, "name": "cheetah", "type": "carnivore"},
+    {"id": 1, "name": "lion", "type": "carnivore"},
+    {"id": 2, "name": "wild dog", "type": "carnivore"},
+    {"id": 3, "name": "leopard", "type": "carnivore"},
+    {"id": 4, "name": "buffalo", "type": "herbivore"},
+    {"id": 5, "name": "duiker", "type": "herbivore"},
+    {"id": 6, "name": "waterbuck", "type": "herbivore"},
+    {"id": 7, "name": "impala", "type": "herbivore"},
+    {"id": 8, "name": "african elephant", "type": "herbivore"},
+    {"id": 9, "name": "giraffe", "type": "herbivore"},
+    {"id": 10, "name": "kudu", "type": "herbivore"},
+    {"id": 11, "name": "creeping bristle grass", "type": "plant"},
+    {"id": 12, "name": "LM grass", "type": "plant"},
+    {"id": 13, "name": "foxtail buffalo grass", "type": "plant"},
+    {"id": 14, "name": "sausage tree", "type": "plant"},
+    {"id": 15, "name": "marula tree", "type": "plant"}
+  ],
+  "links": [
+    {"source": 0, "target": 1},
+    {"source": 2, "target": 1},
+    {"source": 4, "target": 1},
+    {"source": 5, "target": 0},
+    {"source": 5, "target": 1},
+    {"source": 6, "target": 0},
+    {"source": 6, "target": 1},
+    {"source": 6, "target": 3},
+    {"source": 7, "target": 0},
+    {"source": 7, "target": 1},
+    {"source": 7, "target": 2},
+    {"source": 7, "target": 3},
+    {"source": 9, "target": 1},
+    {"source": 10, "target": 0},
+    {"source": 10, "target": 1},
+    {"source": 11, "target": 4},
+    {"source": 11, "target": 7},
+    {"source": 11, "target": 8},
+    {"source": 12, "target": 4},
+    {"source": 12, "target": 7},
+    {"source": 12, "target": 8},
+    {"source": 13, "target": 4},
+    {"source": 13, "target": 7},
+    {"source": 13, "target": 8},
+    {"source": 14, "target": 5},
+    {"source": 14, "target": 7},
+    {"source": 15, "target": 6},
+    {"source": 15, "target": 8},
+    {"source": 15, "target": 9},
+    {"source": 15, "target": 10}
+  ],
+  "constraints": [
+    {
+      "name": "cluster",
+      "set": [{"expr": "datum.type == 'carnivore'"}],
+      "within": [
+        {"type": "circle", "around": {"name": "center"}, "gap": 50}
+      ]
+    },
+    {
+      "name": "cluster",
+      "set": [{"expr": "datum.type == 'herbivore'"}],
+      "within": [
+        {"type": "circle", "around": {"name": "center"}, "gap": 100}
+      ]
+    },
+    {
+      "name": "cluster",
+      "set": [{"expr": "datum.type == 'plant'"}],
+      "within": [
+        {"type": "circle", "around": {"name": "center"}, "gap": 150}
+      ]
+    }
+  ]
+}

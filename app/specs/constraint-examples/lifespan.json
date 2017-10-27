@@ -1,0 +1,38 @@
+{
+  "nodes": [
+    {"name": "human", "lifespan": 122.5, "class": "mammalia"},
+    {"name": "orca", "lifespan": 100, "class": "mammalia"},
+    {"name": "hippopotamus", "lifespan": 54.5, "class": "mammalia"},
+    {"name": "lesser panda", "lifespan": 14, "class": "mammalia"},
+    {"name": "leopard", "lifespan": 23, "class": "mammalia"},
+    {"name": "white-tailed deer", "lifespan": 23, "class": "mammalia"},
+    {"name": "gray wolf", "lifespan": 20, "class": "mammalia"},
+    {"name": "cougar", "lifespan": 20, "class": "mammalia"},
+    {"name": "atlantic puffin", "lifespan": 20, "class": "aves"},
+    {"name": "ferruginous hawk", "lifespan": 20, "class": "aves"},
+    {"name": "osprey", "lifespan": 25, "class": "aves"},
+    {"name": "red kite", "lifespan": 38, "class": "aves"},
+    {"name": "spotted owl", "lifespan": 25, "class": "aves"},
+    {"name": "spotted turtle", "lifespan": 26, "class": "reptilia"},
+    {"name": "painted turtle", "lifespan": 30, "class": "reptilia"},
+    {"name": "bengal monitor", "lifespan": 10, "class": "reptilia"},
+    {"name": "shark", "lifespan": 12, "class": "chondrichthyes"},
+    {"name": "bull shark", "lifespan": 28, "class": "chondrichthyes"},
+    {"name": "sting rays", "lifespan": 21, "class": "chondrichthyes"},
+    {"name": "whitetip reef shark", "lifespan": 25, "class": "chondrichthyes"},
+    {"name": "american toad", "lifespan": 30, "class": "amphibia"},
+    {"name": "olm", "lifespan": 15, "class": "amphibia"},
+    {"name": "marine toad", "lifespan": 8, "class": "amphibia"}
+  ],
+  "links": [
+  ],
+  "constraints": [
+    {
+      "name": "layer",
+      "set": {"partition": "lifespan"},
+      "within": [
+        {"type": "circle", "around": {"name": "center"}}
+      ]
+    }
+  ]
+}
