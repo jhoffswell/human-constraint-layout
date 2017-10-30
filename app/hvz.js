@@ -62,9 +62,11 @@ hvz.start = function() {
   try {
     hvz.error = null;
     if(inspector.errorVisible) inspector.showError();
-    var spec = JSON.parse(hvz.editor.getValue());
+    //var spec = JSON.parse(hvz.editor.getValue());
+    var spec = JSON.parse(graph.spec);
     var t0 = performance.now();
     graph.init(spec);
+    illustrator.init();
     var t1 = performance.now();
     timing.init = t1 - t0;
   } catch (error) {
@@ -117,8 +119,8 @@ hvz.load = function() {
 
   d3.text(PATH, function(spec) {
     graph.spec = spec;
-    hvz.editor.setValue(graph.spec);
-    hvz.editor.session.selection.clearSelection();
+    //hvz.editor.setValue(graph.spec);
+    //hvz.editor.session.selection.clearSelection();
     hvz.start();
   });
 };
@@ -146,16 +148,16 @@ hvz.isUserConstraintGraph = function() {
 
 hvz.ace = function() {
   ace.require("ace/ext/language_tools");
-  hvz.editor = ace.edit("editor");
-  hvz.editor.getSession().setMode("ace/mode/json");
-  hvz.editor.$blockScrolling = Infinity;
+  // hvz.editor = ace.edit("editor");
+  // hvz.editor.getSession().setMode("ace/mode/json");
+  // hvz.editor.$blockScrolling = Infinity;
 
-  hvz.editor.setOptions({
-    tabSize: 2,
-    enableBasicAutocompletion: true,
-    enableSnippets: false,
-    enableLiveAutocompletion: true
-  });
+  // hvz.editor.setOptions({
+  //   tabSize: 2,
+  //   enableBasicAutocompletion: true,
+  //   enableSnippets: false,
+  //   enableLiveAutocompletion: true
+  // });
 
   hvz.colaEditor = ace.edit("cola-editor");
   hvz.colaEditor.getSession().setMode("ace/mode/json");

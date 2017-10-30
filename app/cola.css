@@ -47,6 +47,95 @@ h1 {
   cursor: pointer;
 }
 
+/********************** PANELS ***********************/
+
+#editor-panel {
+  display: flex;
+  flex-flow: row;
+}
+
+#data-panel {
+  display: flex;
+  flex: 0 0 50%;
+  background: #ddd;
+  overflow: scroll;
+  border-right: 1px solid white;
+}
+
+#constraint-panel {
+  display: flex;
+  flex: 0 0 50%;
+  background: #ddd;
+  overflow: hidden;
+  flex-flow: column;
+}
+
+/******************** DATA TABLE *********************/
+
+.node-data {
+  border-collapse: collapse;
+  margin: 5px;
+}
+
+.node-data tr, .node-data th, .node-data td {
+  border: 1px solid #aaa;
+  padding: 5px;
+  font-size: 8pt;
+  font-family: sans-serif;
+  cursor: default;
+}
+
+.node-data th {
+  padding: 5px 8px;
+}
+
+.node-data .fa {
+  font-weight: normal;
+  cursor: pointer;
+}
+
+/***************** CONSTRAINT PANEL ******************/
+
+#collections {
+  width: 100%;
+  overflow: hidden;
+}
+
+.set {
+  width: 98%;
+  height: 22px;
+  margin: 1%;
+  padding: 5px;
+  background: #ccc;
+
+  font-family: sans-serif;
+  font-size: 10pt;
+}
+
+.set .fa-chevron-circle-down {
+  float: right;
+  padding: 0px 10px;
+  color: #aaa;
+  font-size: 14pt;
+}
+
+#newSet {
+  width: 100%;
+  height: 28px;
+}
+
+#newSet:hover {
+  background: #ccc;
+}
+
+.fa-plus-circle {
+  color: #aaa;
+  padding: 5px 50%;
+}
+
+.fa-plus-circle:hover {
+  color: white;
+}
 /*********************** SPECS ***********************/
 
 .mod_spec {
@@ -59,8 +148,8 @@ h1 {
   display: flex;
   flex-flow: column;
   flex: 1 0 auto;
-  border: 1px solid black;
   margin: 2px;
+  border: 1px solid #aaa;
 }
 
 .specs .spec, .specs .cola-spec {
