@@ -19,7 +19,7 @@ illustrator.reset = function() {
 };
 
 illustrator.generateDataTable = function() {
-	var properties = Object.keys(graph.spec.nodes[0]);
+	var properties = graph.properties;
 	var table = d3.select('#data-panel').append('table')
 			.attr('class', 'node-data');
 
@@ -41,7 +41,7 @@ illustrator.generateDataTable = function() {
 };
 
 illustrator.createNewSet = function() {
-	var index = d3.select('#collections')[0][0].children.length;
+	var index = document.getElementById('collections').children.length;
 	illustrator.sets.push('');
 	var div = d3.select('#collections').append('div')
 			.attr('class', 'set #' + index);
@@ -70,4 +70,62 @@ illustrator.createNewSet = function() {
 			});
 	div.append('span')
 			.attr('class', 'fa fa-chevron-circle-down')
+};
+
+illustrator.showRecommendations = function() {
+
+	var div = d3.select('.set_recommendations')
+			.style('display', 'flex');
+
+	d3.selectAll('.recommendation').remove();
+
+	div.selectAll('.recommendation')
+			.data(illustrator.recommendation)
+		.enter().append('div')
+			.text(function(d) { return d; })
+			.attr('class', function(d,i) { 
+				if(i===0) return 'recommendation selected';
+				return 'recommendation';
+			})
+		.on('mouseover', illustrator.recolorGraph);
+
+	illustrator.recolorGraph(illustrator.recommendation[0]);
+
+};
+
+illustrator.recolorGraph = function(property) {
+
+	var color;
+	var domain = graph.spec.nodes.map(m=>m[property]);
+	if(typeof graph.spec.nodes[0][property] == 'string') {
+		color = d3.scaleOrdinal(d3.schemeDark2).domain(domain);
+	} else {
+		color = d3.scaleSequential(d3.interpolateYlGnBu).domain(d3.extent(domain));
+	}
+
+	d3.selectAll('rect.node')
+			.style('fill', function(d) { return color(d[property]); });
+}
+
+illustrator.nodeSelection = function(nodes) {
+	var numSelected = nodes._groups[0].length;
+	var result = {};
+	graph.properties.forEach(function(prop) { result[prop] = []; });
+	nodes._groups[0].forEach(function(node) {
+		var data = d3.select(node).datum();
+		graph.properties.forEach(function(property) {
+			if(result[property].indexOf(data[property]) === -1) result[property].push(data[property]);
+		});
+	});
+
+	// Sort the properties
+	var sorted = Object.keys(result).sort(function(a,b) {
+		return result[a].length >= result[b].length;
+	});
+	var filtered = sorted.filter(function(r) { 
+		return result[r].length !== numSelected;
+	});
+
+	illustrator.recommendation = filtered;
+	illustrator.showRecommendations();
 };

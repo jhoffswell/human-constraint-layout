@@ -136,6 +136,53 @@ h1 {
 .fa-plus-circle:hover {
   color: white;
 }
+
+/*********************** LASSO ***********************/
+
+.lasso path {
+  stroke: #aaa;
+  stroke-width: 2px;
+}
+
+.lasso .drawn {
+  fill-opacity: 0.05 ;
+}
+
+.lasso .loop_close {
+  fill: none;
+  stroke-dasharray: 4,4;
+}
+
+.lasso .origin {
+  fill: #aaa;
+  fill-opacity: .5;
+}
+
+/**************** SET RECOMMENDATIONS ****************/
+
+.set_recommendations {
+  background: white;
+  display: none;
+  flex: 0 0 5%;
+}
+
+.recommendation {
+  background: #ccc;
+  border-radius: 10px;
+  margin: 10px;
+  padding: 10px 5px;
+  min-width: 30px;
+  height: 20px;
+
+  font-family: sans-serif;
+  color: #646464;
+}
+
+.recommendation.selected {
+  color: white;
+  background: #6363b5;
+}
+
 /*********************** SPECS ***********************/
 
 .mod_spec {

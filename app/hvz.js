@@ -66,8 +66,8 @@ hvz.start = function() {
     var spec = JSON.parse(graph.spec);
     var t0 = performance.now();
     graph.init(spec);
-    illustrator.init();
     var t1 = performance.now();
+    illustrator.init();
     timing.init = t1 - t0;
   } catch (error) {
     hvz.error = error;

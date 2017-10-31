@@ -6,47 +6,47 @@ var renderer = {};
 
 renderer.init = function() {
   renderer.options = {};
-  document.getElementById("range-noconst").value =  50;
-  document.getElementById("range-userconst").value = 100;
-  document.getElementById("range-layoutconst").value = 200;
-  document.getElementById("range-linkdist").value = 0;
-  document.getElementById("range-jaccard").value = 0;
-  document.getElementById("range-symmetric").value = 0;
-  document.getElementById("range-constgap").value = 50;
-  document.getElementById("range-nodesize").value = 20;
-  document.getElementById("range-nodepad").value = 2;
+  document.getElementById('range-noconst').value =  50;
+  document.getElementById('range-userconst').value = 100;
+  document.getElementById('range-layoutconst').value = 200;
+  document.getElementById('range-linkdist').value = 0;
+  document.getElementById('range-jaccard').value = 0;
+  document.getElementById('range-symmetric').value = 0;
+  document.getElementById('range-constgap').value = 50;
+  document.getElementById('range-nodesize').value = 20;
+  document.getElementById('range-nodepad').value = 2;
 
-  document.getElementById("check-layoutnode").checked = true;
-  document.getElementById("check-layoutboundary").checked = true;
-  document.getElementById("check-setnode").checked = false;
-  document.getElementById("check-overlaps").checked = true;
-  document.getElementById("check-arrows").checked = false;
-  document.getElementById("check-curved").checked = false;
+  document.getElementById('check-layoutnode').checked = true;
+  document.getElementById('check-layoutboundary').checked = true;
+  document.getElementById('check-setnode').checked = false;
+  document.getElementById('check-overlaps').checked = true;
+  document.getElementById('check-arrows').checked = false;
+  document.getElementById('check-curved').checked = false;
 
-  document.getElementById("text-fillprop").value = "_id";
+  document.getElementById('text-fillprop').value = '_id';
 
-  ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize", "nodepad"].map(updateRange);
-  ["debugprint", "layoutnode", "layoutboundary", "setnode", "overlaps", "arrows", "curved"].map(updateCheck);
-  ["fillprop"].map(updateText);
+  ['noconst', 'userconst', 'layoutconst', 'linkdist', 'jaccard', 'symmetric', 'constgap', 'nodesize', 'nodepad'].map(updateRange);
+  ['debugprint', 'layoutnode', 'layoutboundary', 'setnode', 'overlaps', 'arrows', 'curved'].map(updateCheck);
+  ['fillprop'].map(updateText);
 };
 
 function Node() {
-  var pad = renderer.options["nodepad"];
-  var width = renderer.options["nodesize"] + 2*pad;
-  var height = renderer.options["nodesize"] + 2*pad;
-  return {"width": width, "height": height, "padding": pad};
+  var pad = renderer.options['nodepad'];
+  var width = renderer.options['nodesize'] + 2*pad;
+  var height = renderer.options['nodesize'] + 2*pad;
+  return {'width': width, 'height': height, 'padding': pad};
 };
 
 renderer.draw = function() {
-  if(renderer.options["debugprint"]) console.log("  Drawing the graph...");
+  if(renderer.options['debugprint']) console.log('  Drawing the graph...');
   graph.spec.nodes.forEach(graph.setColor);
 
   // Clear the old graph
-  d3.select(".graph").selectAll("*").remove();
+  d3.select('.graph').selectAll('*').remove();
 
   // Setup Cola
-  var width = d3.select("svg").style("width").replace("px", ""),
-      height = d3.select("svg").style("height").replace("px", "");
+  var width = d3.select('svg').style('width').replace('px', ''),
+      height = d3.select('svg').style('height').replace('px', '');
   renderer.colajs = cola.d3adaptor(d3).size([width, height]);
 
   // Update the graph nodes with style properties
@@ -70,7 +70,7 @@ renderer.draw = function() {
 
     // For all the links that were filtered out prior to the layout, fix the node linking
     graph.spec.links.forEach(function(link) {
-      if(typeof link.source === "number" || typeof link.target === "number") {
+      if(typeof link.source === 'number' || typeof link.target === 'number') {
         link.source = graph.spec.nodes[link.source];
         link.target = graph.spec.nodes[link.target];
       }
@@ -81,198 +81,211 @@ renderer.draw = function() {
 
   // Start the cola.js layout
   renderer.colajs
-      .avoidOverlaps(renderer.options["overlaps"])
+      .avoidOverlaps(renderer.options['overlaps'])
       .convergenceThreshold(1e-3)
       .handleDisconnected(false);
 
-  if(renderer.options["linkdist"] != 0 ) {
+  if(renderer.options['linkdist'] != 0 ) {
     renderer.colajs.linkDistance(function(d) {
-      var linkDistance = renderer.options["linkdist"];
-      if(d.temp) linkDistance = renderer.options["nodesize"]/2;
+      var linkDistance = renderer.options['linkdist'];
+      if(d.temp) linkDistance = renderer.options['nodesize']/2;
       if(d.length) linkDistance = d.length;
-      console.log("distance", linkDistance, d)
+      console.log('distance', linkDistance, d)
       return linkDistance;
     });
   };
-  if(renderer.options["jaccard"] != 0) renderer.colajs.jaccardLinkLengths(renderer.options["jaccard"]);
-  if(renderer.options["symmetric"] != 0) renderer.colajs.symmetricDiffLinkLengths(renderer.options["symmetric"]);
+  if(renderer.options['jaccard'] != 0) renderer.colajs.jaccardLinkLengths(renderer.options['jaccard']);
+  if(renderer.options['symmetric'] != 0) renderer.colajs.symmetricDiffLinkLengths(renderer.options['symmetric']);
   
   // Start the layout engine.
-  renderer.colajs.start(renderer.options["noconst"],renderer.options["userconst"],renderer.options["layoutconst"]);
-  renderer.colajs.on("tick", renderer.tick);
+  renderer.colajs.start(renderer.options['noconst'],renderer.options['userconst'],renderer.options['layoutconst']);
+  renderer.colajs.on('tick', renderer.tick);
 
   // Set up zoom behavior on the graph svg.
-  var zoom = d3.behavior.zoom().scaleExtent([0.25, 2]).on("zoom", zoomed);
+  //var zoom = d3.behavior.zoom().scaleExtent([0.25, 2]).on('zoom', zoomed);
 
-  var svg = d3.select(".graph").append("g")
-      .attr("transform", "translate(0,0)")
-    .call(zoom)
-    .on("click", renderer.opacity);
+  var svg = d3.select('.graph').append('g')
+      .attr('transform', 'translate(0,0)')
+    //.call(zoom)
+    .on('click', function() {
+      renderer.opacity();
+    })
+    .on('dblclick', function() {
+      d3.selectAll('g.node').style('stroke', null);
+      renderer.lasso.items().classed('selected', false);
+    });
 
   // Draw an invisible background to capture zoom events
-  var rect = d3.select(".graph").select("g").append("rect")
-      .attr("width", width)
-      .attr("height", height)
-      .style("fill", "white");
+  var rect = d3.select('.graph').select('g').append('rect')
+      .attr('id', 'graph_background')
+      .attr('width', width)
+      .attr('height', height)
+      .style('fill', 'white');
 
   // Draw the graph
-  renderer.svg = svg.append("g");
-  renderer.options["curved"] ? renderer.drawCurvedLinks() : renderer.drawLinks();
+  renderer.svg = svg/*.append('g')*/;
+  renderer.options['curved'] ? renderer.drawCurvedLinks() : renderer.drawLinks();
+  
+
   if(graph.spec.groups) renderer.drawGroups();
   renderer.drawNodes();
 
   // Draw the boundaries
-  if(renderer.options["layoutboundary"]) renderer.showLayoutBoundaries();
+  if(renderer.options['layoutboundary']) renderer.showLayoutBoundaries();
+
+  renderer.createLasso();
 };
 
 renderer.drawLinks = function() {
 
   //var links = graph.spec.links.filter(function(link) { return !link._temp; });
 
-  renderer.links = renderer.svg.selectAll(".link")
-      .data(graph.spec.links)
-    .enter().append("line")
-      .attr("class", function(d) {
-        var className = "link";
+  renderer.links = renderer.svg.selectAll('.link')
+      .data(graph.spec.links);
+
+  renderer.links = renderer.links.enter().append('line')
+      .attr('class', function(d) {
+        var className = 'link';
         if(d.temp) {
-          if(renderer.options["layoutnode"]) className += " visible";
-          if(!renderer.options["layoutnode"]) className += " hidden";
+          if(renderer.options['layoutnode']) className += ' visible';
+          if(!renderer.options['layoutnode']) className += ' hidden';
         }
         return className;
       })
-      .style("stroke", function(d) { return d.color; });
+      .style('stroke', function(d) { return d.color; })
+    .merge(renderer.links);
 
-  if(renderer.options["arrows"]) {
-    renderer.svg.append("defs").selectAll("marker")
-        .data(["suit", "licensing", "resolved"])
-      .enter().append("marker")
-        .attr("id", function(d) { return d; })
-        .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 25)
-        .attr("refY", 0)
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
-        .attr("orient", "auto")
-      .append("path")
-        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5");
-    renderer.links.style("marker-end", function(d) {
-      if(d.temp) return "none";
-      return "url(#suit)";
+  if(renderer.options['arrows']) {
+    renderer.svg.append('defs').selectAll('marker')
+        .data(['suit', 'licensing', 'resolved'])
+      .enter().append('marker')
+        .attr('id', function(d) { return d; })
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 25)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+      .append('path')
+        .attr('d', 'M0,-5L10,0L0,5 L10,0 L0, -5');
+    renderer.links.style('marker-end', function(d) {
+      if(d.temp) return 'none';
+      return 'url(#suit)';
     });
   }    
 };
 
 renderer.drawCurvedLinks = function() {
   renderer.diagonal = d3.svg.diagonal()
-        .source(function(d) { return {"x":d.source.x, "y":d.source.y}; })            
-        .target(function(d) { return {"x":d.target.x, "y":d.target.y}; })
+        .source(function(d) { return {'x':d.source.x, 'y':d.source.y}; })            
+        .target(function(d) { return {'x':d.target.x, 'y':d.target.y}; })
         .projection(function(d) { return [d.x, d.y]; });
 
-  renderer.links = renderer.svg.selectAll(".link")
+  renderer.links = renderer.svg.selectAll('.link')
       .data(graph.spec.links)
-    .enter().append("path")
-      .attr("class", function(d) {
-        var className = "link";
+    .enter().append('path')
+      .attr('class', function(d) {
+        var className = 'link';
         if(d.temp) {
-          if(renderer.options["layoutnode"]) className += " visible";
-          if(!renderer.options["layoutnode"]) className += " hidden";
+          if(renderer.options['layoutnode']) className += ' visible';
+          if(!renderer.options['layoutnode']) className += ' hidden';
         }
         return className;
       })
-      .attr("d", renderer.diagonal)
-      .style("stroke", function(d) { return d.color; })
-      .style("fill", "transparent");
+      .attr('d', renderer.diagonal)
+      .style('stroke', function(d) { return d.color; })
+      .style('fill', 'transparent');
 
-  if(renderer.options["arrows"]) {
-    renderer.svg.append("defs").selectAll("marker")
-        .data(["suit", "licensing", "resolved"])
-      .enter().append("marker")
-        .attr("id", function(d) { return d; })
-        .attr("viewBox", "0 -5 10 10")
-        .attr("refX", 25)
-        .attr("refY", 0)
-        .attr("markerWidth", 6)
-        .attr("markerHeight", 6)
-        .attr("orient", "auto")
-      .append("path")
-        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5");
-    renderer.links.style("marker-end", function(d) {
-      if(d.temp) return "none";
-      return "url(#suit)";
+  if(renderer.options['arrows']) {
+    renderer.svg.append('defs').selectAll('marker')
+        .data(['suit', 'licensing', 'resolved'])
+      .enter().append('marker')
+        .attr('id', function(d) { return d; })
+        .attr('viewBox', '0 -5 10 10')
+        .attr('refX', 25)
+        .attr('refY', 0)
+        .attr('markerWidth', 6)
+        .attr('markerHeight', 6)
+        .attr('orient', 'auto')
+      .append('path')
+        .attr('d', 'M0,-5L10,0L0,5 L10,0 L0, -5');
+    renderer.links.style('marker-end', function(d) {
+      if(d.temp) return 'none';
+      return 'url(#suit)';
     });
   }
 }
 
 renderer.drawCircleNodes = function() {
-  renderer.nodes = renderer.svg.selectAll(".node")
+  renderer.nodes = renderer.svg.selectAll('.node')
         .data(graph.spec.nodes)
-      .enter().append("circle")
-        .attr("class", "node")
-        .attr("r", function(d) {
+      .enter().append('circle')
+        .attr('class', 'node')
+        .attr('r', function(d) {
           if(d.size) return d.size/2;
-          return renderer.options["nodesize"] / 2
+          return renderer.options['nodesize'] / 2
         })
-        .style("fill", graph.getColor)
+        .style('fill', graph.getColor)
       .call(renderer.colajs.drag);
 
-  renderer.nodes.append("title").text(graph.getLabel);
+  renderer.nodes.append('title').text(graph.getLabel);
 };
 
 var style = serengeti;
 renderer.drawNodes = function() {
-  renderer.nodes = renderer.svg.selectAll(".node")
+  renderer.nodes = renderer.svg.selectAll('.node')
       .data(graph.spec.nodes)
-    .enter().append("g")
-      .attr("class", "node")
+    .enter().append('g')
+      .attr('class', 'node')
     .call(renderer.colajs.drag);
 
-  renderer.nodes.append("rect")
-      .attr("class", function(d) {
-        var className = "node";
+  renderer.nodes.append('rect')
+      .attr('class', function(d) {
+        var className = 'node';
         if(d.temp) {
-          className += (renderer.options["layoutnode"]) ? " visible" : " hidden";
+          className += (renderer.options['layoutnode']) ? ' visible' : ' hidden';
         }
         return className;
       })
-      .attr("width", function(d) { return d.width - 2 * d.padding; })
-      .attr("height", function(d) { return d.height - 2 * d.padding; })
-      .attr("rx", function(d) {
-        return d.size ? d.size : renderer.options["nodesize"];
+      .attr('width', function(d) { return d.width - 2 * d.padding; })
+      .attr('height', function(d) { return d.height - 2 * d.padding; })
+      .attr('rx', function(d) {
+        return d.size ? d.size : renderer.options['nodesize'];
       })
-      .attr("ry", function(d) {
-        return d.size ? d.size : renderer.options["nodesize"];
+      .attr('ry', function(d) {
+        return d.size ? d.size : renderer.options['nodesize'];
       })
-      .style("fill", graph.getColor);
+      .style('fill', graph.getColor);
 
   // Prevent interaction with nodes from causing pan on background.
   renderer.nodes
-    .on("click", renderer.opacity)
-    .on("mousedown", function() { d3.event.stopPropagation(); })
-    .on("mousemove", function() { d3.event.stopPropagation(); });
+    .on('click', renderer.opacity)
+    .on('mousedown', function() { d3.event.stopPropagation(); })
+    .on('mousemove', function() { d3.event.stopPropagation(); });
 
-  renderer.nodes.append("title").text(graph.getLabel);
+  renderer.nodes.append('title').text(graph.getLabel);
 
   var showLabels = true;
   if(showLabels) {
-    renderer.nodes.append("text")
-        .attr("class", "text-label")
-        .attr("dx", style.x)
-        .attr("dy", style.y)
+    renderer.nodes.append('text')
+        .attr('class', 'text-label')
+        .attr('dx', style.x)
+        .attr('dy', style.y)
         .text(style.label)
-        .style("font-size", style.size)
-        .style("font-style", style.style);
+        .style('font-size', style.size)
+        .style('font-style', style.style);
   }
   
 };
 
 renderer.drawGroups = function() {
-  renderer.groups = renderer.svg.selectAll(".group")
+  renderer.groups = renderer.svg.selectAll('.group')
         .data(graph.spec.groups)
-      .enter().append("rect")
-        .attr("rx", 8)
-        .attr("ry", 8)
-        .attr("class", "group")
-        .style("fill", graph.getColor)
+      .enter().append('rect')
+        .attr('rx', 8)
+        .attr('ry', 8)
+        .attr('class', 'group')
+        .style('fill', graph.getColor)
       .call(renderer.colajs.drag);
 };
 
@@ -282,38 +295,38 @@ renderer.tick = function() {
   if(CIRCLE) renderer.circle();
 
   // Update the links
-  if(renderer.options["curved"]) {
-    renderer.links.attr("d", renderer.diagonal);
+  if(renderer.options['curved']) {
+    renderer.links.attr('d', renderer.diagonal);
   } else {
     renderer.links
-        .attr("x1", function (d) { return d.source.x; })
-        .attr("y1", function (d) { return d.source.y; })
-        .attr("x2", function (d) { return d.target.x; })
-        .attr("y2", function (d) { return d.target.y; });
+        .attr('x1', function (d) { return d.source.x; })
+        .attr('y1', function (d) { return d.source.y; })
+        .attr('x2', function (d) { return d.target.x; })
+        .attr('y2', function (d) { return d.target.y; });
   }
 
   // Update the nodes
   // TODO: This is what we had before changing the node to a group with text.
   // renderer.nodes
-  //     .attr("x", function (d) { return d.fixed ? d.x : d.x - d.width / 2 + d.padding; })
-  //     .attr("y", function (d) { return d.fixed ? d.y : d.y - d.height / 2 + d.padding; });
+  //     .attr('x', function (d) { return d.fixed ? d.x : d.x - d.width / 2 + d.padding; })
+  //     .attr('y', function (d) { return d.fixed ? d.y : d.y - d.height / 2 + d.padding; });
 
-  renderer.nodes.attr("transform", function(d) { 
-    if(d.fixed) return "translate(" + d.x + "," + d.y + ")";
+  renderer.nodes.attr('transform', function(d) { 
+    if(d.fixed) return 'translate(' + d.x + ',' + d.y + ')';
     var x = d.x - d.width / 2 + d.padding;
     var y = d.y - d.height / 2 + d.padding;
-    return "translate(" + x + "," + y + ")"; 
+    return 'translate(' + x + ',' + y + ')'; 
   })
 
-  if(renderer.options["layoutboundary"]) renderer.showLayoutBoundaries();
+  if(renderer.options['layoutboundary']) renderer.showLayoutBoundaries();
 
   // Update the groups
   if(!renderer.groups) return;
   renderer.groups
-      .attr("x", function (d) { return d.bounds.x; })
-      .attr("y", function (d) { return d.bounds.y; })
-      .attr("width", function (d) { return d.bounds.width(); })
-      .attr("height", function (d) { return d.bounds.height(); });
+      .attr('x', function (d) { return d.bounds.x; })
+      .attr('y', function (d) { return d.bounds.y; })
+      .attr('width', function (d) { return d.bounds.width(); })
+      .attr('height', function (d) { return d.bounds.height(); });
 };
 
 function lock() {
@@ -326,40 +339,40 @@ function lock() {
 
 function zoomed() {
   renderer.colajs.stop();
-  renderer.svg.attr("transform", "translate(" + d3.event.translate + ")scale(" + d3.event.scale + ")");
+  renderer.svg.attr('transform', 'translate(' + d3.event.translate + ')scale(' + d3.event.scale + ')');
 
   // Modify the visual boundaries
-  var width = d3.select("svg").style("width").replace("px", "");
-  var height = d3.select("svg").style("height").replace("px", "");
+  var width = d3.select('svg').style('width').replace('px', '');
+  var height = d3.select('svg').style('height').replace('px', '');
   var newWidth = width / d3.event.scale;
   var newHeight = height / d3.event.scale;
   var padding = 50;
-  d3.selectAll(".boundary")
-      .attr("x1", function(d) { return d.boundary === "x" ? d.x : padding; })
-      .attr("x2", function(d) { return d.boundary === "x" ? d.x : newWidth-padding*2; })
-      .attr("y1", function(d) { return d.boundary === "y" ? d.y : padding; })
-      .attr("y2", function(d) { return d.boundary === "y" ? d.y : newHeight-padding*2; })
-      .attr("transform", function(d) {
+  d3.selectAll('.boundary')
+      .attr('x1', function(d) { return d.boundary === 'x' ? d.x : padding; })
+      .attr('x2', function(d) { return d.boundary === 'x' ? d.x : newWidth-padding*2; })
+      .attr('y1', function(d) { return d.boundary === 'y' ? d.y : padding; })
+      .attr('y2', function(d) { return d.boundary === 'y' ? d.y : newHeight-padding*2; })
+      .attr('transform', function(d) {
         var translate;
-        if(d.boundary === "x") {
-          translate = d3.event.translate[0] + ",0";
+        if(d.boundary === 'x') {
+          translate = d3.event.translate[0] + ',0';
         } else {
-          translate = "0," + d3.event.translate[1];
+          translate = '0,' + d3.event.translate[1];
         }
-        return "translate(" + translate  + ")scale(" + d3.event.scale + ")";
+        return 'translate(' + translate  + ')scale(' + d3.event.scale + ')';
       });
-  d3.selectAll(".boundary-text")
-      .attr("transform", function(d) {
+  d3.selectAll('.boundary-text')
+      .attr('transform', function(d) {
         var translate;
-        if(d.boundary === "x") {
-          translate = d3.event.translate[0] + ",0";
+        if(d.boundary === 'x') {
+          translate = d3.event.translate[0] + ',0';
         } else {
-          translate = "0," + d3.event.translate[1];
+          translate = '0,' + d3.event.translate[1];
         }
-        return "translate(" + translate  + ")scale(" + d3.event.scale + ")";
+        return 'translate(' + translate  + ')scale(' + d3.event.scale + ')';
       })
-      .style("font-size", function(d) { 
-        return 12/d3.event.scale + "px";
+      .style('font-size', function(d) { 
+        return 12/d3.event.scale + 'px';
       });
 
 };
@@ -368,11 +381,11 @@ renderer.opacity = function(node) {
   d3.event.stopPropagation();
   if(node && node.temp) return;
   var neighbors = [];
-  d3.selectAll(".link")
-      .style("opacity", function(d) {
+  d3.selectAll('.link')
+      .style('opacity', function(d) {
         if(node && ((node._id != d.source._id && node._id != d.target._id) || d._temp)) {
           return 0.15;
-        } else if(d3.select(this).attr("class").indexOf("hidden") != -1) {
+        } else if(d3.select(this).attr('class').indexOf('hidden') != -1) {
           return 0;
         } else {
           if(neighbors.indexOf(d.source._id) == -1) neighbors.push(d.source._id);
@@ -381,11 +394,11 @@ renderer.opacity = function(node) {
         }
       });
 
-  d3.selectAll(".node")
-      .style("opacity", function(d) {
+  d3.selectAll('.node')
+      .style('opacity', function(d) {
         if(node && neighbors.indexOf(d._id) == -1) {
           return 0.15;
-        } else if(d3.select(this).attr("class").indexOf("hidden") != -1) {
+        } else if(d3.select(this).attr('class').indexOf('hidden') != -1) {
           return 0;
         } else {
           return 1;
@@ -394,29 +407,29 @@ renderer.opacity = function(node) {
 };
 
 renderer.highlight = function(nodes) {
-  if(renderer.options["debugprint"]) console.log("  Highlighting: ", nodes);
+  if(renderer.options['debugprint']) console.log('  Highlighting: ', nodes);
   var ids = nodes.map(function(n) { return n._id; });
-  d3.selectAll(".node")
+  d3.selectAll('.node')
       .filter(function(node) { return ids.indexOf(node._id) != -1; })
-      .style("stroke", "red")
-      .style("stroke-width", 3);
+      .style('stroke', 'red')
+      .style('stroke-width', 3);
 };
 
 renderer.removeHighlight = function(nodes) {
-  d3.selectAll(".node")
+  d3.selectAll('.node')
       .filter(function(node) { return node.temp == null; })
-      .style("stroke-width", 0);
+      .style('stroke-width', 0);
 };
 
 renderer.showError = function() {
   var color = d3.scaleSequential(d3.interpolateYlOrRd);
-  renderer.nodes.selectAll("rect").style("fill", function(d) { 
+  renderer.nodes.selectAll('rect').style('fill', function(d) { 
         var err = validator.errors[d._id] / validator.maxError || 0;
         return color(err); 
       })
-    .on("click", function(d) {
+    .on('click', function(d) {
       var invalid = validator.getInvalidConstraints(d);
-      console.log("Node " + d._id + " has " + validator.errors[d._id] + " invalid constraints: ", invalid);
+      console.log('Node ' + d._id + ' has ' + validator.errors[d._id] + ' invalid constraints: ', invalid);
     });
 };
 
@@ -426,48 +439,48 @@ renderer.showLayoutBoundaries = function() {
 
   // Process the boundaries to split the x and y.
   for (var i = 0; i < boundaries.length; i++) {
-    if(boundaries[i].boundary === "xy") {
-      console.log("found xy boundary!")
+    if(boundaries[i].boundary === 'xy') {
+      console.log('found xy boundary!')
       var duplicate = Object.assign({}, boundaries[i]);
-      boundaries[i].boundary = "x";
-      duplicate.boundary = "y";
+      boundaries[i].boundary = 'x';
+      duplicate.boundary = 'y';
       boundaries.push(duplicate);
     }
   };
 
   // Draw the boundaries.
-  var width = d3.select("svg").style("width").replace("px", ""),
-      height = d3.select("svg").style("height").replace("px", "");
+  var width = d3.select('svg').style('width').replace('px', ''),
+      height = d3.select('svg').style('height').replace('px', '');
   var padding = 50;
-  var boundary_line = d3.select(".graph").selectAll(".boundary")
+  var boundary_line = d3.select('.graph').selectAll('.boundary')
       .data(boundaries)
-      .attr("x1", function(d) {
-        return d.boundary === "x" ? d.x : padding;
+      .attr('x1', function(d) {
+        return d.boundary === 'x' ? d.x : padding;
       })
-      .attr("x2", function(d) {
-        return d.boundary === "x" ? d.x : width-padding*2;
+      .attr('x2', function(d) {
+        return d.boundary === 'x' ? d.x : width-padding*2;
       })
-      .attr("y1", function(d) {
-        return d.boundary === "y" ? d.y : padding;
+      .attr('y1', function(d) {
+        return d.boundary === 'y' ? d.y : padding;
       })
-      .attr("y2", function(d) {
-        return d.boundary === "y" ? d.y : height-padding*2;
+      .attr('y2', function(d) {
+        return d.boundary === 'y' ? d.y : height-padding*2;
       });
   
-  boundary_line.enter().append("line").attr("class", "boundary");
+  boundary_line.enter().append('line').attr('class', 'boundary');
 
-  var boundary_text = d3.select(".graph").selectAll(".boundary-text")
+  var boundary_text = d3.select('.graph').selectAll('.boundary-text')
       .data(boundaries)
-      .attr("x", function(d) { return position = d.boundary === "x" ? d.x + 10 : padding; })
-      .attr("y", function(d) { return position = d.boundary === "y" ? d.y - 10 : padding + 10; });
+      .attr('x', function(d) { return position = d.boundary === 'x' ? d.x + 10 : padding; })
+      .attr('y', function(d) { return position = d.boundary === 'y' ? d.y - 10 : padding + 10; });
   
-  boundary_text.enter().append("text")
-      .attr("class", "boundary-text")
+  boundary_text.enter().append('text')
+      .attr('class', 'boundary-text')
       .text(function(d) { 
         console.log(d)
         var string = d.temp_name;
-        if(!string && d._type) string = d._type + " position " + Math.round(d[d.boundary]);
-        if(!string) string = "position ~" + Math.round(d[d.boundary]);
+        if(!string && d._type) string = d._type + ' position ' + Math.round(d[d.boundary]);
+        if(!string) string = 'position ~' + Math.round(d[d.boundary]);
         return string;
       });
 };
@@ -490,9 +503,9 @@ renderer.circle = function() {
     });
   };
 
-  d3.selectAll(".node")
-      .attr("x", function(d) { return d.x; })
-      .attr("y", function(d) { return d.y; });
+  d3.selectAll('.node')
+      .attr('x', function(d) { return d.x; })
+      .attr('y', function(d) { return d.y; });
 };
 
 // A function to remove overlaps from the graph.
@@ -502,26 +515,26 @@ renderer.removeOverlaps = function() {
   var rs = new Array(renderer.nodes[0].length);
   renderer.nodes[0].forEach(function (r, i) {
     var node = d3.select(r);
-    var x = Number(node.attr("x"));
-    var y = Number(node.attr("y"));
-    var w = Number(node.attr("width"));
-    var h = Number(node.attr("height"));
+    var x = Number(node.attr('x'));
+    var y = Number(node.attr('y'));
+    var w = Number(node.attr('width'));
+    var h = Number(node.attr('height'));
     rs[i] = new cola.Rectangle(x, x + w, y, y + h);
   });
-  console.log("rects", rs)
+  console.log('rects', rs)
   cola.removeOverlaps(rs);
   var animate = false;
 
   var nodes = renderer.colajs.nodes();
   renderer.nodes
-      .attr("x", function(d,i) {
+      .attr('x', function(d,i) {
         var t = rs[i];
         d.x = t.x;
         nodes[i].x = d.x;
         console.log(nodes[i].x == t.x, nodes[i].x, d.x, t.x)
         return d.x;
       })
-      .attr("y", function(d,i) {
+      .attr('y', function(d,i) {
         var t = rs[i];
         d.y = t.y;
         nodes[i].y = d.y;
@@ -529,4 +542,64 @@ renderer.removeOverlaps = function() {
       });
   renderer.colajs.nodes(nodes);
   renderer.tick();
+};
+
+/***************************************************************/
+/**************************** LASSO ****************************/
+/***************************************************************/
+
+var lasso_start = function() {
+  renderer.lasso.items()
+      .classed('not_possible', true);
+};
+
+var lasso_draw = function() {
+
+  renderer.links.style('opacity', 0.25);
+
+  // Style the possible dots
+  renderer.lasso.possibleItems()
+      .classed('not_possible', false)
+      .classed('possible', true)
+      .style('opacity', 0.75);
+
+  // Style the not possible dot
+  renderer.lasso.notPossibleItems()
+      .classed('not_possible', true)
+      .classed('possible', false)
+      .style('opacity', 0.25);
+};
+
+var lasso_end = function() {
+
+  // Reset the node style
+  renderer.links.style('opacity', 1);
+  renderer.lasso.items()
+      .classed('not_possible', false)
+      .classed('possible', false)
+      .style('opacity', 1);
+
+  // Style the selected dots
+  renderer.lasso.selectedItems()
+      .classed('selected', true)
+      .style('stroke', 'black')
+      .style('stroke-width', 2);
+
+  // Reset the style of the not selected dots
+  renderer.lasso.notSelectedItems();
+
+  illustrator.nodeSelection(renderer.lasso.selectedItems());
+};
+
+renderer.createLasso = function() {
+  renderer.lasso = d3.lasso()
+    .closePathSelect(true)
+    .closePathDistance(100)
+    .items(d3.selectAll('g.node'))
+    .targetArea(d3.select('#graph_background'))
+    .on('start', lasso_start)
+    .on('draw', lasso_draw)
+    .on('end', lasso_end);
+
+    renderer.svg.call(renderer.lasso)
 };

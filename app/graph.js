@@ -7,10 +7,21 @@ var graph = {};
 graph.init = function(spec) {
   graph.spec = spec;
   graph.hidden_constraints = [];
+  graph.properties = graph.getNodeProperties();
 
   // Set graph options
   var type = graph.spec.nodes[0][renderer.options["fillprop"]];
   graph.color = (typeof type == "string") ? d3.scaleOrdinal(d3.schemeDark2) : d3.scaleSequential(d3.interpolateYlGnBu);
+};
+
+graph.getNodeProperties = function() {
+  var properties = [];
+  graph.spec.nodes.forEach(function(node) {
+    Object.keys(node).forEach(function(prop) {
+      if(properties.indexOf(prop) === -1) properties.push(prop);
+    });
+  });
+  return properties;
 };
 
 graph.computeBuiltInProperties = function(constraint) {
@@ -22,6 +33,7 @@ graph.computeBuiltInProperties = function(constraint) {
   if(JSON.stringify(constraint).indexOf("neighbors") != -1) calculateNeighbors();
   if(JSON.stringify(constraint).indexOf("degree") != -1) calculateDegree();
   if(JSON.stringify(constraint).indexOf("firstchild") != -1) calculateFirstChild();
+  graph.properties = graph.getNodeProperties();
 };
 
 graph.removeTempNodes = function() {
