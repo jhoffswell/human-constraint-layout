@@ -10,7 +10,7 @@ illustrator.init = function() {
 
 	illustrator.reset();
 	illustrator.generateDataTable();
-	illustrator.createNewSet();
+	var newset = illustrator.createNewSet();
 };
 
 illustrator.reset = function() {
@@ -41,15 +41,22 @@ illustrator.generateDataTable = function() {
 };
 
 illustrator.createNewSet = function() {
+
+	d3.selectAll('.set').classed('selected', false);
+
 	var index = document.getElementById('collections').children.length;
 	illustrator.sets.push('');
 	var div = d3.select('#collections').append('div')
-			.attr('class', 'set #' + index);
+			.attr('class', 'set #' + index)
+			.classed('open', true)
+			.classed('selected', true);
+	illustrator.selected = div;
 
-	// Create the set name
-	div.append('span')
+	// Create the set specification header
+	var header = div.append('div');
+	header.append('span')
 			.html('Name:  ');
-	div.append('input')
+	header.append('input')
 			.attr('type', 'text')
 			.on('input', function() {
 				var newValue = this.value;
@@ -58,18 +65,79 @@ illustrator.createNewSet = function() {
 					if(name === newValue && i !== index) exists = true; 
 				});
 				if(exists) {
-					div.append('span')
+					header.append('span')
 							.attr('class', 'fa fa-exclamation-circle')
 							.attr('title', 'Name conflicts with existing collection.')
 							.style('padding', '0px 5px')
 							.style('color', 'firebrick');
 				} else {
-					div.selectAll('.fa-exclamation-circle').remove();
+					header.selectAll('.fa-exclamation-circle').remove();
 					illustrator.sets[index] = newValue;
 				}
 			});
-	div.append('span')
-			.attr('class', 'fa fa-chevron-circle-down')
+	header.append('span')
+			.attr('class', 'fa fa-chevron-circle-up')
+			.on('click', function() {
+				toggleSetSpec(d3.select(this.parentNode.parentNode));
+				d3.event.stopPropagation();
+			});
+
+	// Create the set specification contents
+	var contents = div.append('div')
+			.attr('class', 'setspec');
+
+	// Set Specification
+	var sets = contents.append('div').attr('class', 'contents')
+	sets.append('span')
+			.html('Sets: ');
+	sets.append('input')
+			.attr('id', 'set-input')
+			.attr('type', 'text');
+
+	// Add interaction to the set specification
+	div.on('click', function() { 
+		d3.selectAll('.set').classed('selected', false);
+		d3.select(this).classed('selected', true);
+		illustrator.selected = d3.select(this);
+		illustrator.recolorGraph(d3.select(this).select('#set-input').attr('value'))
+		
+		if(d3.select(this).classed('closed')) {
+			toggleSetSpec(d3.select(this));
+		}
+
+	});
+
+	return div;
+};
+
+function toggleSetSpec(div) {
+	div.classed('closed', !div.classed('closed'));
+	div.classed('open', !div.classed('open'));
+
+	if(div.classed('open')) {
+		div.select('.fa').attr('class', 'fa fa-chevron-circle-up');
+	} else {
+		div.select('.fa').attr('class', 'fa fa-chevron-circle-down');
+		div.classed('selected', false);
+		if(illustrator.selected && illustrator.selected.attr('class') === div.attr('class')) {
+			illustrator.selected = null;
+		}
+	}
+};
+
+function setSpecification(result) {
+
+	var string = '';
+	if(result === 'EXACT') {
+		d3.selectAll('.node.selected')._groups[0].forEach(function(node) {
+			string += 'node._id===' + d3.select(node).datum()._id + '||';
+		});
+		string = string.slice(0, string.length-2);
+	} else {
+		string = result;
+	}
+
+	illustrator.selected.select('#set-input').attr('value', string);
 };
 
 illustrator.showRecommendations = function() {
@@ -87,27 +155,54 @@ illustrator.showRecommendations = function() {
 				if(i===0) return 'recommendation selected';
 				return 'recommendation';
 			})
-		.on('mouseover', illustrator.recolorGraph);
+		.on('mouseover', function(d) {
+			illustrator.recolorGraph(d);
+			setSpecification(d);
+		})
+		.on('mouseout', function() {
+			var prop = d3.select('.recommendation.selected').datum();
+			illustrator.recolorGraph(prop);
+			setSpecification(prop);
+		})
+		.on('click', function(d) {
+			illustrator.recolorGraph(d);
+			setSpecification(d);
+			d3.selectAll('.recommendation').classed('selected', false);
+			d3.select(this).classed('selected', true);
+		});
 
 	illustrator.recolorGraph(illustrator.recommendation[0]);
+	setSpecification(illustrator.recommendation[0]);
 
 };
 
 illustrator.recolorGraph = function(property) {
-
-	var color;
-	var domain = graph.spec.nodes.map(m=>m[property]);
-	if(typeof graph.spec.nodes[0][property] == 'string') {
-		color = d3.scaleOrdinal(d3.schemeDark2).domain(domain);
+	if(property === 'EXACT') {
+		d3.selectAll('rect.node')
+				.style('fill', '#aaa');
+		d3.selectAll('.node.selected').selectAll('rect')
+				.style('fill', '#6363b5');
+	} else if(property.indexOf('===') !== -1) {
+		// TODO: Figure out how to recolor from the expr
 	} else {
-		color = d3.scaleSequential(d3.interpolateYlGnBu).domain(d3.extent(domain));
-	}
+		var color;
+		var domain = graph.spec.nodes.map(m=>m[property]);
+		if(typeof graph.spec.nodes[0][property] == 'string') {
+			color = d3.scaleOrdinal(d3.schemeDark2).domain(domain);
+		} else {
+			color = d3.scaleSequential(d3.interpolateYlGnBu).domain(d3.extent(domain));
+		}
 
-	d3.selectAll('rect.node')
-			.style('fill', function(d) { return color(d[property]); });
+		d3.selectAll('rect.node')
+				.style('fill', function(d) { return color(d[property]); });
+	}
 }
 
 illustrator.nodeSelection = function(nodes) {
+
+	if(!illustrator.selected) illustrator.createNewSet();
+	illustrator.selectedNodes = nodes;
+
 	var numSelected = nodes._groups[0].length;
 	var result = {};
 	graph.properties.forEach(function(prop) { result[prop] = []; });
@@ -126,6 +221,6 @@ illustrator.nodeSelection = function(nodes) {
 		return result[r].length !== numSelected;
 	});
 
-	illustrator.recommendation = filtered;
+	illustrator.recommendation = filtered.concat(['EXACT']);
 	illustrator.showRecommendations();
 };

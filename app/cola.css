@@ -102,17 +102,32 @@ h1 {
 }
 
 .set {
-  width: 98%;
-  height: 22px;
+  width: 96%;
   margin: 1%;
   padding: 5px;
   background: #ccc;
 
-  font-family: sans-serif;
+  font-family: monospace;
   font-size: 10pt;
 }
 
-.set .fa-chevron-circle-down {
+.set.selected {
+  background: #8f8fb0;
+}
+
+.contents {
+  margin: 5px 0px 0px 0px;
+}
+
+.set.closed .setspec {
+  display: none;
+}
+
+.set.open .setspec {
+  display: block;
+}
+
+.set .fa-chevron-circle-down, .set .fa-chevron-circle-up {
   float: right;
   padding: 0px 10px;
   color: #aaa;
