@@ -1,0 +1,128 @@
+% ---------------------------------------------------------------------------
+% Author guideline and sample document for EG publication using LaTeX2e input
+% D.Fellner, v1.13, Jul 31, 2008
+
+\documentclass{egpubl}
+\usepackage{eurovis2018}
+\Full_EuroVis
+% --- for  Annual CONFERENCE
+% \ConferenceSubmission   % uncomment for Conference submission
+%\ConferencePaper        % uncomment for (final) Conference Paper
+% \STAR                   % uncomment for STAR contribution
+% \Tutorial               % uncomment for Tutorial contribution
+% \ShortPresentation      % uncomment for (final) Short Conference Presentation
+% \Areas                  % uncomment for Areas contribution
+% \MedicalPrize           % uncomment for Medical Prize contribution
+% \Education              % uncomment for Education contribution
+%
+% --- for  CGF Journal
+% \JournalSubmission    % uncomment for submission to Computer Graphics Forum
+% \JournalPaper         % uncomment for final version of Journal Paper
+%
+% --- for  CGF Journal: special issue
+% \SpecialIssueSubmission    % uncomment for submission to Computer Graphics Forum, special issue
+\SpecialIssuePaper         % uncomment for final version of Journal Paper, special issue
+%
+% --- for  EG Workshop Proceedings
+% \WsSubmission    % uncomment for submission to EG Workshop
+% \WsPaper         % uncomment for final version of EG Workshop contribution
+%
+ \electronicVersion % can be used both for the printed and electronic version
+
+% !! *please* don't change anything above
+% !! unless you REALLY know what you are doing
+% ------------------------------------------------------------------------
+
+% for including postscript figures
+% mind: package option 'draft' will replace PS figure by a filname within a frame
+\ifpdf \usepackage[pdftex]{graphicx} \pdfcompresslevel=9
+\else \usepackage[dvips]{graphicx} \fi
+
+\PrintedOrElectronic
+
+% prepare for electronic version of your document
+\usepackage{t1enc,dfadobe}
+
+\usepackage{egweblnk}
+\usepackage{cite}
+
+% For backwards compatibility to old LaTeX type font selection.
+% Uncomment if your document adheres to LaTeX2e recommendations.
+% \let\rm=\rmfamily    \let\sf=\sffamily    \let\tt=\ttfamily
+% \let\it=\itshape     \let\sl=\slshape     \let\sc=\scshape
+% \let\bf=\bfseries
+
+% end of prologue
+
+% ---------------------------------------------------------------------
+% EG author guidelines plus sample file for EG publication using LaTeX2e input
+% D.Fellner, v1.17, Sep 23, 2010
+
+
+\title[High-Level, User-Defined Constraints for Graph Layout]%
+      {High-Level, User-Defined Constraints for Graph Layout\\\todo{Figure out a name for the project and update title}
+}
+
+% for anonymous conference submission please enter your SUBMISSION ID
+% instead of the author's name (and leave the affiliation blank) !!
+\author[TODO]
+{
+  Jane Hoffswell,
+  Alan Borning,
+  and Jeffrey Heer
+  \\
+  % For Computer Graphics Forum: Please use the abbreviation of your first name.
+  Paul G. Allen School of Computer Science \& Engineering, University of Washington\\
+  \todo{Remember to anonymize (this includes link to source if we include one)}
+}
+
+% ------------------------------------------------------------------------
+
+% if the Editors-in-Chief have given you the data, you may uncomment
+% the following five lines and insert it here
+%
+% \volume{27}   % the volume in which the issue will be published;
+% \issue{1}     % the issue number of the publication
+% \pStartPage{1}      % set starting page
+
+
+%-------------------------------------------------------------------------
+\input{note-commands.tex}
+
+\newcommand{\projectname}{\green{SetCoLa}}
+
+\input{figures.tex}
+\hyphenpenalty=100000
+
+%-------------------------------------------------------------------------
+\begin{document}
+
+% \teaser{
+%  \includegraphics[width=\linewidth]{eg_new}
+%  \centering
+%   \caption{New EG Logo}
+% \label{fig:teaser}
+% }
+
+%\teaserFigure
+\maketitle
+
+\input{abstract.tex}
+\begin{abstract}
+  \paperabstract
+\end{abstract}
+
+%-------------------------------------------------------------------------
+\input{introduction.tex}
+\input{relatedwork.tex}
+\input{design.tex}
+\input{implementation.tex}
+\input{demonstration.tex}
+\input{discussion.tex}
+\input{conclusion.tex}
+
+%\bibliographystyle{eg-alpha}
+\bibliographystyle{eg-alpha-doi}
+\bibliography{references}
+
+\end{document}

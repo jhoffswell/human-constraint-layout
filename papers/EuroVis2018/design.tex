@@ -1,0 +1,70 @@
+%!TEX root = constraint-layout.tex
+\section{Design Considerations}
+
+\todo{maybe it would be helpful to lay out the main design considerations for the language. e.g. talk about existing graph layouts and requirements when selecting or designing layouts by hand that could motivate our choice of constraints. Or would it be fine to just have this in the design section when discussing the rationale?}
+
+\section{Design of \projectname}
+\projectname~is a domain specific language for the creation of highly customized graph layouts based on the properties of the graph nodes. Users identify element sets from the graph and apply constraints to all elements in a given set. These sets can be hierarhically composed to create a flexible, nested layout. Apply constraints over sets minizimes the specification effor on the part of the user and allows the user to focus on the graph layout in terms of high-level properties of the data rather than node specific details (such as the node index). These layout specificatiosn can also be easily reused across graphs for which the nodes have the same properties, which allows the user to apply a single layout design across multiple graphs in the domain. In this section, we discuss the design of \projectname~including how to specify sets and how to apply constraints to these sets.
+
+In \projectname, a graph is specified in \textsc{json} format and is composed of four components: \texttt{nodes}, \texttt{links}, \texttt{guides}, and \texttt{collections}. The input graph is defined by the \texttt{nodes} and \texttt{links}. The graph \texttt{nodes} can have arbitrary properties, but must have a unique \texttt{"\_id"}; if one does not already exist, the index of the node in the graph specification is used. The graph \texttt{links} identify the \texttt{source} and \texttt{target} nodes in the graph. For specifying particular layout boundaries, the user can define top-level \texttt{guides} that can be used within the constraint specification; \texttt{guides} are given a unique \texttt{name}, and an \texttt{x} and/or \texttt{y} position for the boundary.
+
+The main contribution of \projectname~is the language for specifying high-level constraints. The user defines \texttt{collections} of sets over which to apply the high level constraints. Sets are groups of elements that can contain either graph nodes or previously defined \projectname~collections. The user identifies a list of sets known as a \emph{collection} for which the same constraints should apply. The user can then specify a set of high-level constraints that are applied within each set of the collection. Once a collection is defined, it can be given a name and later used as a set within other collections.
+
+% design section: rationale for why these are the right constructs (sufficiently expressive)
+	% why are they user friendly?
+	% hypotheses and reason hope/belief/evidence
+
+\subsection{Specifying Sets in \projectname}
+\todo{This section is not quite up-to-date with the changes we talked about in the meeting this week.}
+Sets are the primary component of \projectname. In this language, we support several strategies for specifying a set of nodes: \emph{partitioning}, \emph{relations}, and \emph{expressions}.
+
+Users can partition all graph nodes into sets by identifying a \texttt{partition} property over which to split the nodes. Nodes are then separated into disjoint sets based on the value of the \texttt{partition} property for that node. The user can also define a list of values to \texttt{ignore}; when the value of the \texttt{partition} property is within the list of ones to ignore, the node is not placed in a set.
+
+\todo{Relation}
+
+For more flexibility in the definition of sets, users can specify a concrete list of sets to compute using arbitrary boolean expressions for selecting nodes. For each expression, each node is evaluated based on the \texttt{expr} property. The \texttt{expr} definition currently supports value comparisons (e.g. $==$, $<=$, $>$), and conjunctions (\texttt{\&\&}) and disjunctions (\texttt{||}) of value comparisons and boolean values. The user may use \texttt{datum} to refer to the node and extract properties with the \texttt{.} syntax. Users may also optionally specify a \texttt{name} for the set. With this specification strategy, it is possible to create node sets that are \emph{not} disjoint and therefore it is possible for the user to specify unsatisfiable constraints in the layout (\orange{Figure ?}).
+
+%For each of these techniques, the user can also include a boolean value about whether to \texttt{group} or \texttt{cluster} the set, the default for each is \texttt{false}. If the user groups the nodes, they will be placed within an enclosing boundary and the group will be treated as a node in downstream set specifications. In this case, the property with which the set was partitioned or the id of the set can be used as a property of the grouped node. \orange{(this is not actually working right now, but would allow you to do things like incorporate a hierarchy into the specification.)} If the user clusters the nodes, the layout will interpret the center of the set as a sink that attracts the set nodes. \orange{(again, not quite working yet but something I want to have working for the serengeti example.)}
+
+\subsection{Applying Constraints in \projectname}
+\label{sec:constraints}
+Once the sets have been defined, users can apply layout constraints within or between the sets. Constraints applied \emph{within} sets describe constraints that are applied to all of the nodes in a set whereas constraints applied \emph{between} sets describe constraints that are applied across set boundaries. We identify four different types of constraints that can be applied to nodes and are identified by the \texttt{type} property of the constraint: \texttt{align}, \texttt{order}, \texttt{position}, and \texttt{circle}. In the following sections, we describe the behavior of each of these constraint when applied \emph{within} and \emph{between} sets. At the start of each section, we show the syntax for an example constraint with the required constraint properties. Optional properties are described in the text.
+
+\subsubsection{Alignment Constraints}
+\begin{verbatim}
+{ "type": "align", "axis": "x" }
+\end{verbatim}
+Alignment constraints produce an alignment on the nodes or sets. Alignment constraints must include an \texttt{axis} property set to either \texttt{x} or \texttt{y}. \orange{An optional \texttt{align} property can be set to \texttt{center}, \texttt{left} or \texttt{right}; this property is useful for specifying the behavior between sets or when nodes have different sizes.} When applied within a set, this constraint ensures that all the nodes are aligned along the \texttt{axis}. When applied between sets, this constraint aligns the centroid of each set along the \texttt{axis}.
+
+\orange{between set isn't currently working and not sure how doable this is with webcola. align is also not working but should be pretty easy (at least for within set)}
+
+\emph{Rationale.} Alignment is a common characteristic seen when producing graphs by hand \orange{citation} or utilizing particular layout strategies and is therefore crucial to support in \projectname.
+
+\subsubsection{Order Constraints}
+\begin{verbatim}
+{ "type": "order", "axis": "x", "by": "_id" }
+\end{verbatim}
+Order constraints must include an \texttt{axis} and \texttt{by} property. The \texttt{axis} property is set to either \texttt{x} or \texttt{y} and determines the axis along which the constraint is applied. The \texttt{by} property identifies a node property over which to compute the order. The optional \texttt{order} property can be either a list of values that can be assumed by the \texttt{by} property or \orange{<<default sort options>>}. An optional \texttt{reverse} property reverses the sort order. When applied within a set, nodes are sorted \texttt{by} the identified property along the \texttt{axis}. A similar behavior is seen when applied between sets, though the \texttt{by} property must be a property of the set definition (e.g., the \texttt{partition} property).
+
+\emph{Rationale.} \todo{Write rationale.}
+
+\subsubsection{Position Constraints}
+\begin{verbatim}
+{ "type": "position", 
+  "position": "right", 
+  "of": {"name": "right"} }
+\end{verbatim}
+
+\todo{Write description of position constraint.}
+
+\emph{Rationale.} \todo{Write rationale.}
+
+\subsubsection{Circle Constraints}
+\begin{verbatim}
+{ "type": "circle", 
+  "around": {"name": "center"} }
+\end{verbatim}
+
+\todo{Write description of order constraint.}
+
+\emph{Rationale.} \todo{Write rationale.}

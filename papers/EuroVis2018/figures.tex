@@ -1,0 +1,34 @@
+%!TEX root = constraint-layout.tex
+
+% \newcommand{\teaserFigure}{
+% 	\teaser{
+% 		\includegraphics[width=\linewidth]{figures/serengeti-layout.pdf}
+% 		\centering
+% 	  \caption{\label{fig:teaser}}
+
+% 	}
+% }
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%% Demonstration %%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\serengetiLayout}{
+  \begin{figure*}[t]
+    \centering
+    \includegraphics[width=\textwidth]{figures/serengeti-layout.pdf}
+    \vspace{-20px}
+    {\caption{\label{fig:serengeti-layout}
+    The layout for the Serengeti food web using our constraint language, as compared to Baskerville et al. \cite{baskerville2011spatial}. \todo{retake photos on retina screen}}}
+  \end{figure*}
+}
+
+\newcommand{\serengetiSpec}{
+  \begin{figure}[t]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/serengeti-spec.pdf}
+    \vspace{-20px}
+    {\caption{\label{fig:serengeti-spec}
+    The \projectname~specification for the Serengeti food web shown in Figure~\ref{fig:serengeti-layout}. \orange{It might be cool to label the specification with the number of WebCoLa constraints produced for each high level constraint? Try playing with this a little.}}}
+  \end{figure}
+}

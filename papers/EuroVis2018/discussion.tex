@@ -1,0 +1,21 @@
+%!TEX root = constraint-layout.tex
+\section{Limitations \& Future Work}
+
+% constraints not satisfied and debugging and not have constraints respected by underlying solver
+
+\todo{3. Talk about the need to pre-clean and post-edit the graphs. In particular, discuss the fact that this process is assuming that the graphs contain all the information we need as attributes. As such, we can defer some of the complexity that might come out of more complex selection techniques. Also discuss that we added some additional labeling to them in order to create the final 'figure'. But we did \emph{not} edit the layout.}
+
+\todo{4. Talk about decision to allow nodes to occur in multiple sets in the creation process (which may result in the user specifying constraints that lead to contradictions.)}
+
+% wrangler/polestar/lyra strategies for specifying constraints
+% dsl leveraged as useful interface for processing logic
+
+\subsection{Limitations of WebCoLa as the Constraint Solver}
+
+Our implementation with WebCoLa allows us to demonstrate the utility of \projectname~for creating customized, generalizable layouts. However, our implementation was constrained by what WebCoLa currently supports. For example, we were unable to express \projectname's circle constraints in WebCoLa as it does not currently include such a constraint type, though it has been identified in the wiki as an area of future work \orange{citation?}. This work contributes new strategies for the specification of graph layout constraints, but does not aim to create a highly optimized constraint solver for the language; Future work should explore the design of a constraint solver optimized for \projectname~and should look at how new or existing algorithms might co-evolve alongside the high-level language.
+
+\todo{Talk about fact that circle constraint is not particularly well defined in our implementation, but approximates the layout in webcola as an example. or just exclude it from the implementation as something we cannot express?}
+
+We also encountered some behavioral mismatches between the implementation of WebCoLa and our expectations for the graph layout. For example, WebCoLa utilizes a default link length for the layout which attempts to optimize node positions to be as close to the default link length as possible. This technique is a common strategy for force-directed layouts \orange{citation} and helps to highlight the underlying structure of the graph. However, for many of our layouts that require larger layout changes independent of this graph structure, the edge length optimization could produce layouts that were undesirable (\orange{Figure ?}).
+
+\todo{Talk about non-overlap problem for node layout (e.g., it is applied at the start of the layout and it can make it hard for nodes to follow the layout as they cannot pass over each other)}

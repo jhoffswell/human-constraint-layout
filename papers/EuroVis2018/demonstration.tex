@@ -1,0 +1,34 @@
+%!TEX root = constraint-layout.tex
+\section{Examples Reproduced in \projectname}
+\label{sec:examples}
+% Evaluation ? Examples ? different title for section
+\todo{Write demonstration}
+
+\todo{At least one of the demonstrations we include should show that we can reuse a graph specification across graphs with similar properties.}
+
+% pick a graph in a domain and show several different layouts that are possible with small constraint changes
+% running example in design section?
+
+% comparison of user spec and generated spec (quantiative comparison)
+% point out measure of comprehension
+	% our demo uses domain props whereas low-level constraints in _id (separate from original intent)
+
+
+\subsection{Serengeti Food Web}
+\serengetiLayout
+\serengetiSpec
+Food webs visualize complex producer-consumer relationships in ecological systems and are a common presentation strategy for this information despite the challenge of creating an informative visualization \orange{citations}. In many cases, small or simplified food webs may be drawn by hand. However, many real world ecosystems can have hunderds of interconnected organisms for which the underlying structure may be important. In such cases, a customized layout may be useful for capturing this information.
+
+Baskerville et al. use a Bayesian analysis method to identify group structure for the Serengeti food web and provide a customized layout of their results showing both the hierarchy between groups and the clustering \cite{baskerville2011spatial}. We recreate this example in \projectname, the results of which are shown in Figure~\ref{fig:serengeti-layout}. The original food web visualization was published in PLOS Computational Biology, and an interactive version of the figure was created with D3 \cite{baskerville2011interactive}. The interactive version of the figure lacks the labeling and some of the structure of the published figure, but allows the viewer to more easily trace the links between different nodes in the network.
+
+To reproduce this example, we used the \projectname~specification shown in Figure \ref{fig:serengeti-spec}. Our \projectname~specification generates 14 sets of nodes (one for each cluster) for three high-level constraints, with a total of 15 layout constraints on the nodes or sets. The \projectname~specification generates 8,218 WebCoLa constraints that are used to produce the final layout in Figure \ref{fig:serengeti-layout}.
+
+\orange{I think a figure like Figure 7 from my class paper would be helpful to have for this section. It could potentially be a bit easier to digest than the paragraph text.}
+
+\subsection{TLR4 Network}
+\todo{Get tlr4 image}
+
+\todo{Write section about tlr4 network}
+
+\subsection{\orange{<<Third example>>}}
+\todo{Figure out what to do with the third example. Real world example from neil or another sort of example with more reusability / different layouts}
