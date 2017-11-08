@@ -1261,7 +1261,8 @@
         {"type": "position", "position": "left", "of": {"name": "herbivore", "x": 300}, "gap": 100},
         {"type": "position", "position": "right", "of": {"name": "plant", "x": 50}, "gap": 5},
         {"type": "position", "position": "below", "of": {"name": "top", "y": 0}, "gap": 20},
-        {"type": "position", "position": "above", "of": {"name": "bottom", "y": 200}, "gap": 20}
+        {"type": "position", "position": "above", "of": {"name": "bottom", "y": 200}, "gap": 20},
+        {"type": "cluster"}
       ],
       "between": [
         {"type": "order", "axis": "y", "by": "group1", "gap": 75}

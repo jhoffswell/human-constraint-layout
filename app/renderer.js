@@ -88,8 +88,8 @@ renderer.draw = function() {
   if(renderer.options["linkdist"] != 0 ) {
     renderer.colajs.linkDistance(function(d) {
       var linkDistance = renderer.options["linkdist"];
-      if(d.temp) linkDistance = renderer.options["nodesize"]/2;
-      if(d.length) linkDistance = d.length;
+      if(d.hasOwnProperty('temp')) linkDistance = renderer.options["nodesize"]/2;
+      if(d.hasOwnProperty('length')) linkDistance = d.length;
       console.log("distance", linkDistance, d)
       return linkDistance;
     });

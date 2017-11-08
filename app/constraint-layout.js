@@ -68,18 +68,19 @@ function processConstraint(constraint) {
     });
     var filtered = constraint.between.filter(function(c) { return c.type != "group"; });
 
-    //TODO TEMP: trying to optimize order constraint
-    // filtered.forEach(function(c) { 
-    //   var cid = constraint.name + "_" + c.type;
-    //   if(c.type == "order") constraints = constraints.concat(orderConstraintFromSets(sets, c, cid)); 
-    // });
+    // TODO TEMP: trying to optimize order constraint
+    // VERSION B: Remove version A when using
+    filtered.forEach(function(c) { 
+      var cid = constraint.name + "_" + c.type;
+      if(c.type == "order") constraints = constraints.concat(orderConstraintFromSets(sets, c, cid)); 
+    });
 
     // Generate pairs and apply constraints between sets
-    var pairs = generatePairs(sets);
-    Object.keys(pairs).forEach(function(setName) {
-      var nodes = pairs[setName];
-      constraints = constraints.concat(generateConstraints(nodes, filtered, constraint.name));
-    });
+    // var pairs = generatePairs(sets);
+    // Object.keys(pairs).forEach(function(setName) {
+    //   var nodes = pairs[setName];
+    //   constraints = constraints.concat(generateConstraints(nodes, filtered, constraint.name));
+    // });
   }
 
   return constraints;
@@ -108,6 +109,9 @@ function generateConstraints(nodes, constraints, cid) {
       case "group":
         console.log("don\"t want this anymore...")
         groupConstraint(nodes, constraint, ID);
+        break;
+      case "cluster":
+        clusterConstraint(nodes, constraint, ID);
         break;
       default:
         console.error("Unknown constraint type \"" + constraint.type + "\"");
@@ -281,7 +285,7 @@ function positionConstraint(nodes, constraint, cid) {
         // Extract the node by the name if it already exists
         if(constraint.of.name) {
           node = graph.spec.nodes.filter(function(node) { 
-            return node.temp_name == constraint.of.name; 
+            return node.temp_name == constraint.of.name || node.name === constraint.of.name; 
           })[0];
         }
 
@@ -342,6 +346,8 @@ function positionConstraint(nodes, constraint, cid) {
 
 function circleConstraint(nodes, constraint, cid) {
 
+  nodes = nodes.filter(function(node) { return !node.temp; })
+
   // Constants for computing edge length
   var gap = constraint.gap || renderer.options["constgap"];
   var angle = 360/nodes.length;
@@ -365,7 +371,7 @@ function circleConstraint(nodes, constraint, cid) {
     var index = i==0 ? nodes.length - 1 : i-1;
     var node = graph.spec.nodes.indexOf(nodes[index]);
     var next = graph.spec.nodes.indexOf(nodes[i]);
-    links.push({"source": node, "target": next, "_temp": true, "length": edge});
+    links.push({"source": node, "target": next, "temp": true, "length": edge});
   };
 
   var node;
@@ -395,7 +401,7 @@ function circleConstraint(nodes, constraint, cid) {
 
     // Create a new link from the center to all nodes in the circle
     nodes.forEach(function(n) {
-      links.push({"source": node._id, "target": n._id, "_temp": true, "length": gap});
+      links.push({"source": node._id, "target": n._id, "temp": true, "length": gap});
     });
   }
 
@@ -418,6 +424,15 @@ function groupConstraint(nodes, constraint, cid) {
   var group = {"leaves": ids};
   layout.groups.push(group);
 
+};
+
+function clusterConstraint(nodes, constraint, cid) {
+  nodes.forEach(function(node,index) {
+    if(constraint.pad) node.pad = constraint.pad;
+    for (var i = index+1; i < nodes.length; i++) {
+      graph.spec.links.push({'source': node._id, 'target': nodes[i]._id, 'temp': true});
+    }
+  });
 };
 
 /********************* Determine Node Sets *********************/
@@ -537,7 +552,7 @@ function generateSets(nodes, inSet, constraint) {
   var sets = {};
   nodes.forEach(function(node) {
     var set = inSet(node);
-    if(set == -1 || (ignore && ignore.indexOf(set) != -1)) return;
+    if(set == -1 || (ignore && ignore.indexOf(set) != -1) || typeof set === 'undefined') return;
     var current = sets[set] || [];
     current.push(node);
 
