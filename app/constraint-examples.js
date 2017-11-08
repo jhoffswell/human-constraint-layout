@@ -11,6 +11,7 @@ var EXAMPLES = {
     {"name": "serengeti-foodWeb"},
     {"name": "medium-clusters"},
     {"name": "tlr4"},
+    {"name": "syphilis"},
     {"name": "small-order-wineAndCheese"},
     {"name": "small-position-wineAndCheese"},
     {"name": "wineAndCheese"},
@@ -28,6 +29,7 @@ var EXAMPLES = {
     {"name": "large-foodWeb"},
     {"name": "florida-foodWeb"},
     {"name": "tlr4"},
+    {"name": "syphilis"},
     {"name": "wineAndCheese"},
     {"name": "flavorConnection"}
   ],
