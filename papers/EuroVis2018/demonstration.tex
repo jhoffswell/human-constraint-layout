@@ -1,12 +1,10 @@
 %!TEX root = constraint-layout.tex
 \section{Examples Reproduced in \projectname}
 \label{sec:examples}
-% Evaluation ? Examples ? different title for section
-\todo{Write demonstration}
+To demonstrate the simplicity and generalizability of \projectname, we reproduce several real-world examples from ecological networks~\cite{baskerville2011spatial}, biological systems~\cite{barsky2008cerebral}, and social networks~\cite{rothenberg1998using}. We compare our recreated visualizations to the origianl layouts and discuss the benefits of our technique for creating highly customized graph layouts.
 
 \todo{At least one of the demonstrations we include should show that we can reuse a graph specification across graphs with similar properties.}
 
-% pick a graph in a domain and show several different layouts that are possible with small constraint changes
 % running example in design section?
 
 % comparison of user spec and generated spec (quantiative comparison)
@@ -17,18 +15,25 @@
 \subsection{Serengeti Food Web}
 \serengetiLayout
 \serengetiSpec
-Food webs visualize complex producer-consumer relationships in ecological systems and are a common presentation strategy for this information despite the challenge of creating an informative visualization \orange{citations}. In many cases, small or simplified food webs may be drawn by hand. However, many real world ecosystems can have hunderds of interconnected organisms for which the underlying structure may be important. In such cases, a customized layout may be useful for capturing this information.
+Food webs visualize complex producer-consumer relationships in ecological systems and are a common presentation strategy for this information \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,benson2016higher} despite the challenge of creating an informative visualization \cite{kearney2016blog}. Small or simplified food webs may be drawn by hand, but many real world ecosystems can have hunderds of interconnected organisms. In such cases, a customized layout may be useful for reasoning about the structure of the ecological system.
 
-Baskerville et al. use a Bayesian analysis method to identify group structure for the Serengeti food web and provide a customized layout of their results showing both the hierarchy between groups and the clustering \cite{baskerville2011spatial}. We recreate this example in \projectname, the results of which are shown in Figure~\ref{fig:serengeti-layout}. The original food web visualization was published in PLOS Computational Biology, and an interactive version of the figure was created with D3 \cite{baskerville2011interactive}. The interactive version of the figure lacks the labeling and some of the structure of the published figure, but allows the viewer to more easily trace the links between different nodes in the network.
+One example of a larger ecological network is the Serengeti food web from Baskerville et al. \cite{baskerville2011spatial}; this food web depicts the relationship between 161 plants, herbivores, and carnivores with 592 links between entities. Baskerville et al. use a Bayesian analysis method to identify group structure for the Serengeti food web and provide a customized layout of their results showing both the trophic hierarchy and the clustering of the groups (Figure \ref{fig:serengeti-layout}a). This analysis approach and visualization highlight relationships between plant habitats and the underlying network structure that may be hard to identify from the data alone.
 
-To reproduce this example, we used the \projectname~specification shown in Figure \ref{fig:serengeti-spec}. Our \projectname~specification generates 14 sets of nodes (one for each cluster) for three high-level constraints, with a total of 15 layout constraints on the nodes or sets. The \projectname~specification generates 8,218 WebCoLa constraints that are used to produce the final layout in Figure \ref{fig:serengeti-layout}.
+We recreated the Serengeti food web visualization in \projectname~(Figure~\ref{fig:serengeti-layout}b), using the specification shown in Figure \ref{fig:serengeti-spec}. \todo{include a description of what the specification is doing, what constraints we use, and the statistics for the final layout.} \todo{Maybe include something like Fig. 7 from the class paper?}
 
-\orange{I think a figure like Figure 7 from my class paper would be helpful to have for this section. It could potentially be a bit easier to digest than the paragraph text.}
+The original visualization was published in \textsc{Plos} Computational Biology \cite{baskerville2011spatial}, and an interactive version of the figure was created with D3 \cite{baskerville2011interactive}. The interactive version of the figure lacks the labeling and alignment of the published figure, but allows the viewer to more easily trace the links between different nodes in the network. With \projectname, the layout structure is specified by the constraints, which could support similar interactive behaviors while maintaining the structural features of the published figure.
+
+Baskerville et al. note that \emph{``We have not included invertebrates (insects and parasitic helminths) or birds''} in their published food web, though \emph{``hypothesize that the general conclusions will be largely robust to the addition of more species.''} One advantage of \projectname~is that the layout is independant of the individual nodes, so the authors could easily reuse this layout to visualize future iterations of the Serengeti food web or to explore similar structures across different ecological communities.
 
 \subsection{TLR4 Network}
 \todo{Get tlr4 image}
 
 \todo{Write section about tlr4 network}
 
-\subsection{\orange{<<Third example>>}}
-\todo{Figure out what to do with the third example. Real world example from neil or another sort of example with more reusability / different layouts}
+\subsection{Syphilis Social Network}
+\todo{Get syhilis network image}
+
+\todo{Write section about syphilis network}
+
+\subsection{\orange{<<Fourth example>>}}
+\todo{Another example with more reusability / different layouts}
