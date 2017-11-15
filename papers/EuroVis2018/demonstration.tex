@@ -3,6 +3,8 @@
 \label{sec:examples}
 To demonstrate the simplicity and generalizability of \projectname, we reproduce several real-world examples from ecological networks~\cite{baskerville2011spatial}, biological systems~\cite{barsky2008cerebral}, and social networks~\cite{rothenberg1998using}. We compare our recreated visualizations to the origianl layouts and discuss the benefits of our technique for creating highly customized graph layouts.
 
+\todo{Do we want to include disclaimers somewhere in this section that not all the recreations may be an exact match to those seen due to transcription errors or lack of information available in the original publication?}
+
 \todo{At least one of the demonstrations we include should show that we can reuse a graph specification across graphs with similar properties.}
 
 % running example in design section?
@@ -33,9 +35,14 @@ Baskerville et al. note that \emph{``We have not included invertebrates (insects
 \subsection{Syphilis Social Network}
 \syphilisLayout
 \syphilisSpec
-\todo{Get syhilis network image}
 
-\todo{Write section about syphilis network}
+Social networks can be a powerful way to understand inter-personal relationships and are useful for tracking the spread of diseases that result from personal contact \cite{rothenberg1998using} \orange{[other citations]}. The ability to track and identify individuals at risk can help lead to treatment and help manage the spread of the disease. In addition to the links between individuals, structuring the graph layout by properties such as ethnic group may reveal additional details about the spread of the disease.
+
+Rothenberg et al. discuss an ethnographic approach to identifying the ``core'' groups in a social network to better understand the transmission of syphilis amongst sexual partners~\cite{rothenberg1998using}. They found that there were three primary groups involved -- affluent white men (ages 17-21), young white women (ages ??-??), and African-American men (ages 16-??), which are visualized from left to right in Figure \ref{fig:syphilis-layout}a. The authors note that a number of outsiders (visualized as the top cluster of Figure \ref{fig:syphilis-layout}a) to these ``core'' groups played a significant role in the network. In particular, \emph{``Visualization of these groups and all their sex partners uncovered the importance of several people not specifically identified with these groups (e.g., N43 and S30) who served as bridges between the two groups of men.''}
+
+\todo{I don't have the N43 bridge link in my visualization as that was not clear from any of the figures in their paper...}
+
+We reproduced this example with \projectname~(Figure~\ref{fig:syphilis-layout}b) and included a number of additional constraints on the layout (Figure~\ref{fig:syphilis-spec}) apart from the separation constraints that are visible in the original image. In particular, we included a circle constraint on the group of young white women to more strongly enforce the result shown in the original figure and applied an alignment constraint on the two groups of young men. \todo{discussion of the statistics for the final layout.}
 
 \subsection{\orange{<<Fourth example>>}}
 \todo{Another example with more reusability / different layouts}
