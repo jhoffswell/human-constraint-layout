@@ -1,26 +1,9 @@
 %!TEX root = constraint-layout.tex
 \newcommand{\paperabstract}{
 	
-	Constraints enable flexible graph layouts that combine the ease of automatic layouts with designs customized to the particular graph. However, constraint-based layouts often require individual constraints over node pairs and introduce a degree of separation between the constraint definition and the data domain that drives the constraint. To facilitate the specification of customized constraint layouts, we contribute \projectname, a domain-specific language for specifying high-level constraints relative to properties of the backing data. Users identify nodes sets based on data or graph properties and apply high-level constraints within each set of nodes. Applying constraints to node sets minimizes specification effort on the part of the user. Identifying sets by node properties and applying constraints to node sets facilitates reapplication of customized layouts across distinct graphs by separating the constraint generation from individual properties of the nodes. We demonstrate the simplicity and generalizability of \projectname~on a series of real-world examples from ecological networks, biological systems, and social networks.
+	Constraints enable flexible graph layouts that combine the ease of automatic layouts with designs customized to the particular domain. However, constraint-based layouts often require individual constraints over node pairs. Such constraints are specific to the particular graph and thus cannot generalize to other graphs in the same domain. To facilitate the specification of customized and generalizable constraint layouts, we contribute \projectname: a domain-specific language for specifying high-level constraints relative to properties of the backing data. Users identify node sets based on data or graph properties and apply high-level constraints within each set of nodes. Applying constraints to node sets rather than on individual nodes reduces specification effort. \projectname~also facilitates reapplication of customized layouts across distinct graphs by separating the constraint specification from individual properties of the nodes. We demonstrate the conciseness, generalizability, and expressiveness of \projectname~on a series of real-world examples from ecological networks, biological systems, and social networks.
 
   \begin{classification}
   \CCScat{Human-centered computing}{}{Visualization}{Graph drawings}
   \end{classification}
 }
-
-% particular graph -> particular domain
-
-% "However, constraint-based layouts often require individual constraints over node pairs and introduce a degree of separation between the constraint definition and the data domain that drives the constraint." --> revise to separate into two sections. for second sentence, we want to abstract from indivudla graph to domain
-
-% add generalizaiblity to third sentence?
-
-% problems : too verbose and doesn't generalize
-
-% nodes sets --> node sets
-
-% minimizes (too strong) --> reduces
-
-% "defining constraints on node sets rather than on indivudla nodes and edges"
-% 		--> we were missing the comparisons "TO WHAT?"
-
-% "SetCoLa also fascilitates reapplication of customized layouts"
