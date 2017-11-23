@@ -12,6 +12,12 @@
 
 \subsection{Limitations of WebCoLa as the Constraint Solver}
 
+% remember to be generous with WebCoLa when discussing limitations; using a system like this makes it easier to uncover bugs or identify surprising/unsual behavior in the underlying system.
+
+% what happens to the setCoLa specification when it is NOT on top of another system? (e.g. this is applying constraints on top of a number of other parameters of the underlying layout solver, so what is it's role alone?)
+
+% configuration option for the underlying behavior? e.g. stress minimization, edge-length optimization, etc.
+
 Our implementation with WebCoLa allows us to demonstrate the utility of \projectname~for creating customized, generalizable layouts. However, our implementation was constrained by what WebCoLa currently supports. For example, we were unable to express \projectname's circle constraints in WebCoLa as it does not currently include such a constraint type, though it has been identified in the wiki as an area of future work \orange{citation?}. This work contributes new strategies for the specification of graph layout constraints, but does not aim to create a highly optimized constraint solver for the language; Future work should explore the design of a constraint solver optimized for \projectname~and should look at how new or existing algorithms might co-evolve alongside the high-level language.
 
 \todo{Talk about fact that circle constraint is not particularly well defined in our implementation, but approximates the layout in webcola as an example. or just exclude it from the implementation as something we cannot express?}
