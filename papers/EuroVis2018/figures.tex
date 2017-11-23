@@ -20,6 +20,32 @@
 }
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%%%%%%%%%%%%% Design %%%%%%%%%%%%%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\newcommand{\smallTreeExample}{
+  \begin{figure}[t!]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/small-tree-example.pdf}
+    {\caption{\label{fig:small-tree-example}
+    The full \projectname\ specification for a small tree with six nodes. Nodes are split into sets based on their depth from the root \texttt{a}, and aligned. A new collection is formed containing the ``layer'' set and the layers are ordered by their depth to form the tree.
+    }}
+    \vspace{-20px}
+  \end{figure}
+}
+
+\newcommand{\contradictionExample}{
+  \begin{figure}[t!]
+    \centering
+    \includegraphics[width=\columnwidth]{figures/contradiction-example.pdf}
+    {\caption{\label{fig:contradiction-example}
+    (a) The full \projectname\ specification for a small graph with eight nodes. (b) Nodes are aligned based on their \texttt{rank}, and colored based on their \texttt{level}. Two constraints are applied to order the nodes, once by \texttt{level} and once by \texttt{rank}, which produces a contradiction. (c) Nodes are colored based on the amount of error for constraints that are invalid.
+    }}
+    \vspace{-20px}
+  \end{figure}
+}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%% Demonstration %%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
