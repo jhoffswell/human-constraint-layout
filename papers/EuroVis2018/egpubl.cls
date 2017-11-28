@@ -1,20 +1,22 @@
 %%%%%%%%%%%%%%%%%%%%%% start of egpubl.cls %%%%%%%%%%%%%%%%%%%%%%
-\def\fileversion{3.63}
-\def\filedate{2015/12/03}
-\def\docdate {2015/12/03}
+\def\fileversion{3.65}
+\def\filedate{2017/11/27}
+\def\docdate {2017/11/27}
 \NeedsTeXFormat{LaTeX2e}
 \ProvidesClass{egpubl}[\filedate \space
                        Document Style for EG Publications v\fileversion ]
 %
 % EG Publications document style
 % (based on EG Annual Event document style, which in turn was based on CFG Journal)
-% Copyright (c) 1997-2015 D.Fellner
+% Copyright (c) 1997-2017 D.Fellner
 %
 % based on the original LaTeX ARTICLE DOCUMENT STYLE
 %    for LaTeX version 2.09 by Leslie Lamport
 % ...modifications by Sue Brooks, BUSS Ltd
 % ... and Graham White 8.ix.92
 % ...redesign for LaTeX2e and adaption to Conf. Proc. by D.Fellner
+% 27-11-17 SB  3.65 some adpations for EuroVis;
+% 26-01-17 SB  3.64 include ACM CCS 2012 support;
 % 03-12-15 SB  3.63 Introduced \STAR_Eurovis
 % 17-11-15 SB  3.62 introduced \DC
 % 02-09-15 SB  3.61 add Wiley copyright to STARs
@@ -703,6 +705,8 @@
  \let\@maketitle\relax
  \gdef\@author{}
  \gdef\@title{}
+ \hypersetup{pdfauthor={\@shortauthor},
+     pdftitle={\@shorttitle}}% 
  \let\thanks\relax
 }
 
@@ -745,6 +749,9 @@
                 \endgroup\par%
                 \vspace{\teaserspace}%
             \fi%
+
+            
+             
 }
 
 \def\author@nextline{ %
@@ -753,8 +760,6 @@
  }%
 \def\author@nextlinetwo{\tabularnewline[-1pt]\reset@font\small\rmfamily\ignorespaces} 
 
-
-%
 \newif\ifSFB@abstract
 \def\abstract{\if@twocolumn
   \SFB@abstracttrue\start@SFBbox\SFB@widerule\addvspace{2pt}\bgroup\@abstract
@@ -771,12 +776,41 @@
 \def\@abstract{\list{}{\leftmargin 2pc\rightmargin\leftmargin
   \parsep 0pt plus .1pt}\item[]{\textbf{Abstract}}\\\reset@font\itshape}
 %
+%
+
 \def\classification{\vskip 5.5pt\par\reset@font\rmfamily%
 Categories and Subject Descriptors {\small (according to ACM CCS)}: }
 \def\endclassification{\relax}
 %\newcommand\CCScat[4]{#1 [#2]: #3---#4}
 \newcommand\CCScat[4]{#2 [#1]: #3---#4}
 %
+
+
+\RequirePackage{comment}
+\excludecomment{CCSXML}
+\newcommand\CCSconcepts{}
+
+\let\@concepts\@empty
+\newcommand\ccsdesc[2][100]{%
+  \ccsdesc@parse#1~#2~}
+\def\ccsdesc@parse#1~#2~#3~{%
+  \expandafter\ifx\csname CCS@#2\endcsname\relax
+    \expandafter\gdef\csname CCS@#2\endcsname{\textbullet\textbf{#2} $\,\to\,$ }%
+  \g@addto@macro{\@concepts}{\csname CCS@#2\endcsname}\fi
+  \expandafter\g@addto@macro\expandafter{\csname CCS@#2\endcsname}{%
+    \ifnum#1>499\textbf{#3; }\else
+    \ifnum#1>299\textit{#3; }\else
+    #3; \fi\fi }}
+  
+\newcommand\printccsdesc{%
+  \ifx\@concepts\@empty\else
+    \vspace{-8 pt}
+    \section*{CCS Concepts}
+    \@concepts
+  \fi}
+
+
+    
 \def\keywords{\vskip 5.5pt\par\reset@font\rmfamily\textbf{Keywords: }}
 \def\endkeywords{\relax}
 \newcommand\keyword[1]{[#1]}
