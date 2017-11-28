@@ -13,25 +13,25 @@ domain-specific details in order to emphasize relevant trends in the
 data. In an ecological network for example, nodes could be split by trophic
 level (e.g., its positition in the food chain) to highlight the hierarchy
 of producer/consumer relationships
-(Figure~\ref{fig:serengeti-layout}). This visualization shows a customized
+(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
 layout: a unique layout that leverages knowledge of the data domain for
 node placement and understanding of the graph structure.
 
-Many domain-specific layout techniques have been developed to address
-particular graphing needs for customized layouts
-\cite{barsky2008cerebral,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
+Many domain-specific layout techniques address particular graphing needs
+for customized layouts~\cite{barsky2008cerebral,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
 techniques leverage common structural details that are significant to the
 domain, such as known data hierarchies including trophic level
-(Figure~\ref{fig:serengeti-layout}) or cellular structure
-(Figure~\ref{fig:tlr4-layout}), as a guiding property of the
+(Figure~\ref{fig:kruger-layout}, \ref{fig:serengeti-layout}) or cellular 
+structure (Figure~\ref{fig:tlr4-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
 which they were designed. There thus exists a mismatch between domains
 where customized layouts would be useful and the availability of tools to
 support those domains. When a layout technique does not exist for the
 domain or task of interest, users are required to either fit their data
-available techniques or create a new algorithm of their own. Creating a
-customized layout algorithm can be challenging and often requires both
-domain and programming expertise; many \serengetiLayoutColumn \\domain
+to available techniques or create a new algorithm of their own. Creating a
+customized layout algorithm can be\linebreak \krugerLayout \\ \\ 
+challenging and often requires both
+domain and programming expertise; many domain
 experts may lack the skills to create custom layouts themselves, thus
 forcing them to invest large amounts of time into learning the necessary
 skills or creating a layout by hand. This barrier introduces a gap between
@@ -41,16 +41,12 @@ handle those needs.
 Constraints are a natural way to identify the desired properties for a
 customized layout as the designer can think about how domain-specific
 properties drive the positions of nodes. However, many existing techniques
-for constraint layout require the user to identify inter-node constraints
-over \emph{pairs} of nodes in the graph. This process can be highly labor
-intensive, requiring thousands of constraints or careful identification of
-which nodes should be constrained. Furthermore, these constraints often
-refer to low-level node properties (such as the node index) and thus
-introduce a disconnect between the constraint specification and the
-domain-specific details that drive the specification decision.
-
-\todo{from Alan: is it worth noting that the user may also have to add lots of
-  constraints on individual nodes?}
+for constraint layout require the user to identify individual constraints
+on nodes or node \emph{pairs}in the graph. This process can be highly labor
+intensive, requiring thousands of similar constraints or careful reasoning
+about which nodes should be constrained. Furthermore, these constraints often
+refer to low-level node properties (such as the node index) and thus prevent
+the user from reusing the layout across graphs in the same domain.
 
 To enable the design of customized domain-specific layouts with minimal
 programming effort, we present \projectname: a domain specific language for

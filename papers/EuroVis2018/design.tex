@@ -40,6 +40,13 @@ position), which can be referred to in the constraint specification.
 
 \todo{from Alan: what is the difference between a collection and a set? If
   none or not much, should we just use one term (maybe set)?}
+\todo{Jane: the way I see it, the difference between a collection and a
+set is in how it is being used at the time. A collection is used in the
+constraint application stage to identify which sets should have constraints
+applied to them. So collections apply constraints to sets, sets have
+constraints applied to them. A collection can become a set (e.g. have
+constraints applied to it in a downstream step). So there is a blurred line
+of whether or not they are the same.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -198,7 +205,16 @@ should exist between elements in the unit and finally an optional
 
 \todo{from Alan: ``attract'' to me connotes a soft constraint. But are
   these constraints actually required? If so, maybe call it ``alignment''
-  or something else?}
+  or something else?} 
+\todo{Jane: this section is pretty new, so probably want to discuss in the
+meeting this week. The ``unit'' constraints here are supposed to help cover
+some of the layout options that are a bit softer than the position and
+alignment constraints otherwise discussed in this section. I am not sure
+on the naming or anything here really. ``attract'' implies a kind of
+organic clustering. Another option for this could be something like ``shape''
+with options ``organic'' (the current attract) and ``grid.'' Maybe that would
+be better, since I'm not sure it is overly necessary to have this sort of
+alignment on the clustering.}
 
 \emph{Rationale.} The unit constraint allows the user to enforce more
 control on how the nodes within a set behave outside of the general layout
@@ -225,4 +241,4 @@ the error on the nodes that have constraints unsatisfied by the layout
 \todo{Does it make sense to talk about this here, or should we provide this
   as an example that we talk about later? Or should we talk about it more
   generally without an example and discuss why this is
-  allowed?}\\ \\ \\ \\ \\ \\ \\ % Line breaks because latex is mad for some reason
+  allowed?}
