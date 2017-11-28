@@ -1,20 +1,46 @@
 %!TEX root = constraint-layout.tex
 \section{Implementation of \projectname~using WebCoLa}
-We created an implementation of \projectname~in which our high-level constraints are used to generate node specific constraints in WebCoLa~\cite{WebCoLa}. WebCoLa is an open-source JavaScript library for creating high-quality, stable constraint layouts, and was therefore a useful back end to demonstrate the utility of \projectname~on a number of examples (see Section \ref{sec:examples}). In this section, we discuss the constraint generation process for producing WebCoLa constraints.
+We created an implementation of \projectname~in which our high-level
+constraints are used to generate node specific constraints in
+WebCoLa~\cite{WebCoLa}. WebCoLa is an open-source JavaScript library for
+creating high-quality, stable constraint layouts, and was therefore a
+useful back end to demonstrate the utility of \projectname~on a number of
+examples (see Section \ref{sec:examples}). In this section, we discuss the
+constraint generation process for producing WebCoLa constraints.
 
-\todo{Describe the constraint generation procedure for within and between sets as well as the number of constraints that each one generates.}
+\todo{Describe the constraint generation procedure for within and between
+  sets as well as the number of constraints that each one generates.}
 
-In addition to applying constraints relative to domain-specific properties, it may be important to identify properties of the graph structure. For this implementation, we support a number of built-in properties for the nodes which are automatically computed and added to the graph specification when used in the \projectname~constraints, prior to computing the WebCoLa constraints. These properties are only computed if such a property does not already exist on the nodes and are subject to a number of expectations regarding the graph input; for graphs that do not meet these expectations, the user is shown a warning and required to compute the properties themselves.
+In addition to applying constraints relative to domain-specific properties,
+it may be important to identify properties of the graph structure. For this
+implementation, we support a number of built-in properties for the nodes
+which are automatically computed and added to the graph specification when
+used in the \projectname~constraints, prior to computing the WebCoLa
+constraints. These properties are only computed if such a property does not
+already exist on the nodes and are subject to a number of expectations
+regarding the graph input; for graphs that do not meet these expectations,
+the user is shown a warning and required to compute the properties
+themselves.
 
 \begin{description}
-\item[\texttt{\_id}] The node index in the graph specification. This property is always computed regardless of whether or not it is used.
-\item[\texttt{depth}] One more than the max depth of the node's parents. This property is only computed for graphs that contain only one root node and do not contain cycles.
-\item[\texttt{parent}] The parent of the current node. This property is only allowed if the node has one parent; otherwise, it is defined as the parent with the smallest \texttt{\_id}.
+\item[\texttt{\_id}] The node index in the graph specification. This
+  property is always computed regardless of whether or not it is used.
+\item[\texttt{depth}] One more than the max depth of the node's
+  parents. This property is only computed for graphs that contain only one
+  root node and do not contain cycles.
+\item[\texttt{parent}] The parent of the current node. This property is
+  only allowed if the node has one parent; otherwise, it is defined as the
+  parent with the smallest \texttt{\_id}.
 \item[\texttt{firstchild}] The child node of the current node with the smallest \texttt{\_id}.
-\item[\texttt{incoming}] The list of nodes that have edges where the current node is the target (e.g., all parent nodes).
-\item[\texttt{outgoing}] The list of nodes that have edges where the current node is the source (e.g., all child nodes).
-\item[\texttt{neighbors}] The list of nodes that have edges connected to the current node. This property is the join of the \texttt{incoming} and \texttt{outgoing} properties.
+\item[\texttt{incoming}] The list of nodes that have edges where the
+  current node is the target (e.g., all parent nodes).
+\item[\texttt{outgoing}] The list of nodes that have edges where the
+  current node is the source (e.g., all child nodes).
+\item[\texttt{neighbors}] The list of nodes that have edges connected to
+  the current node. This property is the join of the \texttt{incoming} and
+  \texttt{outgoing} properties.
 \item[\texttt{degree}] The number of \texttt{neighbors}.
 \end{description}
+
 \orange{confirm all descriptions}
 \orange{Are there others? This is presumably quite extensible in the implementation.}

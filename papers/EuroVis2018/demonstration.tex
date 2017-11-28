@@ -1,38 +1,99 @@
 %!TEX root = constraint-layout.tex
 \section{Examples Reproduced in \projectname}
 \label{sec:examples}
-To demonstrate the simplicity and generalizability of \projectname, we reproduce several real-world examples from ecological networks~\cite{baskerville2011spatial}, biological systems~\cite{barsky2008cerebral}, and social networks~\cite{rothenberg1998using}. We compare our recreated visualizations to the origianl layouts and discuss the benefits of our technique for creating highly customized graph layouts.
 
-\todo{Do we want to include disclaimers somewhere in this section that not all the recreations may be an exact match to those seen due to transcription errors or lack of information available in the original publication?}
+To demonstrate the simplicity and generalizability of \projectname, we
+reproduce several real-world examples from ecological
+networks~\cite{baskerville2011spatial}, biological
+systems~\cite{barsky2008cerebral}, and social
+networks~\cite{rothenberg1998using}. We compare our recreated
+visualizations to the origianl layouts and discuss the benefits of our
+technique for creating highly customized graph layouts.
 
-\todo{At least one of the demonstrations we include should show that we can reuse a graph specification across graphs with similar properties.}
+\todo{Do we want to include disclaimers somewhere in this section that not
+  all the recreations may be an exact match to those seen due to
+  transcription errors or lack of information available in the original
+  publication?}
+
+\todo{At least one of the demonstrations we include should show that we can
+  reuse a graph specification across graphs with similar properties.}
 
 % running example in design section?
 
 % comparison of user spec and generated spec (quantiative comparison)
 % point out measure of comprehension
-	% our demo uses domain props whereas low-level constraints in _id (separate from original intent)
+% our demo uses domain props whereas low-level constraints in _id (separate from original intent)
 
-% simplicity and generalizability --> conciseness and expressiveness (efficiency or learnability are other ideas)
-% 2b spacing on nodes
-% syphilis (does circle order matter?)
+% simplicity and generalizability --> conciseness and expressiveness
+% (efficiency or learnability are other ideas) 2b spacing on nodes syphilis
+% (does circle order matter?)
 
 
 \subsection{Serengeti Food Web}
 \krugerLayout
 \serengetiLayout
 \serengetiSpec
-Food webs visualize complex producer-consumer relationships in ecological systems and are a common presentation strategy for this information \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,benson2016higher} \orange{kruger citation} despite the challenge of creating an informative visualization \cite{kearney2016blog}. Small or simplified food webs may be drawn by hand, but many real world ecosystems can have hunderds of interconnected organisms. In such cases, a customized layout may be useful for reasoning about the structure of the ecological system.
 
-Small food webs exhibit several of the properties of larger food webs, such as a hierarchy arranged by the trophic level of the individuals in the network. For example, Kruger National Park includeds a simple visualization of such relationships for a subset of the species found in the park (Figure~\ref{fig:kruger-layout}a). We can easily recreate the layout with a small number of constraints on the nodes (Figure~\ref{fig:kruger-layout}b); in particular, we constrain each trophic level to be aligned and enforce an ordering of the layers that respects the food web hierarchy. This \projectname specification could easily be applied to other food webs to produce a similar layout. \todo{this could be an easy place to have a second small food web with the same spec/layout?}. However, as the food web gets more complex, it becomes necessary to relax the alignment constraints or introduce additional clustering to highlight other structures within the layout. 
+Food webs visualize complex producer-consumer relationships in ecological
+systems and are a common presentation strategy for this information
+\cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,benson2016higher}
+\orange{kruger citation} despite the challenge of creating an informative
+visualization \cite{kearney2016blog}. Small or simplified food webs may be
+drawn by hand, but many real world ecosystems can have hunderds of
+interconnected organisms. In such cases, a customized layout may be useful
+for reasoning about the structure of the ecological system.
 
-One example of a larger ecological network is the Serengeti food web from Baskerville et al. \cite{baskerville2011spatial}; this food web depicts the relationship between 161 plants, herbivores, and carnivores with 592 links between entities. Baskerville et al. use a Bayesian analysis method to identify group structure for the Serengeti food web and provide a customized layout of their results showing both the trophic hierarchy and the clustering of the groups (Figure \ref{fig:serengeti-layout}a). This analysis approach and visualization highlight relationships between plant habitats and the underlying network structure that may be hard to identify from the data alone.
+Small food webs exhibit several of the properties of larger food webs, such
+as a hierarchy arranged by the trophic level of the individuals in the
+network. For example, Kruger National Park includeds a simple visualization
+of such relationships for a subset of the species found in the park
+(Figure~\ref{fig:kruger-layout}a). We can easily recreate the layout with a
+small number of constraints on the nodes (Figure~\ref{fig:kruger-layout}b);
+in particular, we constrain each trophic level to be aligned and enforce an
+ordering of the layers that respects the food web hierarchy. This
+\projectname specification could easily be applied to other food webs to
+produce a similar layout. \todo{this could be an easy place to have a
+  second small food web with the same spec/layout?}. However, as the food
+web gets more complex, it becomes necessary to relax the alignment
+constraints or introduce additional clustering to highlight other
+structures within the layout.
 
-We recreated the Serengeti food web visualization in \projectname~(Figure~\ref{fig:serengeti-layout}b), using the specification shown in Figure \ref{fig:serengeti-spec}. \todo{include a description of what the specification is doing, what constraints we use, and the statistics for the final layout.} \todo{Maybe include something like Fig. 7 from the class paper?}
+One example of a larger ecological network is the Serengeti food web from
+Baskerville et al. \cite{baskerville2011spatial}; this food web depicts the
+relationship between 161 plants, herbivores, and carnivores with 592 links
+between entities. Baskerville et al. use a Bayesian analysis method to
+identify group structure for the Serengeti food web and provide a
+customized layout of their results showing both the trophic hierarchy and
+the clustering of the groups (Figure \ref{fig:serengeti-layout}a). This
+analysis approach and visualization highlight relationships between plant
+habitats and the underlying network structure that may be hard to identify
+from the data alone.
 
-The original visualization was published in \textsc{Plos} Computational Biology \cite{baskerville2011spatial}, and an interactive version of the figure was created with D3 \cite{baskerville2011interactive}. The interactive version of the figure lacks the labeling and alignment of the published figure, but allows the viewer to more easily trace the links between different nodes in the network. With \projectname, the layout structure is specified by the constraints, which could support similar interactive behaviors while maintaining the structural features of the published figure.
+We recreated the Serengeti food web visualization in
+\projectname~(Figure~\ref{fig:serengeti-layout}b), using the specification
+shown in Figure \ref{fig:serengeti-spec}. \todo{include a description of
+  what the specification is doing, what constraints we use, and the
+  statistics for the final layout.} \todo{Maybe include something like
+  Fig. 7 from the class paper?}
 
-Baskerville et al. note that \emph{``We have not included invertebrates (insects and parasitic helminths) or birds''} in their published food web, though \emph{``hypothesize that the general conclusions will be largely robust to the addition of more species.''} One advantage of \projectname~is that the layout is independant of the individual nodes, so the authors could easily reuse this layout to visualize future iterations of the Serengeti food web or to explore similar structures across different ecological communities.
+The original visualization was published in \textsc{Plos} Computational
+Biology \cite{baskerville2011spatial}, and an interactive version of the
+figure was created with D3 \cite{baskerville2011interactive}. The
+interactive version of the figure lacks the labeling and alignment of the
+published figure, but allows the viewer to more easily trace the links
+between different nodes in the network. With \projectname, the layout
+structure is specified by the constraints, which could support similar
+interactive behaviors while maintaining the structural features of the
+published figure.
+
+Baskerville et al. note that \emph{``We have not included invertebrates
+  (insects and parasitic helminths) or birds''} in their published food
+web, though \emph{``hypothesize that the general conclusions will be
+  largely robust to the addition of more species.''} One advantage of
+\projectname~is that the layout is independant of the individual nodes, so
+the authors could easily reuse this layout to visualize future iterations
+of the Serengeti food web or to explore similar structures across different
+ecological communities.
 
 \subsection{TLR4 Network}
 \todo{Get tlr4 image}
@@ -43,15 +104,43 @@ Baskerville et al. note that \emph{``We have not included invertebrates (insects
 \syphilisLayout
 \syphilisSpec
 
-\todo{Jeff noted that the nodes in the circle do not have the same order - did they have an important order before worth capturing, if so, what?}
+\todo{Jeff noted that the nodes in the circle do not have the same order -
+  did they have an important order before worth capturing, if so, what?}
 
-Social networks can be a powerful way to understand inter-personal relationships and are useful for tracking the spread of diseases that result from personal contact \cite{rothenberg1998using} \orange{[other citations]}. The ability to track and identify individuals at risk can help lead to treatment and help manage the spread of the disease. In addition to the links between individuals, structuring the graph layout by properties such as ethnic group may reveal additional details about the spread of the disease.
+Social networks can be a powerful way to understand inter-personal
+relationships and are useful for tracking the spread of diseases that
+result from personal contact \cite{rothenberg1998using} \orange{[other
+    citations]}. The ability to track and identify individuals at risk can
+help lead to treatment and help manage the spread of the disease. In
+addition to the links between individuals, structuring the graph layout by
+properties such as ethnic group may reveal additional details about the
+spread of the disease.
 
-Rothenberg et al. discuss an ethnographic approach to identifying the ``core'' groups in a social network to better understand the transmission of syphilis amongst sexual partners~\cite{rothenberg1998using}. They found that there were three primary groups involved -- affluent white men (ages 17-21), young white women (ages ??-??), and African-American men (ages 16-??), which are visualized from left to right in Figure \ref{fig:syphilis-layout}a. The authors note that a number of outsiders (visualized as the top cluster of Figure \ref{fig:syphilis-layout}a) to these ``core'' groups played a significant role in the network. In particular, \emph{``Visualization of these groups and all their sex partners uncovered the importance of several people not specifically identified with these groups (e.g., N43 and S30) who served as bridges between the two groups of men.''}
+Rothenberg et al. discuss an ethnographic approach to identifying the
+``core'' groups in a social network to better understand the transmission
+of syphilis amongst sexual partners~\cite{rothenberg1998using}. They found
+that there were three primary groups involved -- affluent white men (ages
+17-21), young white women (ages ??-??), and African-American men (ages
+16-??), which are visualized from left to right in Figure
+\ref{fig:syphilis-layout}a. The authors note that a number of outsiders
+(visualized as the top cluster of Figure \ref{fig:syphilis-layout}a) to
+these ``core'' groups played a significant role in the network. In
+particular, \emph{``Visualization of these groups and all their sex
+  partners uncovered the importance of several people not specifically
+  identified with these groups (e.g., N43 and S30) who served as bridges
+  between the two groups of men.''}
 
-\todo{I don't have the N43 bridge link in my visualization as that was not clear from any of the figures in their paper...}
+\todo{I don't have the N43 bridge link in my visualization as that was not
+  clear from any of the figures in their paper...}
 
-We reproduced this example with \projectname~(Figure~\ref{fig:syphilis-layout}b) and included a number of additional constraints on the layout (Figure~\ref{fig:syphilis-spec}) apart from the separation constraints that are visible in the original image. In particular, we included a circle constraint on the group of young white women to more strongly enforce the result shown in the original figure and applied an alignment constraint on the two groups of young men. \todo{discussion of the statistics for the final layout.}
+We reproduced this example with
+\projectname~(Figure~\ref{fig:syphilis-layout}b) and included a number of
+additional constraints on the layout (Figure~\ref{fig:syphilis-spec}) apart
+from the separation constraints that are visible in the original image. In
+particular, we included a circle constraint on the group of young white
+women to more strongly enforce the result shown in the original figure and
+applied an alignment constraint on the two groups of young
+men. \todo{discussion of the statistics for the final layout.}
 
 \subsection{\orange{<<Fourth example>>}}
 \todo{Another example with more reusability / different layouts}

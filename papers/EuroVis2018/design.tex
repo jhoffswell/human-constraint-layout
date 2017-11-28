@@ -1,42 +1,112 @@
 %!TEX root = constraint-layout.tex
 \section{Design Considerations}
 
-\todo{maybe it would be helpful to lay out the main design considerations for the language. e.g. talk about existing graph layouts and requirements when selecting or designing layouts by hand that could motivate our choice of constraints. Or would it be fine to just have this in the design section when discussing the rationale?}
+\todo{maybe it would be helpful to lay out the main design considerations
+  for the language. e.g. talk about existing graph layouts and requirements
+  when selecting or designing layouts by hand that could motivate our
+  choice of constraints. Or would it be fine to just have this in the
+  design section when discussing the rationale?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{Design of \projectname}
-\projectname\ is a domain-specific language for the creation of highly customized graph layouts based on properties of the nodes. Users identify element sets from the graph and apply constraints to all elements in a given set. These sets can be hierarchically composed to create a flexible, nested layout. \projectname\ reduces specification effort and allows the user to focus on the graph layout in terms of high-level properties of the data rather on individual nodes. These layout specifications can also be easily reused across graphs for which the nodes have the same properties, which allows the user to apply a single layout design across multiple graphs in the same domain. In this section, we discuss the design of \projectname\ including the process for specifying sets and applying constraints.
+\projectname\ is a domain-specific language for the creation of highly
+customized graph layouts based on properties of the nodes. Users identify
+element sets from the graph and apply constraints to all elements in a
+given set. These sets can be hierarchically composed to create a flexible,
+nested layout. \projectname\ reduces specification effort and allows the
+user to focus on the graph layout in terms of high-level properties of the
+data rather on individual nodes. These layout specifications can also be
+easily reused across graphs for which the nodes have the same properties,
+which allows the user to apply a single layout design across multiple
+graphs in the same domain. In this section, we discuss the design of
+\projectname\ including the process for specifying sets and applying
+constraints.
 
 \smallTreeExample
 
-The main contribution of \projectname\ is the language for specifying high-level constraints. \projectname\ specifications are composed of four components: \emph{nodes}, \emph{links}, \emph{guides}, and \emph{collections}. An example \projectname\ specification is shown in Figure \ref{fig:small-tree-example}. Properties of the graph are included as properties of the nodes and links. The user can then define collections which are defined as a list of sets and a list of high-level constraints that apply to the elements in each set of the collection. Users identify \emph{sets} based on graph properties; sets can contain either graph nodes or previously defined collections. Guides are an optional component and may be used to define top-level layout boundaries (defined with an x and/or y position), which can be referred to in the constraint specification.
+The main contribution of \projectname\ is the language for specifying
+high-level constraints. \projectname\ specifications are composed of four
+components: \emph{nodes}, \emph{links}, \emph{guides}, and
+\emph{collections}. An example \projectname\ specification is shown in
+Figure \ref{fig:small-tree-example}. Properties of the graph are included
+as properties of the nodes and links. The user can then define collections
+which are defined as a list of sets and a list of high-level constraints
+that apply to the elements in each set of the collection. Users identify
+\emph{sets} based on graph properties; sets can contain either graph nodes
+or previously defined collections. Guides are an optional component and may
+be used to define top-level layout boundaries (defined with an x and/or y
+position), which can be referred to in the constraint specification.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Specifying Sets in \projectname}
-Each collection in \projectname\ is defined as a list of sets, where sets are lists of elements. The elements in a set can be either nodes or previously created sets, thus enabling a hierarchical composition of sets for more complex layouts. In this language, we support several strategies for specifying sets of nodes: \emph{partitioning}, \emph{expressions}, \orange{\emph{relations}}, and \emph{compositions}.
+Each collection in \projectname\ is defined as a list of sets, where sets
+are lists of elements. The elements in a set can be either nodes or
+previously created sets, thus enabling a hierarchical composition of sets
+for more complex layouts. In this language, we support several strategies
+for specifying sets of nodes: \emph{partitioning}, \emph{expressions},
+\orange{\emph{relations}}, and \emph{compositions}.
 
-\textbf{Partitioning.} Users can partition all graph nodes into sets by identify a property (\todo{Partition by multiple properties?}) of the nodes with which to group the nodes (see Figure \ref{fig:small-tree-example}, Line \texttt{17}). Nodes are then separated into disjoint sets based on the partition property. The user may also specify lists of values that identify which property values to \texttt{include} or \texttt{ignore} when performing the partition. These properties allow the user to create partitions where some nodes are excluded from the partition, and are therefore not placed in any of the partition sets.
+\textbf{Partitioning.} Users can partition all graph nodes into sets by
+identify a property (\todo{Partition by multiple properties?}) of the nodes
+with which to group the nodes (see Figure \ref{fig:small-tree-example},
+Line \texttt{17}). Nodes are then separated into disjoint sets based on the
+partition property. The user may also specify lists of values that identify
+which property values to \texttt{include} or \texttt{ignore} when
+performing the partition. These properties allow the user to create
+partitions where some nodes are excluded from the partition, and are
+therefore not placed in any of the partition sets.
 
-\textbf{Expressions.} For more flexibility in the definition of sets, users can specify a concrete lists of sets to compute using arbitrary boolean expressions. For each expression, each node is evaluated based on the user defined expression to determine if it is included in the set. The user may refer to properties of the node using dot syntax (e.g., \texttt{node.<property>}). Users may also optionally specify a \texttt{name} for the set, which may be used by the composition set specification. For this specification strategy, it is possible to create node sets that are not disjoint, and may thus produce unsatisfiable constraints. \todo{example figure}
+\textbf{Expressions.} For more flexibility in the definition of sets, users
+can specify a concrete lists of sets to compute using arbitrary boolean
+expressions. For each expression, each node is evaluated based on the user
+defined expression to determine if it is included in the set. The user may
+refer to properties of the node using dot syntax (e.g.,
+\texttt{node.<property>}). Users may also optionally specify a
+\texttt{name} for the set, which may be used by the composition set
+specification. For this specification strategy, it is possible to create
+node sets that are not disjoint, and may thus produce unsatisfiable
+constraints. \todo{example figure}
 
-\textbf{Relations.} For some sets, it may be useful to identify particular relationships between nodes, which can be specified as a relation. For each node, \todo{finish this section}
+\textbf{Relations.} For some sets, it may be useful to identify particular
+relationships between nodes, which can be specified as a relation. For each
+node, \todo{finish this section}
 
 \contradictionExample
 
-\textbf{Compositions.} Sets may also be formed through the hierarchical composition of collections. For example, in Figure \ref{fig:small-tree-example} we first create a collection of sets using partition on Line \texttt{17}, named ``layer.'' On Line \texttt{22} we create a new collection that contains the ``layer'' set. Line \texttt{28} and \texttt{32} of Figure \ref{fig:contradiction-example} show the same strategy, whereas Line \texttt{23} shows the shorthand composition for producing the collection containing one set. For compositions, the user may refer to any named entities previously defined in the specification (e.g., collections or named sets produced from \emph{expressions}).
+\textbf{Compositions.} Sets may also be formed through the hierarchical
+composition of collections. For example, in Figure
+\ref{fig:small-tree-example} we first create a collection of sets using
+partition on Line \texttt{17}, named ``layer.'' On Line \texttt{22} we
+create a new collection that contains the ``layer'' set. Line \texttt{28}
+and \texttt{32} of Figure \ref{fig:contradiction-example} show the same
+strategy, whereas Line \texttt{23} shows the shorthand composition for
+producing the collection containing one set. For compositions, the user may
+refer to any named entities previously defined in the specification (e.g.,
+collections or named sets produced from \emph{expressions}).
 
 \todo{``from'' property for set specification?}
 
-When a named set is defined, the set element promotes the properties that are equivalent for all elements in the set to a property of the set element. For example, in Figure \ref{fig:small-tree-example}, when the user defines a partition on the nodes based on the \texttt{depth} (Line \texttt{17}), then each set element is given a \texttt{depth} property with the value for that set. This property may now be referred to in other parts of the \projectname specification (e.g., Line \texttt{23}).
+When a named set is defined, the set element promotes the properties that
+are equivalent for all elements in the set to a property of the set
+element. For example, in Figure \ref{fig:small-tree-example}, when the user
+defines a partition on the nodes based on the \texttt{depth} (Line
+\texttt{17}), then each set element is given a \texttt{depth} property with
+the value for that set. This property may now be referred to in other parts
+of the \projectname specification (e.g., Line \texttt{23}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Applying Constraints in \projectname}
 \label{sec:constraints}
-Once a collection has been defined, users can apply layout constraints to each of the sets in the collection. We identify four different types of constraints that can be applied to set elements: \texttt{alignment}, \texttt{position}, \texttt{order}, \texttt{circle}, and \texttt{unit}. In the following sections, we describe the behavior and properties of each of these constraints.
+Once a collection has been defined, users can apply layout constraints to
+each of the sets in the collection. We identify four different types of
+constraints that can be applied to set elements: \texttt{alignment},
+\texttt{position}, \texttt{order}, \texttt{circle}, and \texttt{unit}. In
+the following sections, we describe the behavior and properties of each of
+these constraints.
 
 % design section: rationale for why these are the right constructs (sufficiently expressive)
 	% why are they user friendly?
@@ -44,41 +114,108 @@ Once a collection has been defined, users can apply layout constraints to each o
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Alignment Constraints}
-\constraint{\texttt{align} \emph{x} \texttt{axis}}
-Alignment constraints specify the alignment of elements along an axis (Figure \ref{fig:small-tree-example}, Line \texttt{18}). The constraint must include the \texttt{axis} (e.g., \texttt{x} or \texttt{y}) on which the elements should be aligned and may optionally include the \texttt{orientation} for the alignment, one of: \texttt{center}, \texttt{left}, \texttt{right}, \texttt{top}, or \texttt{bottom}. When applied to nodes, this constraint ensures that all the nodes are aligned along the \texttt{axis}. When applied to sets, this constraint produces an alignment based on the centroid or boundary of the set elements.
+\constraint{\texttt{align} \emph{x} \texttt{axis}} Alignment constraints
+specify the alignment of elements along an axis (Figure
+\ref{fig:small-tree-example}, Line \texttt{18}). The constraint must
+include the \texttt{axis} (e.g., \texttt{x} or \texttt{y}) on which the
+elements should be aligned and may optionally include the
+\texttt{orientation} for the alignment, one of: \texttt{center},
+\texttt{left}, \texttt{right}, \texttt{top}, or \texttt{bottom}. When
+applied to nodes, this constraint ensures that all the nodes are aligned
+along the \texttt{axis}. When applied to sets, this constraint produces an
+alignment based on the centroid or boundary of the set elements.
 
-\emph{Rationale.} Alignment is a common characteristic seen when producing graphs by hand \orange{citation} or utilizing particular layout strategies \orange{citation} and is therefore crucial to support in \projectname.
+\emph{Rationale.} Alignment is a common characteristic seen when producing
+graphs by hand \orange{citation} or utilizing particular layout strategies
+\orange{citation} and is therefore crucial to support in \projectname.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Position Constraints}
-\constraint{\texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
-Position constraints specify rules for the layout of nodes relative to globally identified elements (\orange{figure}). The constraint must identify a global element (e.g., a guide) to position the set elements relative to and an orientation for the position (e.g., \texttt{left}, \texttt{right}, \texttt{above}, or \texttt{below}). The user may optionally provide a \texttt{gap} for how far apart the elements should be from the position element.
+\constraint{\texttt{position} \emph{right} \texttt{of}
+  \emph{``top\_guide''}} Position constraints specify rules for the layout
+of nodes relative to globally identified elements (\orange{figure}). The
+constraint must identify a global element (e.g., a guide) to position the
+set elements relative to and an orientation for the position (e.g.,
+\texttt{left}, \texttt{right}, \texttt{above}, or \texttt{below}). The user
+may optionally provide a \texttt{gap} for how far apart the elements should
+be from the position element.
 
-\emph{Rationale.} Position constraints allow the user to provide overarching constraints relative to global elements such as guides. These can be used to constrain the overall size of the graph or to section off different areas. \todo{citations}
+\emph{Rationale.} Position constraints allow the user to provide
+overarching constraints relative to global elements such as guides. These
+can be used to constrain the overall size of the graph or to section off
+different areas. \todo{citations}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Order Constraints}
-\constraint{\texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
-Order constraints enforce a sort order on the set elements (Figure \ref{fig:small-tree-example}, Line \texttt{23}). The constraint must include the \texttt{axis} (e.g., \texttt{x} or \texttt{y}) on which the elements should be ordered. The constraint must also specify the node property \texttt{by} which the order is determined. The user can optionally define an explicit list of values for a custom \texttt{order}. The user may also optionally include a boolean of whether or not to \texttt{reverse} the order. Users may finally specify an optional \texttt{band} property for the constraint that determines a size for each set region; without the \texttt{band} property, the first and last elements in the order are free to move on either end, whereas the \texttt{band} enforces them to fit within the same sized space as the intermediate elements.
+\constraint{\texttt{order} \emph{y} \texttt{axis} \texttt{by}
+  \emph{``depth''}} Order constraints enforce a sort order on the set
+elements (Figure \ref{fig:small-tree-example}, Line \texttt{23}). The
+constraint must include the \texttt{axis} (e.g., \texttt{x} or \texttt{y})
+on which the elements should be ordered. The constraint must also specify
+the node property \texttt{by} which the order is determined. The user can
+optionally define an explicit list of values for a custom
+\texttt{order}. The user may also optionally include a boolean of whether
+or not to \texttt{reverse} the order. Users may finally specify an optional
+\texttt{band} property for the constraint that determines a size for each
+set region; without the \texttt{band} property, the first and last elements
+in the order are free to move on either end, whereas the \texttt{band}
+enforces them to fit within the same sized space as the intermediate
+elements.
 
-\emph{Rationale.} Unlike position constraints, order constraints allow the user to specify relationships between different sets of nodes to specify the overall node layout. These relationships are particular useful for sorting and hierarchical layouts on the different sets of nodes. 
+\emph{Rationale.} Unlike position constraints, order constraints allow the
+user to specify relationships between different sets of nodes to specify
+the overall node layout. These relationships are particular useful for
+sorting and hierarchical layouts on the different sets of nodes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Circle Constraints}
-\constraint{\texttt{circle} \texttt{around} \emph{``center''}}
-Circle constraints allow the user to specify a ring layout for a set of elements. The constraint must include which element the set elements should be positioned around or may specify ``center'' for a generic center point to be used.
+\constraint{\texttt{circle} \texttt{around} \emph{``center''}} Circle
+constraints allow the user to specify a ring layout for a set of
+elements. The constraint must include which element the set elements should
+be positioned around or may specify ``center'' for a generic center point
+to be used.
 
-\emph{Rationale.} Circular structures are a common layout requirement of existing strategies \orange{citation} and can be crucial for relating properties of the underlying structure.
+\emph{Rationale.} Circular structures are a common layout requirement of
+existing strategies \orange{citation} and can be crucial for relating
+properties of the underlying structure.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Unit Constraints}
-\constraint{\texttt{unit}}
-Unit constraints specify additional layout properties for elements in the set. The user may optionally specify a boolean \texttt{enclose} that prevents the set elements from overlapping with other sets (\orange{figure}). The user may optionally specify an \texttt{attract} property as either \texttt{center}, \texttt{left}, \texttt{right}, \texttt{top}, or \texttt{bottom} that causes the nodes to be drawn to the specified area of the set (\orange{figure}). An optional \texttt{padding} property determines the minimum amount of spacing that should exist between elements in the unit and finally an optional \texttt{spacing} property determines whether the spacing is either \texttt{free} or \texttt{fixed}.
+\constraint{\texttt{unit}} Unit constraints specify additional layout
+properties for elements in the set. The user may optionally specify a
+boolean \texttt{enclose} that prevents the set elements from overlapping
+with other sets (\orange{figure}). The user may optionally specify an
+\texttt{attract} property as either \texttt{center}, \texttt{left},
+\texttt{right}, \texttt{top}, or \texttt{bottom} that causes the nodes to
+be drawn to the specified area of the set (\orange{figure}). An optional
+\texttt{padding} property determines the minimum amount of spacing that
+should exist between elements in the unit and finally an optional
+\texttt{spacing} property determines whether the spacing is either
+\texttt{free} or \texttt{fixed}.
 
-\emph{Rationale.} The unit constraint allows the user to enforce more control on how the nodes within a set behave outside of the general layout constraints specified earlier. These constraints allow the user to apply more nuanced behaviors between the nodes.
+\emph{Rationale.} The unit constraint allows the user to enforce more
+control on how the nodes within a set behave outside of the general layout
+constraints specified earlier. These constraints allow the user to apply
+more nuanced behaviors between the nodes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Unsatisfiable Constraints in \projectname}
-For a \projectname\ specification, it is possible to create node sets that are \emph{not} disjoint and may thus be easily susceptible to the specification of unsatisfiable constraints. Furthermore, through various combinations of set specifications and constraint applications, it is possible for the user to specify unsatisfiable constraints in the \projectname\ layout. An example of a layout with unsatisfiable constraints is shown in Figure \ref{fig:contradiction-example}. This layout completes two partitions of the nodes (once by \texttt{level} and once by \texttt{rank}); these collections lifted and an order constraint is applied to enforce a hierarchy between the sets. However, due to the properties of the nodes, the node with \texttt{rank 10} and \texttt{level 3} faces a contradiction in the layout. Figure \ref{fig:contradiction-example}c shows the error on the nodes that have constraints unsatisfied by the layout (where darker means more error).
+For a \projectname\ specification, it is possible to create node sets that
+are \emph{not} disjoint and may thus be easily susceptible to the
+specification of unsatisfiable constraints. Furthermore, through various
+combinations of set specifications and constraint applications, it is
+possible for the user to specify unsatisfiable constraints in the
+\projectname\ layout. An example of a layout with unsatisfiable constraints
+is shown in Figure \ref{fig:contradiction-example}. This layout completes
+two partitions of the nodes (once by \texttt{level} and once by
+\texttt{rank}); these collections lifted and an order constraint is applied
+to enforce a hierarchy between the sets. However, due to the properties of
+the nodes, the node with \texttt{rank 10} and \texttt{level 3} faces a
+contradiction in the layout. Figure \ref{fig:contradiction-example}c shows
+the error on the nodes that have constraints unsatisfied by the layout
+(where darker means more error).
 
-\todo{Does it make sense to talk about this here, or should we provide this as an example that we talk about later? Or should we talk about it more generally without an example and discuss why this is allowed?}\\ \\ \\ \\ \\ \\ \\ % Line breaks because latex is mad for some reason
+\todo{Does it make sense to talk about this here, or should we provide this
+  as an example that we talk about later? Or should we talk about it more
+  generally without an example and discuss why this is
+  allowed?}\\ \\ \\ \\ \\ \\ \\ % Line breaks because latex is mad for some reason

@@ -3,25 +3,71 @@
 
 % constraints not satisfied and debugging and not have constraints respected by underlying solver
 
-\todo{3. Talk about the need to pre-clean and post-edit the graphs. In particular, discuss the fact that this process is assuming that the graphs contain all the information we need as attributes. As such, we can defer some of the complexity that might come out of more complex selection techniques. Also discuss that we added some additional labeling to them in order to create the final 'figure'. But we did \emph{not} edit the layout.}
+\todo{3. Talk about the need to pre-clean and post-edit the graphs. In
+  particular, discuss the fact that this process is assuming that the
+  graphs contain all the information we need as attributes. As such, we can
+  defer some of the complexity that might come out of more complex
+  selection techniques. Also discuss that we added some additional labeling
+  to them in order to create the final 'figure'. But we did \emph{not} edit
+  the layout.}
 
-\todo{4. Talk about decision to allow nodes to occur in multiple sets in the creation process (which may result in the user specifying constraints that lead to contradictions.)}
+\todo{4. Talk about decision to allow nodes to occur in multiple sets in
+  the creation process (which may result in the user specifying constraints
+  that lead to contradictions.)}
 
 % wrangler/polestar/lyra strategies for specifying constraints
 % dsl leveraged as useful interface for processing logic
 
 \subsection{Limitations of WebCoLa as the Constraint Solver}
 
-% remember to be generous with WebCoLa when discussing limitations; using a system like this makes it easier to uncover bugs or identify surprising/unsual behavior in the underlying system.
+% remember to be generous with WebCoLa when discussing limitations; using a
+% system like this makes it easier to uncover bugs or identify
+% surprising/unsual behavior in the underlying system.
 
-% what happens to the setCoLa specification when it is NOT on top of another system? (e.g. this is applying constraints on top of a number of other parameters of the underlying layout solver, so what is it's role alone?)
+% what happens to the setCoLa specification when it is NOT on top of
+% another system? (e.g. this is applying constraints on top of a number of
+% other parameters of the underlying layout solver, so what is it's role
+% alone?)
 
-% configuration option for the underlying behavior? e.g. stress minimization, edge-length optimization, etc.
+% configuration option for the underlying behavior? e.g. stress
+% minimization, edge-length optimization, etc.
 
-Our implementation with WebCoLa allows us to demonstrate the utility of \projectname~for creating customized, generalizable layouts. However, our implementation was constrained by what WebCoLa currently supports. For example, we were unable to express \projectname's circle constraints in WebCoLa as it does not currently include such a constraint type, though it has been identified in the wiki as an area of future work \orange{citation?}. This work contributes new strategies for the specification of graph layout constraints, but does not aim to create a highly optimized constraint solver for the language; Future work should explore the design of a constraint solver optimized for \projectname~and should look at how new or existing algorithms might co-evolve alongside the high-level language.
+Our implementation with WebCoLa allows us to demonstrate the utility of
+\projectname~for creating customized, generalizable layouts. However, our
+implementation was constrained by what WebCoLa currently supports. For
+example, we were unable to express \projectname's circle constraints in
+WebCoLa as it does not currently include such a constraint type, though it
+has been identified in the wiki as an area of future work
+\orange{citation?}. This work contributes new strategies for the
+specification of graph layout constraints, but does not aim to create a
+highly optimized constraint solver for the language; Future work should
+explore the design of a constraint solver optimized for \projectname~and
+should look at how new or existing algorithms might co-evolve alongside the
+high-level language.
 
-\todo{Talk about fact that circle constraint is not particularly well defined in our implementation, but approximates the layout in webcola as an example. or just exclude it from the implementation as something we cannot express?}
+\todo{Talk about fact that circle constraint is not particularly well
+  defined in our implementation, but approximates the layout in webcola as
+  an example. or just exclude it from the implementation as something we
+  cannot express?}
 
-We also encountered some behavioral mismatches between the implementation of WebCoLa and our expectations for the graph layout. For example, WebCoLa utilizes a default link length for the layout which attempts to optimize node positions to produce links as close to the desired link length as possible. This technique is a common strategy for force-directed layouts \orange{citation} and helps to highlight the underlying structure of the graph. For example, in the syphilis social network (Figure~\ref{fig:syphilis-layout}b), since more links exist between the young women and the african american men, the circle is drawn slightly off center between the groups, which emphasizes the strength of these connections. However, some layouts require node positioning that should be independent of the graph structure. Revisting the syphilis social network (Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group are drawn to the lower position allowed by the boundary guide in an attempt to shorten the link length, thus producing an alignment unspecified in the layout. \todo{include additional conclusions about this limitation, or discuss our results further?}
+We also encountered some behavioral mismatches between the implementation
+of WebCoLa and our expectations for the graph layout. For example, WebCoLa
+utilizes a default link length for the layout which attempts to optimize
+node positions to produce links as close to the desired link length as
+possible. This technique is a common strategy for force-directed layouts
+\orange{citation} and helps to highlight the underlying structure of the
+graph. For example, in the syphilis social network
+(Figure~\ref{fig:syphilis-layout}b), since more links exist between the
+young women and the african american men, the circle is drawn slightly off
+center between the groups, which emphasizes the strength of these
+connections. However, some layouts require node positioning that should be
+independent of the graph structure. Revisting the syphilis social network
+(Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
+are drawn to the lower position allowed by the boundary guide in an attempt
+to shorten the link length, thus producing an alignment unspecified in the
+layout. \todo{include additional conclusions about this limitation, or
+  discuss our results further?}
 
-\todo{Talk about non-overlap problem for node layout (e.g., it is applied at the start of the layout and it can make it hard for nodes to follow the layout as they cannot pass over each other)}
+\todo{Talk about non-overlap problem for node layout (e.g., it is applied
+  at the start of the layout and it can make it hard for nodes to follow
+  the layout as they cannot pass over each other)}

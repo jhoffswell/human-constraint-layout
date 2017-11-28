@@ -1,11 +1,68 @@
 %!TEX root = constraint-layout.tex
 \section{Introduction}
-Graph visualizations can effectively represent properties of the underlying data structure, such as the hierarchy or connectedness of the data within the graph layout. Such visualizations are common across domains including ecological networks \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher}, biological systems \cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph}, and social networks \cite{rothenberg1998using} \orange{[additional citations]}, among many others. The graph layout may utilize domain-specific details in order to emphasize relevant trends in the data. In an ecological network for example, nodes could be split by trophic level (e.g., its positition in the food chain) to highlight the hierarchy of producer/consumer relationships (Figure~\ref{fig:serengeti-layout}). This visualization shows a customized layout: a unique layout that leverages knowledge of the data domain for node placement and understanding of the graph structure.
+Graph visualizations can effectively represent properties of the underlying
+data structure, such as the hierarchy or connectedness of the data within
+the graph layout. Such visualizations are common across domains including
+ecological networks
+\cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher},
+biological systems
+\cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph},
+and social networks \cite{rothenberg1998using} \orange{[additional
+    citations]}, among many others. The graph layout may utilize
+domain-specific details in order to emphasize relevant trends in the
+data. In an ecological network for example, nodes could be split by trophic
+level (e.g., its positition in the food chain) to highlight the hierarchy
+of producer/consumer relationships
+(Figure~\ref{fig:serengeti-layout}). This visualization shows a customized
+layout: a unique layout that leverages knowledge of the data domain for
+node placement and understanding of the graph structure.
 
-Many domain-specific layout techniques have been developed to address particular graphing needs for customized layouts \cite{barsky2008cerebral,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These techniques leverage common structural details that are significant to the domain, such as known data hierarchies including trophic level (Figure~\ref{fig:serengeti-layout}) or cellular structure (Figure~\ref{fig:tlr4-layout}), as a guiding property of the layout. However, these techniques rarely generalize beyond the domain for which they were designed. There thus exists a mismatch between domains where customized layouts would be useful and the availability of tools to support those domains. When a layout technique does not exist for the domain or task of interest, users are required to either fit their data available techniques or create a new algorithm of their own. Creating a customized layout algorithm can be challenging and often requires both domain and programming expertise; many
-\serengetiLayoutColumn
-\\domain experts may lack the skills to create custom layouts themselves, thus forcing them to invest large amounts of time into learning the necessary skills or creating a layout by hand. This barrier introduces a gap between the analysis needs of some domains and the availability of techniques to handle those needs.
+Many domain-specific layout techniques have been developed to address
+particular graphing needs for customized layouts
+\cite{barsky2008cerebral,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
+techniques leverage common structural details that are significant to the
+domain, such as known data hierarchies including trophic level
+(Figure~\ref{fig:serengeti-layout}) or cellular structure
+(Figure~\ref{fig:tlr4-layout}), as a guiding property of the
+layout. However, these techniques rarely generalize beyond the domain for
+which they were designed. There thus exists a mismatch between domains
+where customized layouts would be useful and the availability of tools to
+support those domains. When a layout technique does not exist for the
+domain or task of interest, users are required to either fit their data
+available techniques or create a new algorithm of their own. Creating a
+customized layout algorithm can be challenging and often requires both
+domain and programming expertise; many \serengetiLayoutColumn \\domain
+experts may lack the skills to create custom layouts themselves, thus
+forcing them to invest large amounts of time into learning the necessary
+skills or creating a layout by hand. This barrier introduces a gap between
+the analysis needs of some domains and the availability of techniques to
+handle those needs.
 
-Constraints are a natural way to identify the desired properties for a customized layout as the designer can think about how domain-specific properties drive the positions of nodes. However, many existing tehcniques for constraint layout require the user to identify inter-node constraints over \emph{pairs} of nodes in the graph. This process can be highly labor intensive, requiring thousands of constraints or careful identification of which nodes should be constrained. Furthermore, these constraints often refer to low-level node properties (such as the node index) and thus introduce a disconnect between the constraint specification and the domain-specific details that drive the specification decision.
+Constraints are a natural way to identify the desired properties for a
+customized layout as the designer can think about how domain-specific
+properties drive the positions of nodes. However, many existing tehcniques
+for constraint layout require the user to identify inter-node constraints
+over \emph{pairs} of nodes in the graph. This process can be highly labor
+intensive, requiring thousands of constraints or careful identification of
+which nodes should be constrained. Furthermore, these constraints often
+refer to low-level node properties (such as the node index) and thus
+introduce a disconnect between the constraint specification and the
+domain-specific details that drive the specification decision.
 
-To enable the design of customized domain-specific layouts with minimal programming effort, we present \projectname: a domain specific language for specifying high-level constraints for graph layout. Users partition nodes into sets based on node or graph properties and apply layout constraints within or between these sets. This approach allows users to specify layout requirements at a high-level, while deferring the computation of the node-level constraints to the underlying system. These constraint specifications reduce programming effort while still enabling highly customized and generalizable graph layouts. We demonstrate the utility of this technique with an implementation of our constraint language that compiles our high-level constraints into inter-node constraints for WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint based graph layout. To demonstrate the ease and extensibility of our language, we recreate a number of customized layouts with our WebCoLa implementation. We show that users can compactly specify complex graph layouts that resemble those produced by customized layout engines and can reapply layout specifications across different graphs.
+To enable the design of customized domain-specific layouts with minimal
+programming effort, we present \projectname: a domain specific language for
+specifying high-level constraints for graph layout. Users partition nodes
+into sets based on node or graph properties and apply layout constraints
+within or between these sets. This approach allows users to specify layout
+requirements at a high-level, while deferring the computation of the
+node-level constraints to the underlying system. These constraint
+specifications reduce programming effort while still enabling highly
+customized and generalizable graph layouts. We demonstrate the utility of
+this technique with an implementation of our constraint language that
+compiles our high-level constraints into inter-node constraints for
+WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint based graph
+layout. To demonstrate the ease and extensibility of our language, we
+recreate a number of customized layouts with our WebCoLa implementation. We
+show that users can compactly specify complex graph layouts that resemble
+those produced by customized layout engines and can reapply layout
+specifications across different graphs.
