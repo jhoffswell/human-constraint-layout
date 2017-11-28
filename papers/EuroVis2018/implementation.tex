@@ -11,16 +11,21 @@ constraint generation process for producing WebCoLa constraints.
 \todo{Describe the constraint generation procedure for within and between
   sets as well as the number of constraints that each one generates.}
 
-In addition to applying constraints relative to domain-specific properties,
-it may be important to identify properties of the graph structure. For this
+In addition to defining constraints that specify properties arising from
+the domain, it may be important also to define constraints that specify
+properties of the visual appearance of the graph. In our
 implementation, we support a number of built-in properties for the nodes
 which are automatically computed and added to the graph specification when
 used in the \projectname~constraints, prior to computing the WebCoLa
 constraints. These properties are only computed if such a property does not
 already exist on the nodes and are subject to a number of expectations
 regarding the graph input; for graphs that do not meet these expectations,
-the user is shown a warning and required to compute the properties
+users are shown a warning and required to compute the properties
 themselves.
+
+\todo{check rewording of first sentence - was ``In addition to applying
+  constraints relative to domain-specific properties, it may be important
+  to identify properties of the graph structure.''}
 
 \begin{description}
 \item[\texttt{\_id}] The node index in the graph specification. This

@@ -3,8 +3,10 @@
 	
 Constraints enable flexible graph layouts that combine the ease of
 automatic layouts with designs customized to the particular
-domain. However, constraint-based layouts often require individual
-constraints over node pairs. Such constraints are specific to the
+domain. However, constraint-based layouts often require many individual
+constraints over nodes and node pairs.  In addition to the effort of
+writing and maintaining a large number of similar constraints, these
+constraints are specific to the
 particular graph and thus cannot generalize to other graphs in the same
 domain. To facilitate the specification of customized and generalizable
 constraint layouts, we contribute \projectname: a domain-specific language
@@ -19,7 +21,12 @@ generalizability, and expressiveness of \projectname~on a series of
 real-world examples from ecological networks, biological systems, and
 social networks.
 
-  \begin{classification}
+\todo{Jane: please check the above rewording.
+  WAS: However, constraint-based layouts often require individual
+  constraints over node pairs. Such constraints are specific to the ....}
+
+
+\begin{classification}
   \CCScat{Human-centered computing}{}{Visualization}{Graph drawings}
   \end{classification}
 }

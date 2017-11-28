@@ -40,7 +40,7 @@ handle those needs.
 
 Constraints are a natural way to identify the desired properties for a
 customized layout as the designer can think about how domain-specific
-properties drive the positions of nodes. However, many existing tehcniques
+properties drive the positions of nodes. However, many existing techniques
 for constraint layout require the user to identify inter-node constraints
 over \emph{pairs} of nodes in the graph. This process can be highly labor
 intensive, requiring thousands of constraints or careful identification of
@@ -48,6 +48,9 @@ which nodes should be constrained. Furthermore, these constraints often
 refer to low-level node properties (such as the node index) and thus
 introduce a disconnect between the constraint specification and the
 domain-specific details that drive the specification decision.
+
+\todo{from Alan: is it worth noting that the user may also have to add lots of
+  constraints on individual nodes?}
 
 To enable the design of customized domain-specific layouts with minimal
 programming effort, we present \projectname: a domain specific language for

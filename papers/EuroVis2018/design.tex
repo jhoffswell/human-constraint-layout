@@ -38,6 +38,9 @@ or previously defined collections. Guides are an optional component and may
 be used to define top-level layout boundaries (defined with an x and/or y
 position), which can be referred to in the constraint specification.
 
+\todo{from Alan: what is the difference between a collection and a set? If
+  none or not much, should we just use one term (maybe set)?}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Specifying Sets in \projectname}
@@ -94,7 +97,7 @@ element. For example, in Figure \ref{fig:small-tree-example}, when the user
 defines a partition on the nodes based on the \texttt{depth} (Line
 \texttt{17}), then each set element is given a \texttt{depth} property with
 the value for that set. This property may now be referred to in other parts
-of the \projectname specification (e.g., Line \texttt{23}).
+of the \projectname\ specification (e.g., Line \texttt{23}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -192,6 +195,10 @@ be drawn to the specified area of the set (\orange{figure}). An optional
 should exist between elements in the unit and finally an optional
 \texttt{spacing} property determines whether the spacing is either
 \texttt{free} or \texttt{fixed}.
+
+\todo{from Alan: ``attract'' to me connotes a soft constraint. But are
+  these constraints actually required? If so, maybe call it ``alignment''
+  or something else?}
 
 \emph{Rationale.} The unit constraint allows the user to enforce more
 control on how the nodes within a set behave outside of the general layout

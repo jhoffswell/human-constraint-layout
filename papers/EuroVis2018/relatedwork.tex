@@ -15,7 +15,7 @@ that provides a number of built in layouts for graph data including
 force-directed and hierarchical layouts. WebCoLa~\cite{WebCoLa} is a
 JavaScript library for constraint-based layout that can be used alongside
 D3 or Cytoscape~\cite{shannon2003cytoscape}. These techniques emphasize
-certain structural properties, but are agnostic to the graph domain. While
+certain structural properties, but are agnostic as to the domain. While
 WebCoLa can support some customized constraints in addition to more general
 structure constraints, the specification of individual inter-node
 constraints can be labor-intensive and require additional programming
@@ -49,12 +49,13 @@ visualizing food webs~\cite{kearney2016blog}, Kearney notes that the node
 placement algorithm should \emph{``allow contraining y-position to match
   trophic level while allowing free movement in the x-direction. With no
   such algorithm seemingly readily available, I decided to create my
-  own.''} Kearney has developed D3~\cite{kearney2017d3} and
-Ecopath~\cite{kearney2017ecopath} plugins to aid in the visualization of
-food webs. Baskerville et al. \cite{baskerville2011spatial} visualized the
-Serengeti food web and included an interactive graph
-\cite{baskerville2011interactive} created with D3 that approximates the
-layout shown in their paper. Motivated by this related work and the
+  own.''} Kearney has developed plugins for D3~\cite{kearney2017d3} and
+Ecopath~\cite{kearney2017ecopath} to aid in the visualization of
+food webs. Baskerville et al. visualized the Serengeti food web
+\cite{baskerville2011spatial}; in addition to the static visualization
+presented in the paper, they developed an interactive graph
+\cite{baskerville2011interactive} created with D3 that approximates this
+static version.  Motivated by this related work and the
 challenges Kearney describes, our constraint language aims to provide users
 with a lightweight strategy for identifying domain specific constraints.
 
