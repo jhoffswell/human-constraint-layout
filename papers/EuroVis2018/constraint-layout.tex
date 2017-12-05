@@ -45,6 +45,7 @@
 
 \usepackage{egweblnk}
 \usepackage{cite}
+\usepackage{xspace}
 
 % For backwards compatibility to old LaTeX type font selection.
 % Uncomment if your document adheres to LaTeX2e recommendations.
@@ -90,7 +91,7 @@
 %-------------------------------------------------------------------------
 \input{note-commands.tex}
 
-\newcommand{\projectname}{\green{Seltzer}}
+\newcommand{\projectname}{\green{Seltzer}\xspace}
 \newcommand{\constraint}[1]{
 	\vspace{-13px}
 	\begin{flushright}
@@ -98,6 +99,8 @@
 	\gray{#1}
 	\end{flushright}
 }
+
+\newcommand{\jheer}[1]{\textbf{JH: #1}}
 
 \input{figures.tex}
 \hyphenpenalty=100000

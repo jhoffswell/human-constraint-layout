@@ -5,35 +5,37 @@ discuss general layout techniques that motivate this work and expand on the
 discussion of domain specific layouts.
 
 \subsection{General Graph Layout}
-Graph visualization has been a long-standing area of research and there are
-several common layout techniques for visualizing graph data including tree
-layouts or force-directed layouts
+Graph visualization is a long-standing area of research. There are
+several common layout techniques for network data, including tree
+layouts, Sugiyama-style layouts, and force-directed layouts
 \cite{herman2000graph,eades2010graph}. Graphviz~\cite{ellson2001graphviz}
-and Gephi~\cite{bastian2009gephi} are two examples of visualization engines
-specific to graph layout. D3.js~\cite{bostock:d3} is a JavaScript library
-that provides a number of built in layouts for graph data including
+and Gephi~\cite{bastian2009gephi} are two examples of visualization tools
+focused on graph layout. D3.js~\cite{bostock:d3} is a JavaScript library
+that provides a number of layouts for graph data including
 force-directed and hierarchical layouts. WebCoLa~\cite{WebCoLa} is a
 JavaScript library for constraint-based layout that can be used alongside
-D3 or Cytoscape~\cite{shannon2003cytoscape}. These techniques emphasize
-certain structural properties, but are agnostic as to the domain. While
+D3 or Cytoscape~\cite{shannon2003cytoscape}. These techniques \jheer{which techniques?} emphasize
+certain structural properties \jheer{such as?}, but are agnostic as to the domain \jheer{What do you mean by ``domain''?}. While
 WebCoLa can support some customized constraints in addition to more general
 structure constraints, the specification of individual inter-node
 constraints can be labor-intensive and require additional programming
 expertise. Our language aims to reduce the burden of specifying constraints
 to produce generalizable layouts.
 
+\jheer{The prose here feels more *tool* focused (e.g., Graphviz, D3, Cytoscape) then *technique* focused (e.g., different layout approaches). I think you should take a step back and think about the big picture here. What are the common automatic (non-constrained based) approaches to node-link diagram layout? What structural features does each show? What are their limitations? Then go on to discuss contrained and/or customized layouts and their value for domain-specific graph layout. The DiG-CoLa paper does a nice job of this, contrasting force-directed and Sugiyama approaches, and showing how DiG-CoLa in some ways enables hybrids of the two. Also, right now the critical discussion of constrained layouts -- their main concepts, strengths, and weaknesses -- is missing.}
+
 In addition to these standard layout techniques, there is a large field of
 related work surrounding graph layout techniques that emphasize particular
 aesthetic or structural properties in the graph. \textsc{hola}
-\cite{kieffer2016hola} presents a layout engine to produce layouts similar
-to those produced by hand by identifying common aesthetic properties of the
-graph used in manual layouts and using the results to drive the design of a
-new layout algorithm. Kieffer et al.~\cite{kieffer2013incremental} present
+\cite{kieffer2016hola} produces orthogonal layouts similar
+to those produced by hand, informed by common aesthetic properties used in manual layouts. Kieffer et al.~\cite{kieffer2013incremental} present
 a constraint-based layout for creating graphs with node and edge alignment,
 and demonstrate the feasibility of such a technique in an interactive
-system, Dunnart \cite{dwyer2008dunnart}. These customized layouts reflect
+system, Dunnart \cite{dwyer2008dunnart}.
+\jheer{Weird that a 2013 paper has its feasiblity demonstrated by a 2008 paper...}
+These customized layouts reflect
 general properties of the graph rather than domain specific details from
-the data itself. Our work focuses on providing a general language for
+the data itself. \jheer{Previous sentence a bit confusing. What domain-specific ``details'' or ``properties''? Perhaps a better description would help.} Our work focuses on providing a general language for
 supporting customized graph layouts based on domain specific data
 properties with minimal programming expertise.
 

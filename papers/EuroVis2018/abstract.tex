@@ -1,21 +1,20 @@
 %!TEX root = constraint-layout.tex
 \newcommand{\paperabstract}{
-Constraints enable flexible graph layouts that combine the ease of
-automatic layouts with designs customized to the particular
-domain. However, constraint-based layouts often require many individual
-constraints over nodes and node pairs. In addition to the effort of
-writing and maintaining a large number of similar constraints, these
-constraints are specific to the
+Constraints enable flexible graph layout by combining the ease of
+automatic layout with customizations for a particular domain.
+However, constraint-based layout often requires many individual
+constraints defined over specific nodes and node pairs.
+In addition to the effort of writing and maintaining a large number
+of similar constraints, such constraints are specific to the
 particular graph and thus cannot generalize to other graphs in the same
 domain. To facilitate the specification of customized and generalizable
 constraint layouts, we contribute \projectname: a domain-specific language
 for specifying high-level constraints relative to properties of the backing
 data. Users identify node sets based on data or graph properties and apply
 high-level constraints within each set. Applying constraints to
-node sets rather than on individual nodes reduces specification
-effort. \projectname~also facilitates reapplication of customized layouts
-across distinct graphs by separating the constraint specification from
-individual properties of the nodes. We demonstrate the conciseness,
+node sets rather than individual nodes reduces specification
+effort and facilitates reapplication of customized layouts
+across distinct graphs. We demonstrate the conciseness,
 generalizability, and expressiveness of \projectname~on a series of
 real-world examples from ecological networks, biological systems, and
 social networks.
