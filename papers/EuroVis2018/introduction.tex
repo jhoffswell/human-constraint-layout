@@ -6,24 +6,30 @@ network structure, such as hierarchy or connectedness. Such visualizations are c
 \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher,kruger2017},
 biological systems
 \cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph},
-and social networks \cite{rothenberg1998using} \orange{[additional
-    citations]}, among many others. A graph layout may utilize
+and social networks
+\cite{scott1988social,travers1967small,granovetter1973strength,watts1998collective,freeman1978centrality,rothenberg1998using}, 
+among many others. A graph layout may utilize
 domain-specific details in order to emphasize relevant patterns in the
-data. In an ecological network for example, nodes could be split by trophic
-level (e.g., its positition in the food chain) to highlight the hierarchy
-of producer/consumer relationships
-(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
-layout: a unique layout that leverages knowledge of the data domain for
-node placement and understanding of the graph structure.
+data. 
+%In an ecological network for example, nodes could be split by trophic
+%level (e.g., its positition in the food chain) to highlight the hierarchy
+%of producer/consumer relationships
+%(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
+%layout: a unique layout that leverages knowledge of the data domain for
+%node placement and understanding of the graph structure.
+In a biological pathway for example, nodes could be layered by their 
+subcellular location to provide an overview of the cellular structure
+(Figure~\ref{fig:tlr4-layout}). The additional ``downstream genes'' layer
+can further show the outcomes of this network clustered by molecular function.
 
-\krugerLayout
+\tlrfourLayout
 
 Many domain-specific layout techniques address particular needs
 for customized layouts~\cite{barsky2008cerebral,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
 techniques leverage common structural details that are significant to the
-domain, such as known data hierarchies including trophic level
-(Figure~\ref{fig:kruger-layout}, \ref{fig:serengeti-layout}) or cellular 
-structure (Figure~\ref{fig:tlr4-layout}), as a guiding property of the
+domain, such as known data hierarchies including cellular 
+structure (Figure~\ref{fig:tlr4-layout}) or trophic level
+(Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
 which they were designed. There thus exists a mismatch between domains
 where customized layouts would be useful and the availability of tools to
@@ -32,12 +38,8 @@ domain of interest, users are required to either fit their data
 to available techniques or devise a new algorithm. Creating a
 customized layout algorithm can be challenging and often requires both
 domain and programming expertise.
-% many domain
-% experts may lack the skills to create custom layouts themselves, thus
-% forcing them to invest large amounts of time into learning the necessary
-% skills or creating a layout by hand.
-This barrier introduces a gap between
-the analysis needs of some domains and the availability of techniques to
+This barrier introduces a gap between the 
+analysis needs of some domains and the availability of techniques to
 handle those needs.
 
 Constraints are a natural way to identify the desired properties for a
@@ -60,10 +62,10 @@ node-level constraints to the underlying runtime system. These constraint
 specifications reduce programming effort while still enabling highly
 customized and generalizable graph layouts.
 
-We demonstrate the utility of \projectname with an implementation that 
-compiles high-level constraints into inter-node constraints for
+We implemented \projectname in 
 WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint based graph
-layout. To demonstrate the \jheer{ease and extensibility (??)} of our language, we
+layout, by compiling the \projectname constraints into inter-node WebCoLa constraints.
+To demonstrate the generalizability of our language, we
 recreate a number of customized layouts found in the scientific research 
 literature. We
 show that users can compactly specify complex graph layouts that resemble
