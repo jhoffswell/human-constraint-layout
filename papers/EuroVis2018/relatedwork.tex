@@ -88,10 +88,18 @@ support within existing tools. Our work aims to reduce the barrier to
 creating customized graph layouts by providing a compact way to specify domain
 specific layouts that leverage expert knowledge.
 
-For social networks, many visualizations leverage the force-directed layouts
+For social networks, many visualizations leverage force-directed layouts
 to demonstrate the connectedness or clustering of the nodes. However, some
-visualizations may introduce properties to the layout to show ethnographic
-groupings \cite{rothenberg1998using} or the time of 
+visualizations may introduce additional separation or grouping to the layout
+to highlight other properties such as ethnographic groupings \cite{rothenberg1998using},
+the timeline of disease exposure \cite{fitzpatrick2001preventable,mcelroy2003network},
+or differences in the types of relationships reported \cite{fu2011hiv}.
+
+For each of these domains, the visualizations are created using specially
+designed tools or layout algorithms to leverage properties of the data
+specific to the domain. \projectname aims to support the design of such
+customized layouts concisely and enable reuse of the layout across different
+data sets in the domain.
 
 % alan's casssowary
 % other strategies for writing constriants (constraint based section)
