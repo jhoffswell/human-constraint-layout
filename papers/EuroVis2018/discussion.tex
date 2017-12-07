@@ -23,6 +23,24 @@
 % wrangler/polestar/lyra strategies for specifying constraints
 % dsl leveraged as useful interface for processing logic
 
+\subsection{Unsatisfiable Constraints in \projectname}
+For a \projectname\ specification, it is possible to create node sets that
+are \emph{not} disjoint and may thus be easily susceptible to the
+specification of unsatisfiable constraints. Furthermore, through various
+combinations of set specifications and constraint applications, it is
+possible for the user to specify unsatisfiable constraints in the
+\projectname\ layout. An example of a layout with unsatisfiable constraints
+is shown in Figure \ref{fig:contradiction-example}. This layout completes
+two partitions of the nodes (once by \texttt{level} and once by
+\texttt{rank}); these collections lifted and an order constraint is applied
+to enforce a hierarchy between the sets. However, due to the properties of
+the nodes, the node with \texttt{rank 10} and \texttt{level 3} faces a
+contradiction in the layout. Figure \ref{fig:contradiction-example}c shows
+the error on the nodes that have constraints unsatisfied by the layout
+(where darker means more error).
+
+\jheer{This section notes that conflicts can arise, but not much else. What facilities if any does the language provide to help with this? How might a user learn that they've authored conflicting constraints? If this is more of a language runtime issue, we might note that there. For example at this point we haven't said anything about how our high-level constraints get translated into low-level constraints.}
+
 \subsection{Limitations of WebCoLa as the Constraint Solver}
 
 % remember to be generous with WebCoLa when discussing limitations; using a
@@ -76,3 +94,10 @@ layout. \todo{include additional conclusions about this limitation, or
 \todo{Talk about non-overlap problem for node layout (e.g., it is applied
   at the start of the layout and it can make it hard for nodes to follow
   the layout as they cannot pass over each other)}
+
+\todo{In addition to the non-overlap problem, this becomes a problem since
+  we use 'temporary' nodes as boundaries and guides in the layout. These 
+  nodes have a weight of their own which can cause the layout to get stuck
+  when the nodes don't overlap. I'm 'fixing' this by adding some initial
+  randomness to the placement of the guide nodes so that they don't
+  interfere with eachother}

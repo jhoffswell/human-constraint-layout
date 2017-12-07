@@ -103,153 +103,60 @@ defines a partition on the nodes based on the \texttt{depth} (Line
 the value for that set. This property may now be referred to in other parts
 of the \projectname specification (Line \texttt{23}).
 
+\subsection{Built-In Properties of the Graph Structure}
+\todo{Tie this section in better}
+In addition to defining constraints relative to properties arising from
+the domain, it may also be important to define constraints on properties
+of the graph structure. In our WebCoLa implementation, we support a 
+number of built-in properties for the nodes that reflect the graph structure.
+These properties are automatically computed and added to the graph 
+specification when they are used in one of the \projectname\ constraints. 
+These properties are only computed if such a property does not
+already exist on the nodes and are subject to a number of expectations
+regarding the graph input; for graphs that do not meet these expectations,
+users are shown a warning and required to compute the properties
+themselves.
+
+\begin{description}
+\item[\texttt{\_id}] The node index in the graph specification. This
+  property is always computed regardless of whether or not it is used.
+\item[\texttt{depth}] One more than the max depth of the node's
+  parents. This property is only computed for graphs that contain only one
+  root node and do not contain cycles. \todo{Is there a definition for
+  graphs with multiple roots (or can we handle disconnected graphs)? Can
+  the user specify the root in the specification?}
+\item[\texttt{parent}] The parent of the current node. This property is
+  only allowed if the node has one parent; otherwise, it is defined as the
+  parent with the smallest \texttt{\_id}.
+\item[\texttt{firstchild}] The child node of the current node with the smallest \texttt{\_id}.
+\item[\texttt{incoming}] The list of nodes that have edges where the
+  current node is the target (e.g., all parent nodes).
+\item[\texttt{outgoing}] The list of nodes that have edges where the
+  current node is the source (e.g., all child nodes).
+\item[\texttt{neighbors}] The list of nodes that have edges connected to
+  the current node. This property is the join of the \texttt{incoming} and
+  \texttt{outgoing} properties.
+\item[\texttt{degree}] The number of \texttt{neighbors}.
+\end{description}
+
+\todo{confirm all descriptions}
+
+We selected these properties as common structural elements that could be
+applicable to layout specifications. For example, the \texttt{depth}
+property is useful for producing hierarchical tree layouts and the 
+\texttt{incoming}, \texttt{outgoing}, and \texttt{neighbors} properties
+reflect structure produced by the graph edges. There are many other
+properties that could be useful for graph layouts that are not included 
+here; this list could easily be extended in the future to include other
+common properties. Furthermore, additional properties can always be
+computed by the user and added to the graph prior to running the layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Applying Constraints in \projectname}
-
-\label{sec:constraints}
-Once a collection has been defined, users can apply layout constraints to
-each of the sets in the collection. We identify four different types of
-constraints that can be applied to set elements: \texttt{alignment},
-\texttt{position}, \texttt{order}, \texttt{circle}, and \texttt{unit}. In
-the following sections, we describe the behavior and properties of each of
-these constraints.
-
-% design section: rationale for why these are the right constructs (sufficiently expressive)
-	% why are they user friendly?
-	% hypotheses and reason hope/belief/evidence
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Alignment Constraints}
-\constraint{\texttt{align} \emph{x} \texttt{axis}} Alignment constraints
-specify the alignment of elements along an axis (Figure
-\ref{fig:small-tree-example}, Line \texttt{18}). The constraint must
-include the \texttt{axis} (e.g., \texttt{x} or \texttt{y}) on which the
-elements should be aligned and may optionally include the
-\texttt{orientation} for the alignment, one of: \texttt{center},
-\texttt{left}, \texttt{right}, \texttt{top}, or \texttt{bottom}. When
-applied to nodes, this constraint ensures that all the nodes are aligned
-along the \texttt{axis}. When applied to sets, this constraint produces an
-alignment based on the centroid or boundary of the set elements.
-
-\emph{Rationale.} Alignment is a common characteristic seen when producing
-graphs by hand \orange{citation} or utilizing particular layout strategies
-\orange{citation} and is therefore crucial to support in \projectname.
-
-\jheer{Why only x/y axes? Why not polar coordinates, for example? Or along arbitrary line segments defined as guides? I'm not saying you *should* support these, only that it's not clear why you focus where you do. Also I don't totally understand what alignment means here (nor what the default would be if unspecified). Readers may be confused about what you mean by applied to nodes vs. applied to sets, as earlier we talk about sets as the units that constraints are applied to. Also, centroid or boundary, which is used when and why?}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Position Constraints}
-\constraint{\texttt{position} \emph{right} \texttt{of}
-  \emph{``top\_guide''}} Position constraints specify rules for the layout
-of nodes relative to globally identified elements (\orange{figure}). The
-constraint must identify a global element (e.g., a guide) to position the
-set elements relative to and an orientation for the position (e.g.,
-\texttt{left}, \texttt{right}, \texttt{above}, or \texttt{below}). The user
-may optionally provide a \texttt{gap} for how far apart the elements should
-be from the position element.
-
-\emph{Rationale.} Position constraints allow the user to provide
-overarching constraints relative to global elements such as guides. These
-can be used to constrain the overall size of the graph or to section off
-different areas. \todo{citations}
-
-\jheer{Why only relative guides? Why can't relative position constraints be applied between sets?}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Order Constraints}
-\constraint{\texttt{order} \emph{y} \texttt{axis} \texttt{by}
-  \emph{``depth''}} Order constraints enforce a sort order on the set
-elements (Figure \ref{fig:small-tree-example}, Line \texttt{23}). The
-constraint must include the \texttt{axis} (e.g., \texttt{x} or \texttt{y})
-on which the elements should be ordered. The constraint must also specify
-the node property \texttt{by} which the order is determined. The user can
-optionally define an explicit list of values for a custom
-\texttt{order}. The user may also optionally include a boolean of whether
-or not to \texttt{reverse} the order. Users may finally specify an optional
-\texttt{band} property for the constraint that determines a size for each
-set region; without the \texttt{band} property, the first and last elements
-in the order are free to move on either end, whereas the \texttt{band}
-enforces them to fit within the same sized space as the intermediate
-elements. \jheer{I don't totally follow what band is.}
-
-\jheer{Similar question as above regarding x/y vs. other possible options.}
-
-\emph{Rationale.} Unlike position constraints, order constraints allow the
-user to specify relationships between different sets of nodes to specify
-the overall node layout. These relationships are particular useful for
-sorting and hierarchical layouts on the different sets of nodes.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Circle Constraints}
-\constraint{\texttt{circle} \texttt{around} \emph{``center''}} Circle
-constraints allow the user to specify a ring layout for a set of
-elements. The constraint must include which element the set elements should
-be positioned around or may specify ``center'' for a generic center point
-to be used.
-
-\jheer{I'm confused regarding the center. What is a generic center point? Can one specify a x,y point or related guide? What does it mean to put an element in the center? Does this constraint work with sets of sets?}
-
-\emph{Rationale.} Circular structures are a common layout requirement of
-existing strategies \orange{citation} and can be crucial for relating
-properties of the underlying structure.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Unit Constraints}
-\constraint{\texttt{unit}} Unit constraints specify additional layout
-properties for elements in the set. The user may optionally specify a
-boolean \texttt{enclose} that prevents the set elements from overlapping
-with other sets (\orange{figure}). The user may optionally specify an
-\texttt{attract} property as either \texttt{center}, \texttt{left},
-\texttt{right}, \texttt{top}, or \texttt{bottom} that causes the nodes to
-be drawn to the specified area of the set (\orange{figure}). An optional
-\texttt{padding} property determines the minimum amount of spacing that
-should exist between elements in the unit and finally an optional
-\texttt{spacing} property determines whether the spacing is either
-\texttt{free} or \texttt{fixed}.
-
-\todo{from Alan: ``attract'' to me connotes a soft constraint. But are
-  these constraints actually required? If so, maybe call it ``alignment''
-  or something else?} 
-\todo{Jane: this section is pretty new, so probably want to discuss in the
-meeting this week. The ``unit'' constraints here are supposed to help cover
-some of the layout options that are a bit softer than the position and
-alignment constraints otherwise discussed in this section. I am not sure
-on the naming or anything here really. ``attract'' implies a kind of
-organic clustering. Another option for this could be something like ``shape''
-with options ``organic'' (the current attract) and ``grid.'' Maybe that would
-be better, since I'm not sure it is overly necessary to have this sort of
-alignment on the clustering.}
-
-\jheer{We discussed this last week, and believe we decided to break this up into multiple constraints, right?}
-
-\emph{Rationale.} The unit constraint allows the user to enforce more
-control on how the nodes within a set behave outside of the general layout
-constraints specified earlier. These constraints allow the user to apply
-more nuanced behaviors between the nodes.
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Unsatisfiable Constraints in \projectname}
-
-For a \projectname\ specification, it is possible to create node sets that
-are \emph{not} disjoint and may thus be easily susceptible to the
-specification of unsatisfiable constraints. Furthermore, through various
-combinations of set specifications and constraint applications, it is
-possible for the user to specify unsatisfiable constraints in the
-\projectname\ layout. An example of a layout with unsatisfiable constraints
-is shown in Figure \ref{fig:contradiction-example}. This layout completes
-two partitions of the nodes (once by \texttt{level} and once by
-\texttt{rank}); these collections lifted and an order constraint is applied
-to enforce a hierarchy between the sets. However, due to the properties of
-the nodes, the node with \texttt{rank 10} and \texttt{level 3} faces a
-contradiction in the layout. Figure \ref{fig:contradiction-example}c shows
-the error on the nodes that have constraints unsatisfied by the layout
-(where darker means more error).
-
-\todo{Does it make sense to talk about this here, or should we provide this
-  as an example that we talk about later? Or should we talk about it more
-  generally without an example and discuss why this is
-  allowed?}
-
-\jheer{This section notes that conflicts can arise, but not much else. What facilities if any does the language provide to help with this? How might a user learn that they've authored conflicting constraints? If this is more of a language runtime issue, we might note that there. For example at this point we haven't said anything about how our high-level constraints get translated into low-level constraints.}
+For each constraint definition, the user may define multiple constraints
+that are applied to the nodes \emph{within} each individual set. 
+By utilizing set composition, the user can build up a hierarchical 
+definition of sets and thus effectively produce constraints \emph{between} 
+previously defined sets. We discuss the types of constraints currently 
+supported in \projectname in Section \ref{sec:constraints}.

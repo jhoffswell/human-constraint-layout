@@ -1,0 +1,157 @@
+%!TEX root = constraint-layout.tex
+\section{\projectname Constraints and WebCoLa Implementation}
+\label{sec:constraints}
+We identified and implemented seven constraints for \projectname. In 
+this work, we target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in 
+order to support interactive, web-based layouts. 
+
+We identify four different types of
+constraints that can be applied to set elements: \texttt{alignment},
+\texttt{position}, \texttt{order}, \texttt{circle}, and \texttt{unit}. In
+the following sections, we describe the behavior and properties of each of
+these constraints.
+
+In WebCoLa, constraints are defined based on the \texttt{\_id} of the
+node in the graph specification. For our implementation, we start by
+computing the node sets; once we have the sets, we can define the WebCoLa
+constraints for the nodes in the set. We leverage two of WebCoLa's
+constraint types for our implementation: \emph{alignment} constraints 
+and \emph{position} constraints. For other \projectname\ constraints, we
+approximate the behavior as described in the following sections.
+
+For each constraint type, we define the number of WebCoLa constraints
+generated per \projectname\ constraint. Let $s$ be the number of sets per 
+and $n$ be the number of elements per set for each \projectname\ constraint.
+Let $g$ be the number of guides defined in the \projectname\ specification.
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Alignment Constraints}
+\constraint{\texttt{align} \emph{x} \texttt{axis}} Alignment constraints
+specify the alignment of elements along an axis (Figure
+\ref{fig:small-tree-example}, Line \texttt{18}). The constraint must
+include the \texttt{axis} (e.g., \texttt{x} or \texttt{y}) on which the
+elements should be aligned and may optionally include the
+\texttt{orientation} for the alignment, one of: \texttt{center},
+\texttt{left}, \texttt{right}, \texttt{top}, or \texttt{bottom}. When
+applied to nodes, this constraint ensures that all the nodes are aligned
+along the \texttt{axis}. When applied to sets, this constraint produces an
+alignment based on the centroid or boundary of the set elements.
+
+\emph{Rationale.} Alignment is a common characteristic seen when producing
+graphs by hand \orange{citation} or utilizing particular layout strategies
+\orange{citation} and is therefore crucial to support in \projectname.
+
+\jheer{Why only x/y axes? Why not polar coordinates, for example? Or along arbitrary line segments defined as guides? I'm not saying you *should* support these, only that it's not clear why you focus where you do. Also I don't totally understand what alignment means here (nor what the default would be if unspecified). Readers may be confused about what you mean by applied to nodes vs. applied to sets, as earlier we talk about sets as the units that constraints are applied to. Also, centroid or boundary, which is used when and why?}
+
+\emph{Implementation.}
+Alignment constraints are one of the constraint types supported by WebCoLa;
+once the node sets have been identified, we can generate a single WebCoLa
+alignment constraint for each set in each \projectname\ alignment constraint.
+
+\todo{We don't really have alignment working on set elements, only on node elements.}
+\todo{Orientation is not working on nodes yet, but shouldn't be too hard to get working}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Position Constraints}
+\constraint{\texttt{position} \emph{right} \texttt{of}
+  \emph{``top\_guide''}} Position constraints specify rules for the layout
+of nodes relative to globally identified elements (\orange{figure}). The
+constraint must identify a global element (e.g., a guide) to position the
+set elements relative to and an orientation for the position (e.g.,
+\texttt{left}, \texttt{right}, \texttt{above}, or \texttt{below}). The user
+may optionally provide a \texttt{gap} for how far apart the elements should
+be from the position element.
+
+\emph{Rationale.} Position constraints allow the user to provide
+overarching constraints relative to global elements such as guides. These
+can be used to constrain the overall size of the graph or to section off
+different areas. \todo{citations}
+
+\jheer{Why only relative guides? Why can't relative position constraints be applied between sets?}
+
+\emph{Implementation.}
+Position constraints are also a built-in constraint type in WebCoLa.
+Once we have defined the node sets, we generate a WebCoLa position constraint
+for each node in the set relative to the global element (i.e., guide node)
+that is used in the constraint. We create one WebCoLa constraint for each node
+in each set, for each \projectname\ constraint.
+
+\todo{position constraints on set elements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Order Constraints}
+\constraint{\texttt{order} \emph{y} \texttt{axis} \texttt{by}
+  \emph{``depth''}} Order constraints enforce a sort order on the set
+elements (Figure \ref{fig:small-tree-example}, Line \texttt{23}). The
+constraint must include the \texttt{axis} (e.g., \texttt{x} or \texttt{y})
+on which the elements should be ordered. The constraint must also specify
+the node property \texttt{by} which the order is determined. The user can
+optionally define an explicit list of values for a custom
+\texttt{order}. The user may also optionally include a boolean of whether
+or not to \texttt{reverse} the order. Users may finally specify an optional
+\texttt{band} property for the constraint that determines a size for each
+set region; without the \texttt{band} property, the first and last elements
+in the order are free to move on either end, whereas the \texttt{band}
+enforces them to fit within the same sized space as the intermediate
+elements. \jheer{I don't totally follow what band is.}
+
+\jheer{Similar question as above regarding x/y vs. other possible options.}
+
+\emph{Rationale.} Unlike position constraints, order constraints allow the
+user to specify relationships between different sets of nodes to specify
+the overall node layout. These relationships are particular useful for
+sorting and hierarchical layouts on the different sets of nodes.
+
+\emph{Implementation}
+\todo{Finalize description of order procedure}
+\todo{order constraints on set elements}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Circle Constraints}
+\constraint{\texttt{circle} \texttt{around} \emph{``center''}} Circle
+constraints allow the user to specify a ring layout for a set of
+elements. The constraint must include which element the set elements should
+be positioned around or may specify ``center'' for a generic center point
+to be used.
+
+\jheer{I'm confused regarding the center. What is a generic center point? Can one specify a x,y point or related guide? What does it mean to put an element in the center? Does this constraint work with sets of sets?}
+
+\emph{Rationale.} Circular structures are a common layout requirement of
+existing strategies \orange{citation} and can be crucial for relating
+properties of the underlying structure.
+
+\emph{Implementation.}
+Circle constraints are not a supported constraint type in WebCoLa. To 
+demonstrate the utility of this constraint type we approximated the behavior
+in our WebCoLa implementation. To do this, we first add a temporary node
+to act as the center of the constraint. We then add a link between each 
+node in the set and the temporary center. \todo{Finish...}
+
+\todo{Confirm description of procedure}
+\todo{I've looked into two ways of approximating the circle procedure. 
+(1) Add edges between each node in the circle and the center, and around
+the circle edge. (2) Produce the layout with position constraints and 
+then convert to polar coordinates.}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Cluster Constraints}
+\constraint{\texttt{cluster}} 
+\todo{This section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Hull Constraints}
+\constraint{\texttt{hull}} 
+\todo{This section}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsection{Padding Constraints}
+\constraint{\texttt{padding 5}} 
+\todo{This section}
+
+\subsection{Creating Guides in WebCoLa}
+\constraint{$O(g)$ new nodes}
+In \projectname, the user may define guides to control the graph layout.
+To use these guides in WebCoLa constraints, we add a new node to the graph
+for each guide and generate constraints relative to this node. These 
+temporary nodes are included in WebCoLa's layout but are hidden from the
+final visualization of the graph layout.
