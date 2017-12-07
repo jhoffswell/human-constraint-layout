@@ -1,108 +1,107 @@
 %!TEX root = constraint-layout.tex
 \section{Design of \projectname}
+\projectname is a domain-specific language for concise specification of 
+constrained graph layouts. To provide a reusable specification 
+without explicit reference to individual nodes and edges, \projectname
+applies constraints to groups of nodes defined by shared attributes. 
+The central abstraction in \projectname is a \textbf{set}. At the base level, 
+the elements of a set are simply graph nodes; however, \projectname also
+supports hierarchical composition, with nested sets as elements.
 
-\projectname\ is a domain-specific language for the creation of highly
-customized graph layouts based on properties of the nodes. Users identify
-element sets from the graph and apply constraints to all elements in a
-given set. These sets can be hierarchically composed to create a flexible,
-nested layout. \projectname\ reduces specification effort and allows the
-user to focus on the graph layout in terms of high-level properties of the
-data rather on individual nodes. These layout specifications can also be
-easily reused across graphs for which the nodes have the same properties,
-which allows the user to apply a single layout design across multiple
-graphs in the same domain. In this section, we discuss the design of
-\projectname\ including the process for specifying sets and applying
-constraints.
+The core component in \projectname is a \textbf{constraint definition},
+which includes both a set definition and constraint application.
+\projectname provides a concise set of operators for defining
+sets based on node attributes, including structural relations in the graph.
+The result of a set definition produces one or more sets, which 
+can have either distinct or overlapping elements. Each constraint definition can 
+be subject to one or more constraints (e.g., for position, ordering, 
+or alignment), which are applied to the nodes within each separate set. 
+In other words, constraints for a constraint definition with multiple sets are 
+applied to nodes \emph{within} each individual set, not \emph{between} 
+the sets in the constraint definition.
 
-\jheer{I like that this section starts with a high-level description of the key concepts. However, I think it stops short, veering off to repeat earlier made claims about the benefits of the language. Instead, it might help to go further in laying out the core ideas. Namely: what is a ``set''? A crisp definition is needed. (Also not 100\% clear what an ``element'' is.) Then perhaps talk about constraints on/between sets and define the related terminology (collections?).}
+A \projectname specification consists of one or more constraint definitions, 
+along with an optional set of guides (reference elements that serve as 
+positional anchors). The \projectname compiler then takes an input graph 
+and specification and produces a set of instance-level constraints for 
+an existing constrained graph layout solver. In the following sections, 
+we discuss the design of \projectname including the process for 
+specifying sets and applying constraints. The data and \projectname 
+specification for a small tree layout is shown in Figure~\ref{fig:small-tree-example}.
 
 \smallTreeExample
-
-The main contribution of \projectname\ is the language for specifying
-high-level constraints. \projectname\ specifications are composed of four
-components: \emph{nodes}, \emph{links}, \emph{guides}, and
-\emph{collections}. An example \projectname\ specification is shown in
-Figure \ref{fig:small-tree-example}. Properties of the graph are included
-as properties of the nodes and links. The user can then define collections
-which are defined as a list of sets and a list of high-level constraints
-that apply to the elements in each set of the collection. Users identify
-\emph{sets} based on graph properties; sets can contain either graph nodes
-or previously defined collections. Guides are an optional component and may
-be used to define top-level layout boundaries (defined with an x and/or y
-position), which can be referred to in the constraint specification.
-
-\jheer{Why are nodes and links part of the spec? Those are just the data, but the spec should be applicable to any number of datasets. I understand why they are supported in your implementation (for convenience of testing and deployment among other things), but in a full language model the layout specification and data should be neatly separable.}
-
-\todo{from Alan: what is the difference between a collection and a set? If
-  none or not much, should we just use one term (maybe set)?}
-\todo{Jane: the way I see it, the difference between a collection and a
-set is in how it is being used at the time. A collection is used in the
-constraint application stage to identify which sets should have constraints
-applied to them. So collections apply constraints to sets, sets have
-constraints applied to them. A collection can become a set (e.g. have
-constraints applied to it in a downstream step). So there is a blurred line
-of whether or not they are the same.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Specifying Sets in \projectname}
+There are several operators for defining sets based on node attributes 
+or structural properties, which include (1) \emph{partitioning} nodes 
+into disjoint sets, (2) specifying particular sets with \emph{predicates},
+and (3) \emph{composing} previously defined sets. Each of these set
+definitions produces one or more sets for the constraint definition. For
+partitioning or using predicates, the constraint definition may also 
+designate a set from which the elements should be drawn; by default, the
+elements are simply graph nodes.
 
-Each collection in \projectname\ is defined as a list of sets, where sets
-are lists of elements. The elements in a set can be either nodes or
-previously created sets, thus enabling a hierarchical composition of sets
-for more complex layouts. In this language, we support several strategies
-for specifying sets of nodes: \emph{partitioning}, \emph{expressions},
-\orange{\emph{relations}}, and \emph{compositions}.
+\subsubsection{Partitioning nodes into sets}
+\constraint{\texttt{partition} by node \emph{depth}}
+The partition operator creates a collection of disjoint sets based on
+properties of the node (e.g., Figure~\ref{fig:small-tree-example}~Line~\texttt{17}).
+Given $n$ nodes to partition, this operator can produce at most $O(n)$ 
+sets for a particular constraint definition. The user may further limit 
+the number of sets  included by specifying which property values to 
+\emph{include} or \emph{exclude} when producing the sets.
 
-\jheer{Are collections and sets really *lists*, which by definition are ordered? I would think that, formally, sets are *sets*... I also find the terminology here confusing. An expression is just that: an expression. A set created by application of boolean predicate (predicate being a more specific technical term than expression!) should probably have a name other than ``expression''. Relation is also confusing, but maybe because I do a fair amount of database work where relation and relational algebra have a different meaning. Can relation be recast as an expression that makes reference to the graph structure, not just node attributes?}
+For each node, we identify a key based on the node values for the partition
+properties and create sets based on the key. The include parameter allows
+the user to identify particular node values to look for when partitioning
+and includes only those values; the exclude property does the opposite. 
+For example in Figure~\ref{fig:serengeti-layout}~Line~\texttt{11}, \texttt{28},
+and \texttt{46}, the user partitions the nodes by the \texttt{group} property
+and only includes particular groups in each constraint definition to apply
+constraints relative to the tropic level of the nodes.
 
-\textbf{Partitioning.} Users can partition all graph nodes into sets by
-identify a property (\todo{Partition by multiple properties?}) of the nodes
-with which to group the nodes (see Figure \ref{fig:small-tree-example},
-Line \texttt{17}). Nodes are then separated into disjoint sets based on the
-partition property. The user may also specify lists of values that identify
-which property values to \texttt{include} or \texttt{ignore} when
-performing the partition. These properties allow the user to create
-partitions where some nodes are excluded from the partition, and are
-therefore not placed in any of the partition sets.
-
-\textbf{Expressions.} For more flexibility in the definition of sets, users
+\subsubsection{Specifying sets with predicates}
+\constraint{node \emph{depth}\texttt{ == 0}}
+For more flexibility in the definition of sets, users
 can specify a concrete lists of sets to compute using arbitrary boolean
-expressions. For each expression, each node is evaluated based on the user
-defined expression to determine if it is included in the set. The user may
-refer to properties of the node using dot syntax (e.g.,
-\texttt{node.<property>}). Users may also optionally specify a
-\texttt{name} for the set, which may be used by the composition set
-specification. For this specification strategy, it is possible to create
+expressions. For each expression, each node is evaluated by the expression
+to determine if it is included in the set. The user may
+refer to properties of the node using dot syntax; for example, to extract
+the depth the user may write \texttt{node.depth}). Users may also optionally specify a
+\texttt{name} for the set, which may be referred to in composition set
+definitions. For this specification strategy, it is possible to create
 node sets that are not disjoint, and may thus produce unsatisfiable
-constraints. \todo{example figure}
+constraints.
 
-\textbf{Relations.} For some sets, it may be useful to identify particular
-relationships between nodes, which can be specified as a relation. For each
-node, \todo{finish this section}
+\todo{Extract/Relation/?}
 
-\contradictionExample
+%\subsubsection{Extracting related nodes}
+%\constraint{\texttt{extract} node and node \emph{neighbors}}
+%For some sets, it may be useful to identify particular
+%relationships between nodes, which can be specified as a relation. For each
+%node, \todo{finish this section}
 
-\textbf{Compositions.} Sets may also be formed through the hierarchical
-composition of collections. For example, in Figure
-\ref{fig:small-tree-example} we first create a collection of sets using
-partition on Line \texttt{17}, named ``layer.'' On Line \texttt{22} we
-create a new collection that contains the ``layer'' set. Line \texttt{28}
-and \texttt{32} of Figure \ref{fig:contradiction-example} show the same
-strategy, whereas Line \texttt{23} shows the shorthand composition for
-producing the collection containing one set. For compositions, the user may
+\subsubsection{Composing previously defined sets}
+\constraint{\texttt{[} \emph{set1}, \emph{set2} \texttt{]}}
+Sets may also be formed through the hierarchical
+composition of previously defined sets. For example, in Figure
+\ref{fig:small-tree-example} the first constraint definition includes a 
+set definition that produces three sets using partition~(Line~\texttt{17}),
+named ``layer.'' The next constraint definition includes a composition 
+that contains only the ``layer'' set~(Line~\texttt{22}). For compositions, the user may
 refer to any named entities previously defined in the specification (e.g.,
-collections or named sets produced from \emph{expressions}).
-
-\todo{``from'' property for set specification?}
+previous set definitions or named sets produced from \emph{predicates}).
+In the current version of \projectname, we only support conjunctions of
+sets; in other words, the new set contains only the listed sets.
 
 When a named set is defined, the set element promotes the properties that
 are equivalent for all elements in the set to a property of the set
 element. For example, in Figure \ref{fig:small-tree-example}, when the user
 defines a partition on the nodes based on the \texttt{depth} (Line
-\texttt{17}), then each set element is given a \texttt{depth} property with
+\texttt{17}), each set element is given a \texttt{depth} property with
 the value for that set. This property may now be referred to in other parts
-of the \projectname\ specification (e.g., Line \texttt{23}).
+of the \projectname specification (Line \texttt{23}).
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
