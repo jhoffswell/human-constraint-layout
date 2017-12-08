@@ -1,12 +1,12 @@
 {
   "nodes": [
     {"rank": 10, "level": 1},
-    {"rank": 5, "level": 2},
-    {"rank": 5, "level": 2},
-    {"rank": 5, "level": 2},
-    {"rank": 5, "level": 2},
-    {"rank": 1, "level": 3},
-    {"rank": 1, "level": 3},
+    {"rank": 5,  "level": 2},
+    {"rank": 5,  "level": 2},
+    {"rank": 5,  "level": 2},
+    {"rank": 5,  "level": 2},
+    {"rank": 1,  "level": 3},
+    {"rank": 1,  "level": 3},
     {"rank": 10, "level": 3}
   ],
   "links": [
@@ -18,17 +18,19 @@
     {"source": 0, "target": 6},
     {"source": 0, "target": 7}
   ],
-  "constraints": [
+  "sets": [
     {
-      "name": "level",
-      "set": {"partition": "level"},
-      "within": [{"type": "align", "axis": "x"}],
-      "between": [{"type": "order", "axis": "y", "by": "level"}]
+      "name": "rank_set",
+      "elements": {"partition": "rank"},
+      "constraints": [{"constraint": "align", "axis": "x"}]
     },
     {
-      "name": "rank",
-      "set": {"partition": "rank"},
-      "between": [{"type": "order", "axis": "y", "by": "rank", "reverse": true}]
+      "elements": ["rank_set"],
+      "constraints": [{"constraint": "order", "axis": "y", "by": "rank", "reverse": true}]
+    },
+    {
+      "elements": [{"partition": "level"}],
+      "constraints": [{"constraint": "order", "axis": "y", "by": "level"}]
     }
   ]
 }

@@ -77,7 +77,7 @@ hvz.start = function() {
   // Figure out the constraints for the graph layout.
   if(hvz.isUserConstraintGraph()) {
     try {
-      graph.user_constraints = graph.spec.constraints;
+      graph.user_constraints = graph.spec.sets;
       var t0 = performance.now();
       var result = layout.getConstraints();
       var t1 = performance.now();
@@ -115,6 +115,8 @@ hvz.load = function() {
   var PATH = "app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
   PATH = PATH.toLowerCase();
 
+  renderer.setStyle(example);
+
   d3.text(PATH, function(spec) {
     graph.spec = spec;
     hvz.editor.setValue(graph.spec);
@@ -141,7 +143,7 @@ hvz.visibility = function() {
 };
 
 hvz.isUserConstraintGraph = function() {
-  return graph.spec.constraints && graph.spec.constraints[0].name != undefined;
+  return graph.spec.sets;
 };
 
 hvz.ace = function() {
@@ -187,4 +189,17 @@ function prettyJSON() {
   //     .replace(/\]\}/g, "\n\t]\n}");
   var spec = JSON.stringify(simplified, null, 2);
   return spec;
+};
+
+hvz.constraints = function(nodeID) {
+  return graph.spec.constraints.filter(function(constraint) {
+
+    var left = constraint.left === nodeID;
+    var right = constraint.right === nodeID;
+    var align = (constraint.offsets || []).filter(function(node) {
+      return node.node === nodeID
+    }).length > 0;
+
+    return left || right || align;
+  });
 };

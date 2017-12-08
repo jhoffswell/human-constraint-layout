@@ -14,12 +14,15 @@
     {"source": 2, "target": 4},
     {"source": 2, "target": 5}
   ],
-  "constraints": [
+  "sets": [
     {
       "name": "layer",
-      "set": {"partition": "depth"},
-      "within": [{ "type": "align", "axis": "x" }],
-      "between": [{ "type": "order", "axis": "y", "by": "depth" }]
+      "elements": {"partition": "depth"},
+      "constraints": [{ "constraint": "align", "axis": "x" }]
+    },
+    {
+      "elements": ["layer"],
+      "constraints": [{ "constraint": "order", "axis": "y", "by": "depth" }]
     }
   ]
 }

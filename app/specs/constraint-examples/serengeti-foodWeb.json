@@ -1244,62 +1244,63 @@
     {"prey_code":"HYPFIL","pred_code":"TRASCR","source":155,"target":87},
     {"prey_code":"THETRI","pred_code":"TRASCR","source":155,"target":154}
   ],
-  "constraints": [
+  "guides": [
+    {"name": "top_guide", "y": 0},
+    {"name": "bottom_guide", "y": 100},
+    {"name": "carnivore_guide", "x": 450},
+    {"name": "herbivore_guide", "x": 300},
+    {"name": "plant_guide", "x": 50}
+  ],
+  "sets": [
     {
       "name": "plants",
-      "set": [
-        {"expr": "datum.group1 == 7"},
-        {"expr": "datum.group1 == 8"},
-        {"expr": "datum.group1 == 9"},
-        {"expr": "datum.group1 == 10"},
-        {"expr": "datum.group1 == 11"},
-        {"expr": "datum.group1 == 12"},
-        {"expr": "datum.group1 == 13"},
-        {"expr": "datum.group1 == 14"}
-      ],
-      "within": [
-        {"type": "position", "position": "left", "of": {"name": "herbivore", "x": 300}, "gap": 100},
-        {"type": "position", "position": "right", "of": {"name": "plant", "x": 50}, "gap": 5},
-        {"type": "position", "position": "below", "of": {"name": "top", "y": 0}, "gap": 20},
-        {"type": "position", "position": "above", "of": {"name": "bottom", "y": 200}, "gap": 20},
-        {"type": "cluster"}
-      ],
-      "between": [
-        {"type": "order", "axis": "y", "by": "group1", "gap": 75}
+      "elements": {"partition": "group1", "include": [7,8,9,10,11,12,13,14]},
+      "constraints": [
+        {"constraint": "position", "position": "right", "of": "plant_guide", "gap": 5},
+        {"constraint": "position", "position": "left", "of": "herbivore_guide", "gap": 200},
+        {"constraint": "position", "position": "below", "of": "top_guide", "gap": 5},
+        {"constraint": "position", "position": "above", "of": "bottom_guide", "gap": 20},
+        {"constraint": "cluster"}
+      ]
+    },
+    {
+      "elements": ["plants"],
+      "constraints": [
+        {"constraint": "order", "axis": "y", "by": "group1", "gap": 50, "band": 25}
       ]
     },
     {
       "name": "herbivores",
-      "set": [
-        {"expr": "datum.group1 == 3"},
-        {"expr": "datum.group1 == 4"},
-        {"expr": "datum.group1 == 5"},
-        {"expr": "datum.group1 == 6"}
-      ],
-      "within": [
-        {"type": "align", "axis": "y"},
-        {"type": "position", "position": "left", "of": {"name": "carnivore", "x": 450}},
-        {"type": "position", "position": "right", "of": {"name": "herbivore"}},
-        {"type": "position", "position": "below", "of": {"name": "top", "y": 0}, "gap": 50},
-        {"type": "position", "position": "above", "of": {"name": "bottom", "y": 200}, "gap": 50}
-      ],
-      "between": [
-        {"type": "order", "axis": "y", "by": "group1", "gap": 125}
+      "elements": {"partition": "group1", "include": [3,4,5,6]},
+      "constraints": [
+        {"constraint": "align", "axis": "y"},
+        {"constraint": "position", "position": "right", "of": "herbivore_guide"},
+        {"constraint": "position", "position": "left", "of": "carnivore_guide"},
+        {"constraint": "position", "position": "below", "of": "top_guide", "gap": 250},
+        {"constraint": "position", "position": "above", "of": "bottom_guide", "gap": 50},
+        {"constraint": "hull"}
+      ]
+    },
+    {
+      "elements": ["herbivores"],
+      "constraints": [
+        {"constraint": "order", "axis": "y", "by": "group1", "gap": 75}
       ]
     },
     {
       "name": "carnivores",
-      "set": [
-        {"expr": "datum.group1 == 1"},
-        {"expr": "datum.group1 == 2"}
-      ],
-      "within": [
-        {"type": "align", "axis": "y"},
-        {"type": "position", "position": "right", "of": {"name": "carnivore"}}
-      ],
-      "between": [
-        {"type": "order", "axis": "x", "by": "group1", "reverse": true},
-        {"type": "order", "axis": "y", "by": "group1"}
+      "elements": {"partition": "group1", "include": [1,2]},
+      "constraints": [
+        {"constraint": "align", "axis": "y"},
+        {"constraint": "position", "position": "right", "of": "carnivore_guide"},
+        {"constraint": "position", "position": "below", "of": "top_guide", "gap": 450}
+      ]
+    },
+    {
+      "elements": ["carnivores"],
+      "constraints": [
+        {"constraint": "order", "axis": "x", "by": "group1", "reverse": true},
+        {"constraint": "order", "axis": "y", "by": "group1"}
       ]
     }
   ]

@@ -139,7 +139,9 @@ h1 {
 
 marker path {
   stroke-width: 1.5;
-  stroke: #bbb;
+  /*stroke: #bbb;*/
+  /*stroke: #060076;*/
+  stroke: black;
 }
 
 .text-label {

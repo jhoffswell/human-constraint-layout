@@ -1,4 +1,5 @@
 var layout = {};
+var INDEX = 0;
 
 /***************************************************************/
 /********************** CONSTRAINT LAYOUT **********************/
@@ -10,23 +11,60 @@ layout.getConstraints = function() {
 
   layout.sets = {};
   layout.groups = [];
+  INDEX = 0;
   
   // Add an _id to the nodes
   layout.index = -1;
   graph.spec.nodes.map(graph.setID);
-  graph.computeBuiltInProperties(graph.spec.constraints);
+  graph.computeBuiltInProperties(graph.spec.sets);
   graph.removeTempNodes();
 
+  // Create the guides
+  if(!graph.spec.guides) graph.spec.guides = [];
+  layout.guides = [].concat.apply([], graph.spec.guides.map(newGuide));
+
   // Process the constraints
-  var constraints = [].concat.apply([], graph.spec.constraints.map(processConstraint));
+  var constraints = [].concat.apply([], graph.spec.sets.map(processConstraint));
   return {"constraints": constraints, "groups": layout.groups};
 };
 
 // Process each user defined constraint.
-function processConstraint(constraint) {
-  if(renderer.options["debugprint"]) console.log("    Processing constraint '" + constraint.name + "'...");
+function processConstraint(definition) {
+  if(renderer.options["debugprint"]) console.log("    Processing constraint '" + definition.name + "'...");
+
+  // Get the source.
+  var source;
+  if(definition.from && typeof definition.from === 'string') {
+    source = layout.sets[definition.from];
+  } else if(definition.from) {
+    source = createSet(graph.spec.nodes, definition.from);
+  } else {
+    source = graph.spec.nodes;
+  }
+  console.log('PROCESSING: ', definition.name, source, definition.elements)
 
   // Create the sets
+  var name = definition.name;
+  if(!name) {
+    name = 'set' + INDEX;
+    INDEX += 1;
+  }
+  layout.sets[name] = createSet(source, definition.elements);
+
+  // Create the constraints
+  var results = [];
+  definition.constraints.forEach(function(constraint) {
+    layout.sets[name].forEach(function(elements) {
+      results = results.concat(constraintDef.generateConstraints(elements, constraint, name));
+    });    
+  });
+
+  return results;
+
+//*************
+//* OLD STUFF *
+//*************
+
   if(constraint.name && constraint.set) {
     var inSet = generateInSetFunc(constraint.set);
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set);
@@ -120,6 +158,61 @@ function generateConstraints(nodes, constraints, cid) {
   });
 
   return results;
+};
+
+function newGuide(guide) {
+  var nodeSize = 1;
+  var node = { 
+    'fixed': true, 
+    'temp': true, 
+    'guide': true,
+    'width': nodeSize,
+    'height': nodeSize,
+    'padding': 0
+  };
+
+  var offset = graph.spec.nodes.filter(function(node) { 
+    return node.temp; 
+  }).length;
+
+  // Save the position information from the guide.
+  if(guide.hasOwnProperty('x') && guide.hasOwnProperty('y')) {
+    node.boundary = "xy";
+    node.x = guide.x;
+    node.y = guide.y;
+  } else if(guide.hasOwnProperty('x')) {
+    node.boundary = "x";
+    node.x = guide.x;
+    node.y = offset*nodeSize*10;
+  } else if(guide.hasOwnProperty('y')) {
+    node.boundary = "y";
+    node.y = guide.y;
+    node.x = offset*nodeSize*10;
+  } else {
+    console.error('Guide must have an x and/or y position: ', guide);
+  }
+
+  // Save the name from the guide.
+  if(guide.hasOwnProperty('name')) {
+
+    var found = graph.spec.nodes.filter(function(node) { 
+      return node.name === guide.name; 
+    });
+
+    if(found.length > 0) {
+      console.error('A node with the name ' + guide.name + ' already exists.');
+    } else {
+      node.name = guide.name;
+    }
+
+  } else {
+    console.error('Guide must have a name: ', guide);
+  }
+  
+  // Save the guide and get it's index.
+  graph.spec.nodes.push(node);
+  node._id = graph.spec.nodes.indexOf(node);
+  return node;
 };
 
 /************** Process User Defined Constraints ***************/
@@ -280,7 +373,13 @@ function positionConstraint(nodes, constraint, cid) {
       node = nodes[0].firstchild;
       break;
     default:
-      if(constraint.of) {
+      if(typeof constraint.of === 'string') {
+
+        node = graph.spec.nodes.filter(function(node) {
+          return node.name === constraint.of && node.guide;
+        })[0];
+
+      } else if(constraint.of) {
 
         // Extract the node by the name if it already exists
         if(constraint.of.name) {
@@ -306,7 +405,6 @@ function positionConstraint(nodes, constraint, cid) {
             "x": constraint.of.x || 0,
             "y": constraint.of.y || 0,
             "temp": true,
-            "fixed": true,
             "boundary": direction
           };
           if(constraint.of.name) node.temp_name = constraint.of.name;
@@ -456,34 +554,37 @@ function generateOrderFuncSort(def) {
   return order;
 };
 
-function generateOrderFunc(def) {
-  var order;
-  if(def.order) {
-    if(def.reverse) def.order.reverse();
-    order = function(n1,n2) {
-      return def.order.indexOf(n1[def.by]) < def.order.indexOf(n2[def.by]);
-    };
-  } else if(def.reverse) {
-    order = function(n1,n2) {
-      return n1[def.by] > n2[def.by];
-    };
-  } else {
-    order = function(n1,n2) {
-      return n1[def.by] <= n2[def.by];
-    };
-  }
-  return order;
-};
 
+// Return a function that returns the name of all sets that the element
+// is included in based on this definition.
 function generateInSetFunc(def) {
   var inSet;
 
   if(!def) {
 
-    // Create a function to include all nodes in one set.
-    inSet = function(node) { return true; };
+    // Create a function to include all elements in one set.
+    inSet = function(element) { return true; };
   
-  } else if(!def.partition && !def.relation) { 
+  } else if(def.partition) {
+
+    // Create a function to partition nodes based on "def.partition".
+    inSet = function(element) {
+      var value = element[def.partition];
+      if(value != null && typeof value == "object") value = value._id;
+      return value;
+    };
+
+  } else if(def.relation) {
+
+    // Create a function to partition nodes based on "def.relation".
+    // TODO: this is a little weird --> this is not working
+    inSet = function(element) {
+      var value = element[def.relation];
+      if(value != null && typeof value == "object") value = value._id;
+      return value;
+    };
+
+  } else if(def instanceof Array) {
 
     // Create a function to partition nodes into the user defined sets
     inSet = function(node) {
@@ -494,25 +595,6 @@ function generateInSetFunc(def) {
       });
       if(sets.length > 1) console.error("Node '" + node + "' is included in multiple sets. Nodes can only be in one set per constraint definition.");
       return sets[0] || -1;
-    };
-
-  } else if(def.partition) {
-
-    // Create a function to partition nodes based on "def.partition".
-    inSet = function(node) {
-      var value = node[def.partition];
-      if(value != null && typeof value == "object") value = value._id;
-      return value;
-    };
-
-  } else if(def.relation) {
-
-    // Create a function to partition nodes based on "def.relation".
-    // TODO: this is a little weird --> this is not working
-    inSet = function(node) {
-      var value = node[def.relation];
-      if(value != null && typeof value == "object") value = value._id;
-      return value;
     };
 
   } else {
@@ -542,59 +624,41 @@ function generatePairs(sets) {
 };
 
 // Partition nodes into sets based on inSet
-function generateSets(nodes, inSet, constraint) {
+function generateSets(source, inSet, elements) {
   if(renderer.options["debugprint"]) console.log("      Computing sets...");
 
-  var ignore, include, group;
-  if(constraint && constraint.ignore) ignore = constraint.ignore;
-  if(constraint && constraint.include) include = constraint.include;
+  var ignore, include;
+  if(elements && elements.ignore) ignore = elements.ignore;
+  if(elements && elements.include) include = elements.include;
+
+  var ignore = function(setName) { 
+    return elements && elements.ignore && contains(elements.ignore, setName);
+  }
+
+  var include = function(setName) {
+    var inc = true;
+    if(elements && elements.include) {
+      inc = contains(elements.include, setName);
+    }
+    return inc;
+  }
 
   var sets = {};
-  nodes.forEach(function(node) {
-    var set = inSet(node);
-    if(set == -1 || (ignore && ignore.indexOf(set) != -1) || typeof set === 'undefined') return;
-    var current = sets[set] || [];
-    current.push(node);
+  source.forEach(function(element) {
+    var setName = inSet(element);
+    console.log('      ', element, 'is in set', setName);
 
-    if(include && node[include]) {
-      current.push(node[include]);
-    }
+    if(setName == -1 || ignore(setName) || !include(setName)) return;
 
-    sets[set] = current;
+    var elements = sets[setName] || [];
+    elements.push(element);
+    sets[setName] = elements;
   });
   
   if(renderer.options["setnode"]) {
     // TODO! We want to add the set nodes to the sets. 
     // We don"t want set nodes in the sets, we want them in the groups?
     // createSetNode(sets);
-  }
-
-  if(constraint instanceof Array) {
-    constraint.forEach(function(test) {
-      if(test.group) {
-        var id = test.name || test.expr;
-        var set = sets[id];
-
-        if(renderer.options["setnode"]) {
-          var node = createSetNode(set);
-          set = set.concat([node]);
-        }
-
-        groupConstraint(set);
-      }
-    });
-  } else if(constraint && constraint.group) {
-    Object.keys(sets).forEach(function(setName) {
-      var set = sets[setName];
-
-      if(renderer.options["setnode"]) {
-        var node = createSetNode(set);
-        set = set.concat([node]);
-      }
-
-      groupConstraint(set);
-    });
-  } else if(renderer.options["setnode"]) {
     createSetNodes(sets);
   }
 
@@ -602,7 +666,6 @@ function generateSets(nodes, inSet, constraint) {
 };
 
 function createSetNodes(sets) {
-  console.log("sets are", sets)
   Object.keys(sets).forEach(function(setName) {
     createSetNode(sets[setName]);
   });
@@ -770,3 +833,10 @@ function createColaSeparation(left, right, axis, cid, gap) {
   };
   return constraint;
 }
+
+/*************************** Helpers ***************************/
+
+function contains(list, element) {
+  return list.indexOf(element) !== -1;
+};
+

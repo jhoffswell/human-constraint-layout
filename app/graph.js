@@ -14,6 +14,7 @@ graph.init = function(spec) {
 };
 
 graph.computeBuiltInProperties = function(constraint) {
+  if(renderer.options["debugprint"]) console.log("      Computing built in properties.");
   graph.spec.nodes.forEach(graph.setID);
   if(JSON.stringify(constraint).indexOf("depth") != -1) calculateDepths();
   if(JSON.stringify(constraint).indexOf("parents") != -1) calculateIncoming();
@@ -153,8 +154,8 @@ graph.sinks = function() {
 graph.setSize = function(node) {
   var pad = node.pad ? node.pad : renderer.options["nodepad"];
   var size = node.size ? node.size : renderer.options["nodesize"];
-  node.width = size + 2*pad;
-  node.height = size + 2*pad;
+  node.width = node.width ? node.width + 2*pad : size + 2*pad;
+  node.height = node.height ? node.height + 2*pad : size + 2*pad;
   node.padding = pad;
 };
 
@@ -182,6 +183,18 @@ graph.getColor = function(node) {
   var value = node[renderer.options["fillprop"]] || 0.5;
   return node.color || graph.color(value);
 };
+
+graph.getStroke = function(node) {
+  var value = "white";
+  if(node.guide) return node.stroke || "#f6c5c5";
+  if(node.temp) return node.stroke || "#ddd";
+  return node.stroke || value;
+};
+
+graph.getPadding = function(node) {
+  var value = renderer.options["nodepad"];
+  return node.pad || node.padding || value;
+}
 
 // TODO: This will not work on cyclic graphs!!
 graph.getDepth = function(node) {

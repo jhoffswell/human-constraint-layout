@@ -6,10 +6,10 @@
   "links": [
     {"source": 0, "target": 1}
   ],
-  "constraints": [
+  "sets": [
     {
       "name": "sample",
-      "within": [{"type": "align", "axis": "x"}]
+      "constraints": [{"constraint": "align", "axis": "x"}]
     }
   ]
 }

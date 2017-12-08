@@ -1,70 +1,167 @@
 {
   "nodes": [
-    {"id": 0, "name": "cheetah", "type": "carnivore"},
-    {"id": 1, "name": "lion", "type": "carnivore"},
-    {"id": 2, "name": "wild dog", "type": "carnivore"},
-    {"id": 3, "name": "leopard", "type": "carnivore"},
-    {"id": 4, "name": "buffalo", "type": "herbivore"},
-    {"id": 5, "name": "duiker", "type": "herbivore"},
-    {"id": 6, "name": "waterbuck", "type": "herbivore"},
-    {"id": 7, "name": "impala", "type": "herbivore"},
-    {"id": 8, "name": "african elephant", "type": "herbivore"},
-    {"id": 9, "name": "giraffe", "type": "herbivore"},
-    {"id": 10, "name": "kudu", "type": "herbivore"},
-    {"id": 11, "name": "creeping bristle grass", "type": "plant"},
-    {"id": 12, "name": "LM grass", "type": "plant"},
-    {"id": 13, "name": "foxtail buffalo grass", "type": "plant"},
-    {"id": 14, "name": "sausage tree", "type": "plant"},
-    {"id": 15, "name": "marula tree", "type": "plant"}
+    {
+      "id": 0, "name": "Cheetah", "type": "carnivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 1, "name": "Lion", "type": "carnivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 2, "name": "Wild Dog", "type": "carnivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 3, "name": "Leopard", "type": "carnivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 4, "name": "Buffalo", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 5, "name": "Duiker", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 6, "name": "Waterbuck", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 7, "name": "Impala", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 8, "name": "African Elephant", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 9, "name": "Giraffe", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 10, "name": "Kudu", "type": "herbivore",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 11, "name": "Creeping Bristle Grass", "type": "plant",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 12, "name": "LM grass", "type": "plant",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 13, "name": "Foxtail Buffalo Grass", "type": "plant",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 14, "name": "Sausage Tree", "type": "plant",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    },
+    {
+      "id": 15, "name": "Marula Tree", "type": "plant",
+      "color": "#AFFF79",
+      "stroke": "blue",
+      "width": 50,
+      "height": 30
+    }
   ],
   "links": [
-    {"source": 0, "target": 1},
-    {"source": 2, "target": 1},
-    {"source": 4, "target": 1},
-    {"source": 5, "target": 0},
-    {"source": 5, "target": 1},
-    {"source": 6, "target": 0},
-    {"source": 6, "target": 1},
-    {"source": 6, "target": 3},
-    {"source": 7, "target": 0},
-    {"source": 7, "target": 1},
-    {"source": 7, "target": 2},
-    {"source": 7, "target": 3},
-    {"source": 9, "target": 1},
-    {"source": 10, "target": 0},
-    {"source": 10, "target": 1},
-    {"source": 11, "target": 4},
-    {"source": 11, "target": 7},
-    {"source": 11, "target": 8},
-    {"source": 12, "target": 4},
-    {"source": 12, "target": 7},
-    {"source": 12, "target": 8},
-    {"source": 13, "target": 4},
-    {"source": 13, "target": 7},
-    {"source": 13, "target": 8},
-    {"source": 14, "target": 5},
-    {"source": 14, "target": 7},
-    {"source": 15, "target": 6},
-    {"source": 15, "target": 8},
-    {"source": 15, "target": 9},
-    {"source": 15, "target": 10}
+    {"source": 0, "target": 1, "color": "#060076", "style": "dashed"},
+    {"source": 2, "target": 1, "color": "#060076", "style": "dashed"},
+    {"source": 4, "target": 1, "color": "#060076"},
+    {"source": 5, "target": 0, "color": "#060076"},
+    {"source": 5, "target": 1, "color": "#060076"},
+    {"source": 6, "target": 0, "color": "#060076"},
+    {"source": 6, "target": 1, "color": "#060076"},
+    {"source": 6, "target": 3, "color": "#060076"},
+    {"source": 7, "target": 0, "color": "#060076"},
+    {"source": 7, "target": 1, "color": "#060076"},
+    {"source": 7, "target": 2, "color": "#060076"},
+    {"source": 7, "target": 3, "color": "#060076"},
+    {"source": 9, "target": 1, "color": "#060076"},
+    {"source": 10, "target": 0, "color": "#060076"},
+    {"source": 10, "target": 1, "color": "#060076"},
+    {"source": 11, "target": 4, "color": "#060076"},
+    {"source": 11, "target": 7, "color": "#060076"},
+    {"source": 11, "target": 8, "color": "#060076"},
+    {"source": 12, "target": 4, "color": "#060076"},
+    {"source": 12, "target": 7, "color": "#060076"},
+    {"source": 12, "target": 8, "color": "#060076"},
+    {"source": 13, "target": 4, "color": "#060076"},
+    {"source": 13, "target": 7, "color": "#060076"},
+    {"source": 13, "target": 8, "color": "#060076"},
+    {"source": 14, "target": 5, "color": "#060076"},
+    {"source": 14, "target": 7, "color": "#060076"},
+    {"source": 15, "target": 6, "color": "#060076"},
+    {"source": 15, "target": 8, "color": "#060076"},
+    {"source": 15, "target": 9, "color": "#060076"},
+    {"source": 15, "target": 10, "color": "#060076"}
   ],
-  "constraints": [
+  "sets": [
     {
-      "name": "cluster",
-      "set": {"partition": "type"},
-      "within": [
-        { "type": "order", "axis": "x", "by": "id" },
-        { "type": "align", "axis": "x" }
-      ],
-      "between": [
-        { 
-          "type": "order", 
-          "axis": "y", 
-          "by": "type", 
-          "order": ["carnivore", "herbivore", "plant"]
-        }
-      ]
+      "name": "tropic_level",
+      "elements": {"partition": "type"},
+      "constraints": [
+        { "constraint": "order", "axis": "x", "by": "id" },
+        { "constraint": "align", "axis": "x" }
+     ]
+    },
+    {
+      "elements": ["tropic_level"],
+      "constraints": [{ 
+        "constraint": "order",
+        "axis": "y", 
+        "by": "type",
+        "order": ["carnivore", "herbivore", "plant"]
+      }]
     }
   ]
 }
