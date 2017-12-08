@@ -36,43 +36,47 @@ specification for a small tree layout is shown in Figure~\ref{fig:small-tree-exa
 \subsection{Specifying Sets in \projectname}
 There are several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
-into disjoint sets, (2) specifying particular sets with \emph{predicates},
+into disjoint sets, (2) specifying (potentially overlapping) sets via
+\emph{predicates},
 and (3) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
-partitioning or using predicates, the constraint definition may also 
+partitions or predicates, the constraint definition may also 
 designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes.
 
-\subsubsection{Partitioning nodes into sets}
-\constraint{\texttt{partition} by node \emph{depth}}
+\subsubsection{Partitioning Nodes into Sets}
+\constraint{Ex: \texttt{partition} by node \emph{depth}}
+
 The partition operator creates a collection of disjoint sets based on
-properties of the node (e.g., Figure~\ref{fig:small-tree-example}~Line~\texttt{17}).
+properties of the node
+(e.g., Figure~\ref{fig:small-tree-example}, Line~\texttt{17}).
 Given $n$ nodes to partition, this operator can produce at most $O(n)$ 
-sets for a particular constraint definition. The user may further limit 
-the number of sets  included by specifying which property values to 
+sets. The user may further limit 
+the number of sets included by providing specific property values to 
 \emph{include} or \emph{exclude} when producing the sets.
 
 For each node, we identify a key based on the node values for the partition
-properties and create sets based on the key. The include parameter allows
+properties and create sets based on the key. The \emph{include} parameter allows
 the user to identify particular node values to look for when partitioning
 and includes only those values; the exclude property does the opposite. 
-For example in Figure~\ref{fig:serengeti-layout}~Line~\texttt{11}, \texttt{28},
-and \texttt{46}, the user partitions the nodes by the \texttt{group} property
+For example in Figure~\ref{fig:serengeti-layout}, Lines~\texttt{11}, \texttt{28},
+\& \texttt{46}, the user partitions the nodes by the \texttt{group} property
 and only includes particular groups in each constraint definition to apply
 constraints relative to the tropic level of the nodes.
 
-\subsubsection{Specifying sets with predicates}
-\constraint{node \emph{depth}\texttt{ == 0}}
+\subsubsection{Specifying Sets with Predicates}
+\constraint{Ex: node \emph{depth}\texttt{ == 0}}
+
 For more flexibility in the definition of sets, users
-can specify a concrete lists of sets to compute using arbitrary boolean
-expressions. For each expression, each node is evaluated by the expression
-to determine if it is included in the set. The user may
-refer to properties of the node using dot syntax; for example, to extract
-the depth the user may write \texttt{node.depth}). Users may also optionally specify a
-\texttt{name} for the set, which may be referred to in composition set
-definitions. For this specification strategy, it is possible to create
-node sets that are not disjoint, and may thus produce unsatisfiable
-constraints.
+can specify a concrete list of sets, each defined by an arbitrary boolean
+expression. For each expression, nodes are evaluated by the expression
+to determine if it should be included in the set. The user may
+refer to properties of the node using dot syntax; for example,
+\texttt{node.depth} refers to the depth property. Users may also optionally 
+specify a \texttt{name} for the set, which may be referred to in subseqeunt
+composite set definitions. With this specification strategy, it is possible
+to create node sets that are not disjoint, and may thus lead to
+unsatisfiable constraints.
 
 \todo{Extract/Relation/?}
 
@@ -82,44 +86,50 @@ constraints.
 %relationships between nodes, which can be specified as a relation. For each
 %node, \todo{finish this section}
 
-\subsubsection{Composing previously defined sets}
-\constraint{\texttt{[} \emph{set1}, \emph{set2} \texttt{]}}
-Sets may also be formed through the hierarchical
-composition of previously defined sets. For example, in Figure
-\ref{fig:small-tree-example} the first constraint definition includes a 
-set definition that produces three sets using partition~(Line~\texttt{17}),
-named ``layer.'' The next constraint definition includes a composition 
-that contains only the ``layer'' set~(Line~\texttt{22}). For compositions, the user may
+\subsubsection{Composing Previously Defined Sets}
+\constraint{Ex: \texttt{[} \emph{set1}, \emph{set2} \texttt{]}}
+
+Sets may also be defined as hierarchical
+compositions of previously defined sets. For example, in
+Figure~\ref{fig:small-tree-example} the first constraint definition
+(named ``layer'') produces three sets via
+partition~(Line~\texttt{17}). The next constraint definition performs 
+composition, refencing only the ``layer'' set~(Line~\texttt{22}): the result
+is a single set that contains the three layer sets as elements.
+For composition, the user may
 refer to any named entities previously defined in the specification (e.g.,
 previous set definitions or named sets produced from \emph{predicates}).
-In the current version of \projectname, we only support conjunctions of
-sets; in other words, the new set contains only the listed sets.
+In the current version of \projectname, we only support composition via
+set union.
 
 When a named set is defined, the set element promotes the properties that
 are equivalent for all elements in the set to a property of the set
 element. For example, in Figure \ref{fig:small-tree-example}, when the user
 defines a partition on the nodes based on the \texttt{depth} (Line
-\texttt{17}), each set element is given a \texttt{depth} property with
-the value for that set. This property may now be referred to in other parts
-of the \projectname specification (Line \texttt{23}).
+\texttt{17}), each set is given a corresponding \texttt{depth} property with
+the shared value for that set. This property can be referenced in other 
+parts of the \projectname specification (Line~\texttt{23}).
 
 \subsection{Built-In Properties of the Graph Structure}
 \todo{Tie this section in better}
-In addition to defining constraints relative to properties arising from
-the domain, it may also be important to define constraints on properties
-of the graph structure. In our WebCoLa implementation, we support a 
-number of built-in properties for the nodes that reflect the graph structure.
+
+In addition to defining constraints relative to node properties, it may
+also be important to define constraints on properties
+of the graph structure. Our implementation supports a 
+number of built-in node properties that reflect the graph structure.
 These properties are automatically computed and added to the graph 
-specification when they are used in one of the \projectname\ constraints. 
+specification if they are used in one of the \projectname\ constraints. 
 These properties are only computed if such a property does not
 already exist on the nodes and are subject to a number of expectations
 regarding the graph input; for graphs that do not meet these expectations,
 users are shown a warning and required to compute the properties
 themselves.
 
+\jheer{Not clear under what these expectations are and under what circumstances a graph does not meet them.}
+
 \begin{description}
 \item[\texttt{\_id}] The node index in the graph specification. This
-  property is always computed regardless of whether or not it is used.
+  property is always computed regardless whether or not it is used.
 \item[\texttt{depth}] One more than the max depth of the node's
   parents. This property is only computed for graphs that contain only one
   root node and do not contain cycles. \todo{Is there a definition for
@@ -139,24 +149,40 @@ themselves.
 \item[\texttt{degree}] The number of \texttt{neighbors}.
 \end{description}
 
+\jheer{Is \texttt{\_id} required? That might confuse readers after we make claims about \projectname's reusability.}
+
+\jheer{What makes a node a root? How do we know? Why not support forests? Do we perform a topological sort? This needs more clarification.}
+
+\jheer{Are parents only available for directed graphs? Does \projectname distinguish between directed and undirected graphs?}
+
+\jheer{In addition to parent/child, source/target is another possible terminology. Indeed, \texttt{sources} and \texttt{targets} might be preferable to incoming/outgoing (which sound like they describe edges, not nodes).}
+
+\jheer{For firstchild, how is node ordering defined?}
+
+\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes? Also, neighbors could be further parameterized by graph distance, e.g., \texttt{graphDistance(node) < 3}.}
+
+\jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
+
+
 \todo{confirm all descriptions}
 
-We selected these properties as common structural elements that could be
-applicable to layout specifications. For example, the \texttt{depth}
+We selected these properties as common structural elements
+applicable to a variety of layout specifications. For example, the \texttt{depth}
 property is useful for producing hierarchical tree layouts and the 
 \texttt{incoming}, \texttt{outgoing}, and \texttt{neighbors} properties
 reflect structure produced by the graph edges. There are many other
 properties that could be useful for graph layouts that are not included 
-here; this list could easily be extended in the future to include other
+here and this list could easily be extended in the future to include other
 common properties. Furthermore, additional properties can always be
-computed by the user and added to the graph prior to running the layout.
+computed by the user and added to the graph data prior to using \projectname.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Applying Constraints in \projectname}
+
 For each constraint definition, the user may define multiple constraints
 that are applied to the nodes \emph{within} each individual set. 
 By utilizing set composition, the user can build up a hierarchical 
-definition of sets and thus effectively produce constraints \emph{between} 
-previously defined sets. We discuss the types of constraints currently 
+definition of sets and thereby specify constraints \emph{between} 
+previously defined sets. We discuss the various constraints currently 
 supported in \projectname in Section \ref{sec:constraints}.
