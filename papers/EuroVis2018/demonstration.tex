@@ -12,6 +12,8 @@ For each recreated example, the layout of the nodes is produced
 entirely in \projectname. However, we added additional labeling to the 
 final figures to better match the originals.
 
+\feedback{Younghoon}{Meanings of Purple/Blue/Green highlights?}
+
 % comparison of user spec and generated spec (quantiative comparison)
 % point out measure of comprehension
 % our demo uses domain props whereas low-level constraints in _id (separate from original intent)
@@ -49,6 +51,8 @@ particular, \emph{``Visualization of these groups and all their sex
 
 \jheer{Maybe just stop the quote right before ``(e.g., ...)''?}
 
+\feedback{Younghoon}{I agree with removing/replacing the quote.}
+
 We reproduced this visualization with \projectname~(Figure~\ref{fig:syphilis-layout}b) 
 and included a number of additional constraints on the layout apart
 from the separation constraints that are visible in the original image. In
@@ -65,7 +69,10 @@ Our modified layout~(Figure~\ref{fig:syphilis-layout}b) includes
 five constraint definitions, nine \projectname constraints, and generates 
 $166$ WebCoLa constraints~(Figure~\ref{fig:constraints}). With a small 
 number of user-defined constraints, we can tidy up the layout to produce
-one that more effectively communicates the ethnographic groupings. The
+one that more effectively communicates the ethnographic groupings. 
+\feedback{Zening}{Could you be more specific about ``effectively''? I think 
+in Fig 3 b the nodes in each cluster is more aligned. They form a circle, 
+or a straight line, or a matrix. So that's easier to perceive by the eyes?} The
 WebCoLa constraint solver includes a procedure to reduce the length of
 edges to a set length. This behavior encourages the circle of young women
 to trend towards the group of African-American men thus further demonstrating
@@ -75,6 +82,12 @@ the original paper.
 \todo{Is it useful to mention what it would be like to just recreate the
 original `constraints'? And if it is useful, should we add that version
 to the figure?}
+
+\feedback{Zening}{I think if the recreation is exactly the same as the 
+original figure, it can be omitted. You already said in the text the 
+recreation of the original figure can be done with three constraint 
+definitions and three SetCoLa constraints. Showing the improved layout 
+seems more useful to me.}
 
 \subsection{TLR4 Network}
 \tlrfourSpec
@@ -176,3 +189,6 @@ web, though \emph{``hypothesize that the general conclusions will be
 the authors could reuse the layout specification to visualize future iterations
 of the Serengeti food web or explore similar structures across different
 ecological communities.
+
+\feedback{Younghoon}{If you have a space, could you explain why the Group 
+13 looks different between the original and the SetCoLa example?}

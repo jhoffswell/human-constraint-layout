@@ -7,13 +7,18 @@
 \texttt{cluster}, \texttt{hull}, and \texttt{padding}. We
 target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
 interactive, web-based layouts. In this section, we describe the requirements 
-for each type of constraint and how we implement them using WebCoLa. 
+for each type of constraint and how we implement them using WebCoLa.
+\feedback{Matt}{Could use some writing-style cleanup} 
 In WebCoLa, constraints are defined based on the \texttt{\_id} of the
 node in the graph specification. We leverage two of WebCoLa's
 constraint types for our implementation: \emph{alignment} constraints 
 and \emph{position} constraints. For other \projectname constraints, we
 approximate the behavior by imputing additional edges or by applying
 padding to the nodes in the layout.
+
+\feedback{Zening}{Sec 4 Intro: I feel the intro of this section could 
+benefit from adding a sentence or two about why you picked these seven 
+constraints instead of the others.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
@@ -33,6 +38,21 @@ a constraint such that $n_1[y]$ == $n_2[y]$.
 to write this up?}
 
 \jheer{I like having the formal description. I think the numbering is unnecessary though. Simply including the formal description as part of the writing may suffice.}
+
+\feedback{Matt}{I'm torn about all the mathematical definitions. Here's what I initially wrote:
+``\emph{If you can specify something in words as concisely as you can with an
+equation, probably no need for the equation... although if you want it to 
+be more mathy the mathematical definitions probably don't hurt?}''
+But then after reading through 4.2 and 4.3 the definitions seemed kind of 
+nice. But then there kept being more definitions and it got really tedious 
+to read, when really the plane descriptions were much more useful for me 
+to think about it. I think I'd prefer to see a small figure for each type, 
+showing it visually. maybe  annotated to show the most important parts 
+of the math graphically?}
+
+\feedback{Younghoon}{I'm not sure the formal definition in WebCoLa language 
+is important. The information I wanted to get was what this term can 
+express/visualize/act in graph layout.}
 
 The user may also optionally identify an \texttt{orientation} for the alignment.
 The orientation is useful for producing alignments when the size of the 

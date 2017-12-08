@@ -1,0 +1,39 @@
+{
+  "nodes": [
+    {"name": "a", "value": 8}, 
+    {"name": "b", "value": 7},
+    {"name": "c", "value": 3},
+    {"name": "d", "value": 2},
+    {"name": "e", "value": 9},
+    {"name": "f", "value": 4}
+  ],
+  "links": [
+    {"source": 0, "target": 1},
+    {"source": 0, "target": 2},
+    {"source": 1, "target": 3},
+    {"source": 2, "target": 4},
+    {"source": 2, "target": 5}
+  ],
+  "constraintDefinitions": [
+    {
+      "name": "children",
+      "sets": {"partition": "parent", "ignore": [null]},
+      "forEach": [{ "constraint": "order", "axis": "x", "by": "value" }]
+    },
+    {
+      "name": "parent-child",
+      "sets": {"collect": ["node", "sort(node.children, 'value')[0]"]},
+      "forEach": [{"constraint": "align", "axis": "y"}]
+    },
+    {
+      "name": "layer",
+      "sets": {"partition": "depth"},
+      "forEach": [{ "constraint": "align", "axis": "x" }]
+    },
+    {
+      "name": "tree-order",
+      "sets": ["layer"],
+      "forEach": [{ "constraint": "order", "axis": "y", "by": "depth", "reverse": true }]
+    }
+  ]
+}

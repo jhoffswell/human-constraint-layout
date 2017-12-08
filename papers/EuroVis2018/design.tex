@@ -4,11 +4,11 @@
 constrained graph layouts. To provide a reusable specification 
 without explicit reference to individual nodes and edges, \projectname
 applies constraints to groups of nodes defined by shared attributes. 
-The central abstraction in \projectname is a \textbf{set}. At the base level, 
-the elements of a set are simply graph nodes; however, \projectname also
+The central abstraction in \projectname is a \textbf{set}. The 
+simplest elements of a set are graph nodes; however, \projectname also
 supports hierarchical composition, with nested sets as elements.
 
-The core component in \projectname is a \textbf{constraint definition},
+A \projectname specification comprises one or more \textbf{constraint definitions},
 which includes both a set definition and constraint application.
 \projectname provides a concise set of operators for defining
 sets based on node attributes, including structural relations in the graph.
@@ -19,6 +19,10 @@ or alignment), which are applied to the nodes within each separate set.
 In other words, constraints for a constraint definition with multiple sets are 
 applied to nodes \emph{within} each individual set, not \emph{between} 
 the sets in the constraint definition.
+
+\feedback{Matt}{It is confusing to me that a constraint and a constraint 
+definition don't have a 1-1 mapping. A constraint definition applies multiple 
+constraints over a set or multiple sets?}
 
 A \projectname specification consists of one or more constraint definitions, 
 along with an optional set of guides (reference elements that serve as 
@@ -46,6 +50,18 @@ elements are simply graph nodes.
 
 \subsubsection{Partitioning Nodes into Sets}
 \constraint{Ex: \texttt{partition} by node \emph{depth}}
+
+\feedback{Matt}{I like what you're trying to do with the little code snippets 
+in the section headers, but as someone who doesn't know what they mean 
+I find them more confusing than helpful}
+
+\feedback{Younghoon}{Next to 4.n. subsection titles: what about showing 
+a sample spec in SetCoLa instead of WebCoLa? It might help to connect 
+the text to the example codes.}
+
+\todo{It is definitely not clear what these little annotations are so need
+to better explain/write those if it is something that we want to try and
+keep}
 
 The partition operator creates a collection of disjoint sets based on
 properties of the node
