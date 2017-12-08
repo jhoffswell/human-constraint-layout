@@ -1,22 +1,24 @@
 %!TEX root = constraint-layout.tex
 \section{\projectname Constraints and WebCoLa Implementation}
 \label{sec:constraints}
-We implemented seven constraints for \projectname: 
+
+\projectname provides seven types of constraints:
 \texttt{alignment}, \texttt{position}, \texttt{order}, \texttt{circle},
-\texttt{cluster}, \texttt{hull}, and \texttt{padding}. In this work, we
+\texttt{cluster}, \texttt{hull}, and \texttt{padding}. We
 target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
 interactive, web-based layouts. In this section, we describe the requirements 
-for each type of constraint and how we implemented them using WebCoLa. 
+for each type of constraint and how we implement them using WebCoLa. 
 In WebCoLa, constraints are defined based on the \texttt{\_id} of the
 node in the graph specification. We leverage two of WebCoLa's
 constraint types for our implementation: \emph{alignment} constraints 
 and \emph{position} constraints. For other \projectname constraints, we
-approximate the behavior using additional edges or by applying padding
-to the nodes in the layout.
+approximate the behavior by imputing additional edges or by applying
+padding to the nodes in the layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
-\constraint{\texttt{align} \emph{x} \texttt{axis}}
+\constraint{Ex: \texttt{align} \emph{x} \texttt{axis}}
+
 Alignment constraints ensure that all nodes in the set share one of their
 coordinates. For this implementation, the constraint must specify the \texttt{axis}
 as either \texttt{x} or \texttt{y}. These constraints are defined as:
@@ -55,7 +57,8 @@ to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Position Constraints}
-\constraint{\texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
+\constraint{Ex: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
+
 Position constraints ensure that all nodes in the set are positioned relative to
 a guide \orange{or previously named set}. The user most specify the relative
 orientation for the position as one of \texttt{left}, \texttt{right}, 
@@ -94,7 +97,8 @@ different areas.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Constraints}
-\constraint{\texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
+\constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
+
 Order constraints enforce a sort order on the set elements. The user must 
 specify the \texttt{axis} as either \texttt{x} or \texttt{y} and must define
 the node property \texttt{by} which the order is determined. These 
@@ -136,7 +140,8 @@ user to specify the overall sort order for the layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circle Constraints}
-\constraint{\texttt{circle} \texttt{around} \emph{``center''}}
+\constraint{Ex: \texttt{circle} \texttt{around} \emph{``center''}}
+
 Circle constraints allow the user to specify a ring layout for a set of
 elements. The constraint must include which element the set elements should
 be positioned around or may specify ``center'' for a generic center point
@@ -164,7 +169,8 @@ properties of the underlying structure.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cluster Constraints}
-\constraint{\texttt{cluster}} 
+\constraint{Ex: \texttt{cluster}} 
+
 Cluster constraints encourage a organic clustering of the nodes around
 a center point.
 
@@ -184,7 +190,8 @@ nodes are attracted to others of similar type.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
-\constraint{\texttt{hull}} 
+\constraint{Ex: \texttt{hull}} 
+
 Hull constraints create a boundary around the set elements and prevents
 elements from other sets from passing through this boundary. These 
 constraints are defined as follows:
@@ -211,7 +218,8 @@ of separate sets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
-\constraint{\texttt{padding 5}} 
+\constraint{Ex: \texttt{padding 5}} 
+
 Padding constraints introduce an amount of space around the element relative
 to other elements in the set. These constraints are defined as follows:
 
@@ -231,7 +239,8 @@ To support the overall legibility of the graph, additional padding can be
 beneficial to ensure that nodes are not placed to close together.
 
 \subsection{Creating Guides in WebCoLa}
-\constraint{$O(g)$ new nodes}
+\constraint{Ex: $O(g)$ new nodes}
+
 In \projectname, the user may define guides to control the graph layout.
 To use these guides in WebCoLa constraints, we add a new node to the graph
 for each guide and generate constraints relative to this node. These 
