@@ -4,18 +4,18 @@
 There are a number of useful areas for future work surrounding optimizations
 for the constraint generation procedure, the development of useful debugging
 tools to facilitate the user's understanding of unsatisfiable constraints,
-and the evolution of constraint solvers targeted towards \projectname.
+and the evolution of constraint solvers more closely integrated with \projectname.
 
 % wrangler/polestar/lyra strategies for specifying constraints
 % dsl leveraged as useful interface for processing logic
 
 \subsection{Prototyping and Constraint Generation}
 \projectname allows users to easily produce layout constraints that apply
-to across nodes in a graph rather than applying constraints to individual
+to groups of nodes in a graph rather than applying constraints to individual
 nodes one at a time. By deferring this complexity to the underlying constraint
 solver, the user can more easily prototype the layout and make changes that
-impact the overall behavior with minimal effort. As noted in Figure~\ref{fig:constraints},
-the number of \projectname constraints is a mere fraction of the WebCoLa constraints.
+impact the overall behavior with minimal effort. As shown in Figure~\ref{fig:constraints},
+the number of \projectname constraints is a small fraction of the WebCoLa constraints.
 
 The current WebCoLa implementation is not completely optimized to reduce the
 number of constraints. In particular, the current procedure for generating
@@ -23,24 +23,24 @@ order constraints introduces a number of inter-node constraints that could
 be superfluous in the final layout. For example, in generating constraints
 for Figure \ref{fig:small-tree-example}, the current \projectname implementation
 for WebCoLa produces two constraints ($a.y < b.y$ and $a.y < c.y$) even though
-we also specify a constraint that says $b.y == c.y$. Future work should explore
-additional optimizations for the underlying constraint solver in order to
+we also specify a constraint that says $b.y == c.y$. Future work could explore
+additional optimizations in order to
 reduce the generation of unnecessary constraints.
 
 \subsection{Debugging and Unsatisfiable Constraints in \projectname}
 For a \projectname specification, it is possible to create node sets that
-are \emph{not} disjoint and may thus be easily susceptible to the
-specification of unsatisfiable constraints. Furthermore, through various
-combinations of set definitions and constraint applications, it is
-possible for the user to specify unsatisfiable constraints in the
-\projectname layout. These concerns are not exclusive to \projectname, but
-may also arise in WebCoLa and other constraint systems.
+are \emph{not} disjoint and may thus be susceptible to the
+specification of unsatisfiable constraints. Furthermore, it is
+possible for the user to specify unsatisfiable constraints indirectly through
+combinations of set definitions and constraint applications. These concerns
+are not exclusive to \projectname, as they can also arise
+in WebCoLa and other constraint-based layout tools.
 
 For the constraints described in this paper, it is possible to determine if
 conflicts arise at program runtime and show such conflicts to the user. One
 advantage of the SetCoLa abstraction is that the original user constraints
-are defined on the high-level properties of the nodes and therefore it is
-easier to understand why the conflicts are occurring. For example, we may
+are defined on the high-level properties of the nodes and therefore it may
+be easier to understand why the conflicts are occurring. For example, we may
 note that some nodes occur in multiple sets with conflicting constraints
 or that multiple constraints on a particular set are generally in conflict.
 
@@ -57,16 +57,16 @@ or that multiple constraints on a particular set are generally in conflict.
 
 Our implementation with WebCoLa allows us to demonstrate the utility of
 \projectname for creating customized domain-specific layouts that can be
-easily reapplied to multiple graphs in the same domain. However, our current
-implementation was partially constrained by what WebCoLa currently supports. For
-example, we were unable to express \projectname's circle constraints in
-WebCoLa as it does not currently include such a constraint type, though it
+reapplied to multiple graphs in the same domain. However, our current
+implementation was partially limited by what WebCoLa currently supports. For
+example, we were unable to directly express \projectname's circle constraints in
+WebCoLa. WebCoLa does not currently include such a constraint type, though it
 has been identified in the wiki as an area of future work
-\todo{citation?}. This work contributes new strategies for the
+\todo{citation?}. Our work contributes new strategies for the
 specification of graph layout constraints, but does not aim to create a
-highly optimized constraint solver for the language; WebCoLa was a useful
-library on which to build and demonstrate this constraint technique but 
-future work should explore how new or existing constraint solvers might
+highly optimized constraint solver for the language. WebCoLa is a useful
+library on which to build and demonstrate our approach, but 
+future work might explore how new or existing constraint solvers might
 co-evolve alongside this high-level language for constraint specification.
 
 We also encountered some behavioral mismatches between the implementation
@@ -76,31 +76,34 @@ node positions to produce links as close to the desired link length as
 possible. While this technique can be useful for highlighting the underlying 
 structure of the graph, it has a significant effect on the layout that is
 produced by WebCoLa that may vary from what is specified in \projectname.
+
 This behavior can be beneficial for some layouts, such as the syphilis social network.
 As noted in Section \ref{sec:examples}, in the syphilis social network
 (Figure~\ref{fig:syphilis-layout}b), the circle is drawn slightly off
 center between the groups since more links exist between the
 young women and the African-American men than between the young women and
 the white men, which emphasizes the strength of these
-connections. However, some layouts require node positioning that should be
+connections.
+
+However, some layouts require node positioning that should be
 independent of the graph structure. Revisting the syphilis social network
 (Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
 are drawn to the lower position allowed by the boundary guide in an attempt
 to shorten the link length, thus producing an alignment unspecified in the
 layout. The underlying constraint solver can thus significantly impact the
 behavior of the layout since it may encode additional preferences based on
-the type of solver. In future work, it may be useful for the user to be able
-to specify the type of underlying solver or additional properties regarding
+the underlying solver. In future work, it may be useful for the user to be able
+to specify the type of underlying solver or additional parameters expressing
 global preferences for the graph layout.
 
 Another interesting behavior of WebCoLa is that a global non-overlap constraint
 may be applied to the nodes at the start of the overall layout. This constraint
 prevents nodes from overlapping even at intermediate stages of the layout and
-may thus cause the layout to reach to become stuck in a local maxima that still
-contains constraints that are currently unsatisfied. Furthermore, our use of
-`temporary' nodes with a fixed position may further complicate the issue of
-reaching a local maxima. Future work should explore additional procedures for
-iteratively adding constraints to the graph layout that can build up the final
+may thus cause the layout to become stuck in a local optima that still
+includes unsatisfied constraints. Furthermore, our use of
+dummy guide nodes with a fixed position may further complicate issues
+with local maxima. Future work might explore additional procedures for
+iteratively adding constraints to the graph layout, building up the final
 result incrementally. This technique would help to reduce some of the burdens
-on the layout to resolve all constraints at once and can allow the user to
-incrementally improve the overall layout.
+on the layout to resolve all constraints at once and allow the user to
+incrementally improve the layout.
