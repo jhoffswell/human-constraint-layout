@@ -17,10 +17,10 @@ data.
 %(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
 %layout: a unique layout that leverages knowledge of the data domain for
 %node placement and understanding of the graph structure.
-In a biological pathway for example, nodes could be layered by their 
+In a biological pathway, nodes could be layered by their 
 subcellular location to provide an overview of the cellular structure
 (Figure~\ref{fig:tlr4-layout}). The additional ``downstream genes'' layer
-can further show the outcomes of this network clustered by molecular function.
+can further show the outcomes of this network, clustered by molecular function.
 
 \tlrfourLayout
 
@@ -36,38 +36,34 @@ where customized layouts would be useful and the availability of tools to
 support those domains. When a layout technique does not exist for the
 domain of interest, users are required to either fit their data
 to available techniques or devise a new algorithm. Creating a
-customized layout algorithm can be challenging and often requires both
-domain and programming expertise.
-This barrier introduces a gap between the 
-analysis needs of some domains and the availability of techniques to
+customized layout algorithm requires both
+domain and programming expertise, and so introduces a gap between 
+analysis needs and the availability of techniques to
 handle those needs.
 
-Constraints are a natural way to identify the desired properties for a
-customized layout, as the designer can think about how domain-specific
-properties drive the positions of nodes. However, many existing techniques
-for constraint layout require the user to identify individual constraints
-on nodes or node \emph{pairs} in the graph. This process can be highly labor
-intensive, requiring thousands of similar constraints or careful reasoning
-about which nodes should be constrained. Furthermore, these constraints often
-refer to low-level node properties (such as the node index) and thus prevent
-the user from reusing the layout across graphs in the same domain.
+Constraints can be used to specify desired properties for a layout, as the designer can think about how domain-specific properties should control the positions of nodes. However, many existing techniques
+for constraint layout require the user to define constraints
+on individual nodes or node pairs in the graph. This process can be labor
+intensive, requiring thousands of similar constraints and careful reasoning
+about which nodes should be constrained. Moreover, instance-level constraints (e.g., defined \emph{extensionally} via node indices) prevent
+reuse of a layout for various graphs from the same domain.
 
-To enable the design of customized domain-specific layouts with minimal
-programming effort, we present \projectname: a domain specific language for
+To enable customized domain-specific layouts with reduced
+programming effort, we contribute \projectname: a domain specific language for
 specifying high-level constraints for graph layout. Users partition nodes
-into sets based on node or graph properties and apply layout constraints
-within or between these sets. This approach allows users to specify layout
+into sets based on node or graph properties, and apply layout constraints
+to these sets. This approach allows users to specify layout
 requirements at a high-level, deferring the generation of
-node-level constraints to the underlying runtime system. These constraint
-specifications reduce programming effort while still enabling highly
-customized and generalizable graph layouts.
+instance-level constraints to the underlying runtime system. These constraint
+definitions reduce specification effort while enabling highly
+customized and reusbale graph layouts.
 
-We implemented \projectname in 
+Our implementation of \projectname generates instance-level constraints for
 WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint based graph
-layout, by compiling the \projectname constraints into inter-node WebCoLa constraints.
-To demonstrate the generalizability of our language, we
+layout. We compile \projectname constraints to inter-node WebCoLa constraints.
+To demonstrate the expressiveness of our language, we
 recreate a number of customized layouts found in the scientific research 
 literature. We
 show that users can compactly specify complex graph layouts that resemble
-those produced by customized layout engines and can reapply layout
+those produced by customized layout engines, and can reapply layout
 specifications across different graphs.
