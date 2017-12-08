@@ -32,6 +32,8 @@ a constraint such that $n_1[y]$ == $n_2[y]$.
 \todo{Is it helpful to have a description like this? Is there a better way
 to write this up?}
 
+\jheer{I like having the formal description. I think the numbering is unnecessary though. Simply including the formal description as part of the writing may suffice.}
+
 The user may also optionally identify an \texttt{orientation} for the alignment.
 The orientation is useful for producing alignments when the size of the 
 elements do not match. By default, the orientation is defined as \texttt{center} 
@@ -50,6 +52,8 @@ alignment orientation of the nodes.
 users to produce layouts that exhibit grid like layout properties similar
 to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
 
+\jheer{This is not a true rationale. Focus on the user needs this meets. Why are grid-like layouts needed or desirable? Why is the fact that Kieffer et al. produce them relevant here? One alternative you could consider is moving your rationale to a dedicated subsection at the end of this section. Some designs are achieved by combining constraints, but listing rationales one-by-one may make it harder to talk about what can be achieved via constraint composition.}
+
 %\jheer{Why only x/y axes? Why not polar coordinates, for example? Or along arbitrary line segments defined as guides? I'm not saying you *should* support these, only that it's not clear why you focus where you do. Also I don't totally understand what alignment means here (nor what the default would be if unspecified). Readers may be confused about what you mean by applied to nodes vs. applied to sets, as earlier we talk about sets as the units that constraints are applied to. Also, centroid or boundary, which is used when and why?}
 
 % When applied to sets, this constraint produces an alignment based on the centroid or boundary of the set elements.
@@ -60,8 +64,8 @@ to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
 \constraint{Ex: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
 
 Position constraints ensure that all nodes in the set are positioned relative to
-a guide \orange{or previously named set}. The user most specify the relative
-orientation for the position as one of \texttt{left}, \texttt{right}, 
+a guide \orange{or previously named set}. The user must specify the relative
+placement for the position as one of \texttt{left}, \texttt{right}, 
 \texttt{above}, or \texttt{below}. These constraints are defined as:
 
 \begin{definition}
@@ -80,10 +84,10 @@ For all nodes $n$ in $S$, we define a constraint such that $(n[x]$ + 20) < $g[x]
 
 \emph{Implementation.}
 Position constraints are one of the constraint types natively supported in
-WebCoLa and also include a \texttt{gap} for the constraint. For each node
+WebCoLa, including a \texttt{gap} parameter. For each node
 in set $S_1$, we produce one position constraint relative to the specified guide.
 \orange{When the position constraint is defined relative to a named set $S_2$,
-we produce one position constraint for each pair of nodes between $S_1$ and $S_2$.}
+we produce one position constraint for each pair of nodes $(u, v)$ where $u \in S_1$ and $v \in S_2$.}
 
 \emph{Rationale.} Position constraints allow the user to provide
 overarching constraints relative to global elements such as guides. These
@@ -105,15 +109,15 @@ the node property \texttt{by} which the order is determined. These
 constraints are defined as follows:
 
 \begin{definition}
-Let $S$ be the set on which the constraint \texttt{order x axis by node depth} is applied.
+Let $S$ be the set on which the constraint \texttt{order x axis by `depth'} is applied.
 For all nodes $n_1$ and $n_2$ in $S$, we define a constraint such that $n_1[x]$ < $n_2[x]$
 if $n_1[depth] < n_2[depth]$.
 \end{definition}
 
 The user can optionally define an explicit list of values for a custom
-\texttt{order}; otherwise, the elements are ordered alphabetically \texttt{by}
-the specified property. The user may also optionally include a boolean of whether
-or not to \texttt{reverse} the order. Users may finally specify an optional
+\texttt{order}; otherwise, the elements are ordered lexicographically \texttt{by}
+the specified property. The user may also indicate whether
+or not to \texttt{reverse} the order. Users may specify an optional
 \texttt{band} property for the constraint that determines a size for each
 set region. For the \texttt{band} property, users can introduce fixed spacing
 to the order of the elements by introducing boundaries between elements.
@@ -121,7 +125,7 @@ Constraints with the \texttt{band} property are defined as follows:
 
 \begin{definition}
 Let $S$ be the set with $N$ elements on which the constraint 
-\texttt{order x axis by node depth with band 200} is applied.
+\texttt{order x axis by `depth' with band 200} is applied.
 We define $N+1$ boundary guides: $b_1, b_2, ..., b_{N+1}$ where
 $b_1[x] + 200 == b_2[x]$. We then sort the elements by the depth.
 Let $n_1$ be the element with the smallest depth and $n_2$ be the element 
@@ -188,39 +192,38 @@ another to produce a more inherent grouping than may otherwise occur.
 This behavior is similar to many force-directed techniques in which
 nodes are attracted to others of similar type.
 
+\jheer{I don't think many (any?) force-directed techniques actually have nodes of the same type attact each other. You might instead explicitly cite d3-force, which uses x, y forces to attract certain nodes to a given point (much like a guide). Note that there is no attractive force between nodes. Rather, a proportionally-balanced repulsive (n-body) repulsive force and/or collision force is used to prevent overlap among nodes attracted to the same point.}
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
 \constraint{Ex: \texttt{hull}} 
 
-Hull constraints create a boundary around the set elements and prevents
-elements from other sets from passing through this boundary. These 
+Hull constraints create a boundary (hull) around the set elements and prevent any other nodes from residing within that boundary. These 
 constraints are defined as follows:
 
 \begin{definition}
-Let $S$ be the set on which the constraint \texttt{hull} is applied. We produce a
-rectangle $B$ with properties $B.x1$, $B.x2$ $B.y1$, $B.y2$. For all nodes
+Let $S$ be the set on which the constraint \texttt{hull} is applied. We produce a minimally enclosing rectangle $B$ with properties $B.x1$, $B.x2$ $B.y1$, $B.y2$. For all nodes
 $n$ in $S$, we define constraints such that $B.x1 < n[x]$, $n[x] < B.x2$,
 $B.y1 < n[y]$, $n[y] < B.y2$. For all nodes $m$ \emph{not} in $S$, we define
 constraints such that $m[x] < B[x1] || B[x2] < m[x]$ and $m[y] < B[y1] || B[y2] < m[x]$.
 \end{definition}
 
 \emph{Implementation.}
-We generate hull constraints in WebCoLa using its built-in support for 
+We implement hull constraints in WebCoLa using its built-in support for 
 specifying \texttt{groups} in the layout which produce a boundary around 
 the nodes defined by their \texttt{\_id}.
 
 \emph{Rationale.}
 Hull constraints allow users to create enclosed regions of the graph in
-which the set elements do not interact with elements outside the set. This
-type of constraint can prevent nodes from interleaving when they are part
-of separate sets.
+which the set elements do not interleave with elements outside the set. This
+constraint enforces spatial separation of nodes in different sets.
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
 \constraint{Ex: \texttt{padding 5}} 
 
-Padding constraints introduce an amount of space around the element relative
+Padding constraints enforce minimum spacing around an element relative
 to other elements in the set. These constraints are defined as follows:
 
 \todo{Formal definition of this constraint?}
@@ -228,11 +231,13 @@ to other elements in the set. These constraints are defined as follows:
 \emph{Implementation.}
 Padding introduces additional space around nodes without constraining the
 axis on which the padding is added. Our current implementation adds a
-padding to the nodes which essentially increases the size of the element
-when WebCoLa's non-overlap behavior is applied. However, in this implementation
+padding to the node geometry which essentially increases the size of the element
+when WebCoLa's non-overlap behavior is applied. In this implementation
 padding can only be specified once and applies to all nodes, not just nodes
-in the specified set. Future work is required to develop constraint that
-respect the padding only relative to set elements.
+in the specified set. Additional work is required to develop constraints that
+respect the padding only relative to certain set elements.
+
+\jheer{Is the issue here one of applying spacing respected by elements within a set, but which is otherwsie ignored by elements of other sets? If so, this seems like a minor shortcoming (if even a shortcoming at all). I feel like this doesn't really follow our set-based model, but rather serves as a form of global constraint (i.e., applied on the set containing all nodes). Also, if I wanted to give different padding values to different types of nodes (which is then globally respected by the layout) is this possible?}
 
 \emph{Rationale.}
 To support the overall legibility of the graph, additional padding can be
