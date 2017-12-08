@@ -1,22 +1,21 @@
 %!TEX root = constraint-layout.tex
 \section{Related Work}
-There are many areas of related work surrounding graph visualization; we
-discuss general layout techniques that motivate this work and expand on the
-discussion of domain specific layouts.
+
+A great deal of prior work has contributed to graph visualization.
+We discuss general layout techniques that motivate this work and
+then expand upon domain-specific layouts.
 
 \subsection{General Graph Layout}
 There are numerous approaches to graph layout that leverage structural
 information from the graph to produce the layout \cite{herman2000graph,eades2010graph,gibson2013survey}.
-For node-link diagrams, the Reingold \& Tilford layout~\cite{reingold1981tidier}
-iteratively arranges graph nodes to produce compact, symmetrical tree layouts.
-Radial layouts \orange{citation} similarly represent node-link diagrams but rather use polar coordinates,
-with the root placed at the center point. Sugiyama-style layouts \cite{sugiyama1981methods} iteratively
-arrange nodes into layers and ensure the arrangement visually depicts the hierarchy.
-Force-directed techniques \cite{tutte1963draw,kobourov2012spring,quinn1979forced,fruchterman1991graph} 
-run physical simulations that incorporate forces on the nodes and
-may treat edges as springs meant to draw neighboring nodes
-together and minimize the overall energy. 
-There are a variety of tools that support graph drawing with different layout 
+For node-link diagrams of hierarchical data, Reingold \& Tilford's ``tidy'' 
+layout~\cite{reingold1981tidier} iteratively arranges graph nodes to
+produce compact, symmetrical tree layouts.
+Radial layouts \orange{citation} follow similar procedures but using polar coordinates, with a root node placed at the origin.
+Sugiyama-style layouts~\cite{sugiyama1981methods} visualize directed graphs by first assigning nodes to hierarchical layers and then iteratively adjusting node placement to minimize edge crossings.
+Force-directed techniques~\cite{tutte1963draw,kobourov2012spring,quinn1979forced,fruchterman1991graph} 
+use physical simulation and/or optimization methods that model repulsive forces between nodes and spring-like forces on edges, and then attempt to minimize the overall energy. 
+A number of popular tools support graph drawing with various layout 
 techniques, including D3.js~\cite{bostock:d3}, Gephi~\cite{bastian2009gephi},
 Graphviz~\cite{ellson2001graphviz}, and Cytoscape~\cite{shannon2003cytoscape}.
 
@@ -35,71 +34,73 @@ aesthetic properties. \textsc{hola} \cite{kieffer2016hola} produces orthogonal
 layouts similar to those produced by hand, informed by common aesthetic properties 
 used in manual layouts.
 
-\subsection{Constraint Layout Techniques}
-Constraints are another strategy for creating more complex layouts that further
-represent structural or aesthetic properties of the graph. IPSep-CoLa extends
-the force-directed layout to apply separation constraints on pairs of nodes.
-Dig-CoLa \cite{dwyer2005dig} encodes the hierarchy of nodes as constraints
+\jheer{I don't think we need to include techniques for representations other than node-link diagrams. For example, we could drop treemaps, icicle trees, adjacency matrices, etc. Hola is (to my mind) in a totally different category and should be cited / discussed, and perhaps related to issues of domain-specificity. For example, what domains are orthogonal layouts important for?}
+
+\subsection{Constraint-Based Layout Techniques}
+Extending an existing layout method to support \emph{constraints} enables customized layouts that may emphasize important
+structural or aesthetic properties of the graph. IPSep-CoLa~\jheer{cite?} extends
+force-directed layout to apply separation constraints on pairs of nodes.
+Dig-CoLa~\cite{dwyer2005dig} encodes the hierarchy of nodes as constraints
 and attempts to minimize the stress on the overall graph layout. 
 Kieffer et al.~\cite{kieffer2013incremental} present a constraint-based 
 layout for creating graphs with node and edge alignment,
 and demonstrate the feasibility of such a technique by incorporating it into
-the interactive graph layout system, Dunnart \cite{dwyer2008dunnart}.
+the interactive graph layout system Dunnart~\cite{dwyer2008dunnart}.
 WebCoLa~\cite{WebCoLa} is a JavaScript library for constraint-based layout 
-that can be used alongside D3 or Cytoscape~\cite{shannon2003cytoscape}. 
-These constraint layout techniques help to emphasize structural properties of
+that can be used with D3~\cite{bostock:d3} or Cytoscape~\cite{shannon2003cytoscape}. 
+These constraint-based layout techniques are often used to emphasize structural properties of
 the graph such as hierarchy or containment. While WebCoLa can support 
 customized constraints in addition to more general structural constraints,
 the specification of individual inter-node constraints can be labor intensive.
 \projectname aims to reduce the burden of specifying customized constraints
 to enable the design of domain-specific and generalizable layouts.
 
+\jheer{Beyond listing lots of projects, perhaps we should say more about the nature of the constraints. What kinds of constraints do these tools support? That kind of overview is probably more important than listing all the various projects, and helps setup a later discussion of constraints supported by \projectname}
+
 %\jheer{The prose here feels more *tool* focused (e.g., Graphviz, D3, Cytoscape) then *technique* focused (e.g., different layout approaches). I think you should take a step back and think about the big picture here. What are the common automatic (non-constrained based) approaches to node-link diagram layout? What structural features does each show? What are their limitations? Then go on to discuss contrained and/or customized layouts and their value for domain-specific graph layout. The DiG-CoLa paper does a nice job of this, contrasting force-directed and Sugiyama approaches, and showing how DiG-CoLa in some ways enables hybrids of the two. Also, right now the critical discussion of constrained layouts -- their main concepts, strengths, and weaknesses -- is missing.}
 
-\subsection{Domain Specific Graph Visualization}
-Several techniques have been developed to utilize
-domain specific information for graph layout, but these techniques do not cover
-all possible domains of interest. In a blog post describing her approach to
+\subsection{Domain-Specific Graph Visualization}
+Several techniques have been developed to reflect
+domain-specific concenrs within graph layouts. However, these techniques
+tend to be highly-specialized, and so may not apply to other possible
+domains of interest. In a blog post describing her approach to
 visualizing food webs~\cite{kearney2016blog}, Kearney notes that the node
-placement algorithm should \emph{``allow contraining y-position to match
+placement algorithm should \emph{``allow constraining y-position to match
   trophic level while allowing free movement in the x-direction. With no
   such algorithm seemingly readily available, I decided to create my
-  own.''} Kearney has developed plugins for D3~\cite{kearney2017d3} and
+  own.''} Kearney developed plugins for D3~\cite{kearney2017d3} and
 Ecopath~\cite{kearney2017ecopath} to aid in the visualization of
-food webs. Baskerville et al.\ visualized the Serengeti food web
-\cite{baskerville2011spatial}; in addition to the static visualization
-presented in the paper, they developed an interactive graph
-\cite{baskerville2011interactive} created with D3 that approximates the
-paper figure. Motivated by this related work and the
-challenges Kearney describes, our constraint language aims to provide users
-with a lightweight strategy for identifying domain specific constraints.
+food webs. Baskerville et al.\ visualized the Serengeti food web~\cite{baskerville2011spatial}; in addition to the static visualization
+presented in their paper, they published an interactive version online~\cite{baskerville2011interactive}. Motivated by this related work and the
+challenges described by Kearney, our constraint language aims to provide users
+with a lightweight means for authoring domain-specific constraints.
 
 Biological systems are a common domain requiring customized visualizations.
-Cerebral \cite{barsky2008cerebral} is a tool designed to visualize
+Cerebral~\cite{barsky2008cerebral} is a tool designed to visualize
 biological systems and support interactive exploration of different
-experimental conditions. Genc and Dogrusoz \cite{saraiya2005visualizing}
-describe a constrained, force-directed layout technique for visualizing 
-biological pathways. Cytoscape \cite{shannon2003cytoscape} is a
+experimental conditions. Genc and Dogrusoz~\cite{genc2003constrained}
+describe a constrained force-directed layout technique for visualizing 
+biological pathways. Cytoscape~\cite{shannon2003cytoscape} is a
 visualization system designed to explore biomolecular interaction networks
 and provides a framework for accepting customized plugins to extend the
 system, such as WebCoLa~\cite{WebCoLa}. Each of these strategies was designed to
-address the needs of domain experts who were unable to find the necessary
-support within existing tools. Our work aims to reduce the barrier to
-creating customized graph layouts by providing a compact way to specify domain
-specific layouts that leverage expert knowledge.
+address the needs of domain experts who did not find necessary
+support within existing tools.
 
 For social networks, many visualizations leverage force-directed layouts
 to demonstrate the connectedness or clustering of the nodes. However, some
-visualizations may introduce additional separation or grouping to the layout
-to highlight other properties such as ethnographic groupings \cite{rothenberg1998using},
-the timeline of disease exposure \cite{fitzpatrick2001preventable,mcelroy2003network},
-or differences in the types of relationships reported \cite{fu2011hiv}.
+layouts may introduce additional separation or clustering
+to highlight properties such as ethnographic groups~\cite{rothenberg1998using},
+the timeline of disease
+exposure~\cite{fitzpatrick2001preventable,mcelroy2003network},
+or differences in reported relationship types~\cite{fu2011hiv}.
 
-For each of these domains, the visualizations are created using specially
+For each of these areas, the visualizations are created using specially
 designed tools or layout algorithms to leverage properties of the data
-specific to the domain. \projectname aims to support the design of such
-customized layouts concisely and enable reuse of the layout across different
-data sets in the domain.
+specific to the domain. With \projectname, we aim to reduce the barrier to
+creating customized graph layouts by providing a compact way to specify
+reusable domain specific layouts that incorporate expert knowledge.
+
 
 % alan's casssowary
 % other strategies for writing constriants (constraint based section)
