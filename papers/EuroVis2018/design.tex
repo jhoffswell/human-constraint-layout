@@ -37,14 +37,15 @@ specification for a small tree layout is shown in Figure~\ref{fig:small-tree-exa
 There are several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
 into disjoint sets, (2) specifying (potentially overlapping) sets via
-\emph{predicates},
-and (3) \emph{composing} previously defined sets. Each of these set
+\emph{predicates}, (3) \emph{joining} sets based on key expressions,
+and (4) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
 partitions or predicates, the constraint definition may also 
 designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes. For each subsection, we show a sample
 \projectname constraint in the section header.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Partitioning Nodes into Sets}
 \constraint{Ex: \texttt{partition} by \texttt{depth}}
 The partition operator creates a collection of disjoint sets based on
@@ -64,43 +65,51 @@ For example in Figure~\ref{fig:serengeti-layout}, Lines~\texttt{11}, \texttt{28}
 and only includes particular groups in each constraint definition to apply
 constraints relative to the tropic level of the nodes.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Specifying Sets with Predicates}
 \constraint{Ex: \texttt{node.depth == 2}}
-
 For more flexibility in the definition of sets, users
 can specify a concrete list of sets, each defined by an arbitrary boolean
 expression. For each expression, nodes are evaluated by the expression
 to determine if it should be included in the set. The user may
 refer to properties of the node using dot syntax; for example,
 \texttt{node.depth} refers to the depth property. Users may also optionally 
-specify a \texttt{name} for the set, which may be referred to in subseqeunt
+specify a \texttt{name} for the set, which may be referred to in subsequent
 composite set definitions. With this specification strategy, it is possible
 to create node sets that are not disjoint, and may thus lead to
 unsatisfiable constraints.
 
-\todo{Extract/Relation/?}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\subsubsection{Joining Sets on Key Expressions}
+\constraint{Ex: \texttt{join} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
+To combine the flexibility of \emph{predicates} with the automation of 
+\emph{partition}, users may specify sets as a join based on key expressions.
+For each key expression in the join, nodes are evaluated to extract one 
+or more keys, which are used to split nodes into (potentially overlapping) 
+sets. For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{35}, the 
+user creates a new set that includes two key expressions: one identifies
+the \texttt{\_id} of the node, the other identifies the \texttt{\_id}s of
+the neighboring nodes. Each node is placed in the sets corresponding to
+all keys identified by the key expression. We also include a number of 
+built-in properties for identifying the structural relationships of the 
+graph, which are described in Section~\ref{sec:built-in-properties}.
 
-%\subsubsection{Extracting related nodes}
-%\constraint{\texttt{extract} node and node \emph{neighbors}}
-%For some sets, it may be useful to identify particular
-%relationships between nodes, which can be specified as a relation. For each
-%node, \todo{finish this section}
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Composing Previously Defined Sets}
 \constraint{Ex: \texttt{[} \emph{``set1''}, \emph{``set2''} \texttt{]}}
-
 Sets may also be defined as hierarchical
 compositions of previously defined sets. For example, in
 Figure~\ref{fig:small-tree-example} the first constraint definition
 (named ``layer'') produces three sets via
 partition~(Line~\texttt{17}). The next constraint definition performs 
-composition, refencing only the ``layer'' set~(Line~\texttt{22}): the result
+composition, referencing only the ``layer'' set~(Line~\texttt{22}): the result
 is a single set that contains the three layer sets as elements.
-For composition, the user may
+For composition, users may
 refer to any named entities previously defined in the specification (e.g.,
 previous set definitions or named sets produced from \emph{predicates}).
 In the current version of \projectname, we only support composition via
-set union.
+set union, though future work should explore the types of set definitions
+that other composition strategies could enable.
 
 When a named set is defined, the set element promotes the properties that
 are equivalent for all elements in the set to a property of the set
@@ -110,66 +119,86 @@ defines a partition on the nodes based on the \texttt{depth} (Line
 the shared value for that set. This property can be referenced in other 
 parts of the \projectname specification (Line~\texttt{23}).
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Built-In Properties of the Graph Structure}
-\todo{Tie this section in better}
+\label{sec:built-in-properties}
 
 In addition to defining constraints relative to node properties, it may
 also be important to define constraints on properties
-of the graph structure. Our implementation supports a 
-number of built-in node properties that reflect the graph structure.
+of the graph structure, which we support with a number of built-in accessors.
 These properties are automatically computed and added to the graph 
-specification if they are used in one of the \projectname\ constraints. 
+specification only when they are used in one of the \projectname constraints. 
 These properties are only computed if such a property does not
 already exist on the nodes and are subject to a number of expectations
 regarding the graph input; for graphs that do not meet these expectations,
 users are shown a warning and required to compute the properties
-themselves.
+themselves. In this section, we describe each built-in property and discuss 
+the expectations for use.
 
-\jheer{Not clear under what these expectations are and under what circumstances a graph does not meet them.}
+% \jheer{Not clear under what these expectations are and under what circumstances a graph does not meet them.}
 
 \begin{description}
 \item[\texttt{\_id}] The node index in the graph specification. This
-  property is always computed regardless whether or not it is used.
-\item[\texttt{depth}] One more than the max depth of the node's
-  parents. This property is only computed for graphs that contain only one
-  root node and do not contain cycles. \todo{Is there a definition for
-  graphs with multiple roots (or can we handle disconnected graphs)? Can
-  the user specify the root in the specification?}
-\item[\texttt{parent}] The parent of the current node. This property is
-  only allowed if the node has one parent; otherwise, it is defined as the
-  parent with the smallest \texttt{\_id}.
-\item[\texttt{firstchild}] The child node of the current node with the smallest \texttt{\_id}.
-\item[\texttt{incoming}] The list of nodes that have edges where the
-  current node is the target (e.g., all parent nodes).
-\item[\texttt{outgoing}] The list of nodes that have edges where the
-  current node is the source (e.g., all child nodes).
+  property is always computed regardless of whether or not it is used. The
+  \texttt{\_id} acts as a unique identifier of the node and is used to 
+  convert the \projectname constraints to low-level WebCoLa constraints.
+\item[\texttt{depth}] One more than the max depth of the node's parents. 
+	Root nodes (any nodes with no edges for which the node is the target)
+	have a depth of zero. The \texttt{depth} property is only computed for
+	graphs that do not contain cycles.
+\item[\texttt{sources}] The list of nodes that have edges for which the
+	current node is the target (e.g., all parent nodes).
+\item[\texttt{targets}] The list of nodes that have edges for which the
+	current node is the source (e.g., all child nodes).
 \item[\texttt{neighbors}] The list of nodes that have edges connected to
-  the current node. This property is the join of the \texttt{incoming} and
-  \texttt{outgoing} properties.
+  the current node. This property is the join of the \texttt{sources} and
+  \texttt{targets} properties. Neighbors may also take an optional value
+  as input, which returns all nodes with a graph distance less than or
+  equal to the specified value.
+% \item[\texttt{firstchild(<property>)}] The child node of the current node 
+	% with the smallest value for the defined \texttt{property}. We can similarly
+	% enable \texttt{lastchild}, which returns the largest value for the defined 
+	% \texttt{property}.
+\item[\texttt{incoming}] The list of edges in which the current node is the
+	target (e.g., the edges connecting the current node to all parent nodes).
+\item[\texttt{outgoing}] The list of edges in which the current node is the
+	source (e.g., the edges connecting the current node to all child nodes).
+\item[\texttt{edges}] The list of edges that contain the current node. This
+	property is the join of the \texttt{incoming} and \texttt{outgoing} properties.
 \item[\texttt{degree}] The number of \texttt{neighbors}.
 \end{description}
 
-\jheer{Is \texttt{\_id} required? That might confuse readers after we make claims about \projectname's reusability.}
+% \jheer{Is \texttt{\_id} required? That might confuse readers after we make claims about \projectname's reusability.}
 
-\jheer{What makes a node a root? How do we know? Why not support forests? Do we perform a topological sort? This needs more clarification.}
+In the original graph specification, the user specifies the links as directed
+edges with a defined source and target node. Whether or not these links are
+directed or undirected is up to the discretion of the user in how the links
+are treated in the graph layout. For example, properties such as
+\texttt{neighbors} and \texttt{edges} are more appropriate than \texttt{parents}
+for undirected graphs.
 
-\jheer{Are parents only available for directed graphs? Does \projectname distinguish between directed and undirected graphs?}
+In addition to the built-in properties, we include several operators for 
+manipulating the resulting lists of elements. Values can also be extracted from
+nodes or edges using the dot syntax at any point. The user may use standard
+array access to extract elements from the list (e.g., the first element of
+the list is \texttt{list[0]}).
 
-\jheer{In addition to parent/child, source/target is another possible terminology. Indeed, \texttt{sources} and \texttt{targets} might be preferable to incoming/outgoing (which sound like they describe edges, not nodes).}
+\begin{description}
+\item[\texttt{length()}] The length of the list.
+\item[\texttt{reverse()}] Reverse the order of the list.
+\item[\texttt{contains(value)}] Whether the list contains the value.
+\item[\texttt{sort(property)}] Sort the list by the specified property.
+\item[\texttt{extract(property)}] Extract the specified property from each element in the list.
+\end{description}
 
-\jheer{For firstchild, how is node ordering defined?}
+%\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes?}
 
-\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes? Also, neighbors could be further parameterized by graph distance, e.g., \texttt{graphDistance(node) < 3}.}
-
-\jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
-
-
-\todo{confirm all descriptions}
+% \jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
 
 We selected these properties as common structural elements
 applicable to a variety of layout specifications. For example, the \texttt{depth}
 property is useful for producing hierarchical tree layouts and the 
-\texttt{incoming}, \texttt{outgoing}, and \texttt{neighbors} properties
+\texttt{sources}, \texttt{targets}, and \texttt{neighbors} properties
 reflect structure produced by the graph edges. There are many other
 properties that could be useful for graph layouts that are not included 
 here and this list could easily be extended in the future to include other
