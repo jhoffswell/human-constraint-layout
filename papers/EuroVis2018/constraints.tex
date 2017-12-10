@@ -2,23 +2,21 @@
 \section{\projectname Constraints and WebCoLa Implementation}
 \label{sec:constraints}
 
-\projectname provides seven types of constraints:
-\texttt{alignment}, \texttt{position}, \texttt{order}, \texttt{circle},
-\texttt{cluster}, \texttt{hull}, and \texttt{padding}. We
-target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
-interactive, web-based layouts. In this section, we describe the requirements 
-for each type of constraint and how we implement them using WebCoLa.
-\feedback{Matt}{Could use some writing-style cleanup} 
+We target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
+interactive, web-based layouts.
 In WebCoLa, constraints are defined based on the \texttt{\_id} of the
-node in the graph specification. We leverage two of WebCoLa's
+graph node. We leverage two of WebCoLa's
 constraint types for our implementation: \emph{alignment} constraints 
 and \emph{position} constraints. For other \projectname constraints, we
 approximate the behavior by imputing additional edges or by applying
-padding to the nodes in the layout.
-
-\feedback{Zening}{Sec 4 Intro: I feel the intro of this section could 
-benefit from adding a sentence or two about why you picked these seven 
-constraints instead of the others.}
+padding to the nodes in the layout. The current implementation of
+\projectname provides seven constraint types:
+\texttt{alignment}, \texttt{position}, \texttt{order}, \texttt{circle},
+\texttt{cluster}, \texttt{hull}, and \texttt{padding}. These constraints
+were selected to span a range of visualization requirements for expressive
+graph layouts. In this section, we discuss the design, implementation, 
+and utility of each \projectname constraint. For each subsection, we show 
+a sample \projectname constraint in the section header.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
@@ -247,6 +245,7 @@ Padding constraints enforce minimum spacing around an element relative
 to other elements in the set. These constraints are defined as follows:
 
 \todo{Formal definition of this constraint?}
+\constraintsFigure
 
 \emph{Implementation.}
 Padding introduces additional space around nodes without constraining the
@@ -264,7 +263,6 @@ To support the overall legibility of the graph, additional padding can be
 beneficial to ensure that nodes are not placed to close together.
 
 \subsection{Creating Guides in WebCoLa}
-\constraint{Ex: $O(g)$ new nodes}
 
 In \projectname, the user may define guides to control the graph layout.
 To use these guides in WebCoLa constraints, we add a new node to the graph

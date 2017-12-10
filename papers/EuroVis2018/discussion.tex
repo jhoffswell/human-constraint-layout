@@ -1,13 +1,9 @@
 %!TEX root = constraint-layout.tex
 \section{Limitations \& Future Work}
-\constraintsFigure
 There are a number of useful areas for future work surrounding optimizations
 for the constraint generation procedure, the development of useful debugging
 tools to facilitate the user's understanding of unsatisfiable constraints,
 and the evolution of constraint solvers more closely integrated with \projectname.
-
-\feedback{Younghoon}{If you have an interesting failure case (e.g., a 
-diagram that SetCoLa couldn't express), it might be good to mention in future work.}
 
 % wrangler/polestar/lyra strategies for specifying constraints
 % dsl leveraged as useful interface for processing logic
@@ -17,8 +13,8 @@ diagram that SetCoLa couldn't express), it might be good to mention in future wo
 to groups of nodes in a graph rather than applying constraints to individual
 nodes one at a time. By deferring this complexity to the underlying constraint
 solver, the user can more easily prototype the layout and make changes that
-impact the overall behavior of the layout with a small number of constraints 
-or changes. As shown in Figure~\ref{fig:constraints},
+have a large overall impact with a small number of constraints or changes.
+As shown in Figure~\ref{fig:constraints},
 the number of \projectname constraints is a small fraction of the WebCoLa constraints.
 
 The current WebCoLa implementation is not completely optimized to reduce the

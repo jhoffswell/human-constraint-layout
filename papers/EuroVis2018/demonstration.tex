@@ -12,7 +12,12 @@ For each recreated example, the layout of the nodes is produced
 entirely in \projectname. However, we added additional labeling to the 
 final figures to better match the originals.
 
-\feedback{Younghoon}{Meanings of Purple/Blue/Green highlights?}
+We include the specification for each of our three major examples 
+(Figure~\ref{fig:syphilis-spec}, \ref{fig:tlr4-spec}, \ref{fig:serengeti-spec}),
+and annotate the specification with the number of sets produced for each 
+constraint definition (green), the number of WebCoLa constraints generated
+for each SetCoLa constraint (blue), and the behavior of SetCoLa constraints
+that are not directly translated to WebCoLa constraints (purple).
 
 % comparison of user spec and generated spec (quantiative comparison)
 % point out measure of comprehension
@@ -42,16 +47,7 @@ The authors note that a number of outsiders to these ``core'' groups
 also played a significant role in the network. In
 particular, \emph{``Visualization of these groups and all their sex
   partners uncovered the importance of several people not specifically
-  identified with these groups (e.g., N43 and S30) who served as bridges
-  between the two groups of men.''}
-
-\todo{I don't have the N43 bridge link in my visualization as that was not
-  clear from any of the figures in their paper... should I remove the quote?
-  or at least that part of it?}
-
-\jheer{Maybe just stop the quote right before ``(e.g., ...)''?}
-
-\feedback{Younghoon}{I agree with removing/replacing the quote.}
+  identified with these groups.''}
 
 We reproduced this visualization with \projectname~(Figure~\ref{fig:syphilis-layout}b) 
 and included a number of additional constraints on the layout apart
@@ -68,26 +64,16 @@ $123$ WebCoLa constraints~(Figure~\ref{fig:constraints}).
 Our modified layout~(Figure~\ref{fig:syphilis-layout}b) includes 
 five constraint definitions, nine \projectname constraints, and generates 
 $166$ WebCoLa constraints~(Figure~\ref{fig:constraints}). With a small 
-number of user-defined constraints, we can tidy up the layout to produce
-one that more effectively communicates the ethnographic groupings. 
-\feedback{Zening}{Could you be more specific about ``effectively''? I think 
-in Fig 3 b the nodes in each cluster is more aligned. They form a circle, 
-or a straight line, or a matrix. So that's easier to perceive by the eyes?} The
+number of user-defined constraints, we can update the layout to produce
+one that more effectively communicates the ethnographic groupings. The
+alignment and circle constraints emphasize the group relationships by
+introducing shared visual properties amongst the nodes. The more grid-like
+layout also faciliates scanning of the nodes. The
 WebCoLa constraint solver includes a procedure to reduce the length of
-edges to a set length. This behavior encourages the circle of young women
-to trend towards the group of African-American men thus further demonstrating
+edges to a user-defined length. This behavior encourages the circle of young women
+to shift towards the group of African-American men further demonstrating
 the \emph{``intensity of interaction''} between the two groups, as described in
 the original paper.
-
-\todo{Is it useful to mention what it would be like to just recreate the
-original `constraints'? And if it is useful, should we add that version
-to the figure?}
-
-\feedback{Zening}{I think if the recreation is exactly the same as the 
-original figure, it can be omitted. You already said in the text the 
-recreation of the original figure can be done with three constraint 
-definitions and three SetCoLa constraints. Showing the improved layout 
-seems more useful to me.}
 
 \subsection{TLR4 Network}
 \tlrfourSpec
@@ -111,11 +97,6 @@ across different graphs in the domain since the specification itself does
 not refer to the individual nodes but to the high-level properties desired
 by the layout.
 
-\todo{Would it be useful/interesting to find another network in this class 
-and include a secondary figure that uses the same tlr4 SetCoLa specification?}
-
-\jheer{Maybe, but (a) it doesn't strike me as a high priority and (b) I don't know how much space you'll have in the paper.}
-
 \subsection{Serengeti Food Web}
 \krugerLayout
 \serengetiLayout
@@ -138,15 +119,13 @@ number of constraints on the nodes; for this specification, we specify
 two constraint definitions with three constraints~(Figure~\ref{fig:constraints}).
 In particular, we constrain each trophic level to be aligned and enforce an
 ordering of the layers that respects the food web hierarchy. We also
-include a constraint to order each layer by their \texttt{id} in order
-to exactly match the original visualization. This \projectname specification 
+include a constraint to order each layer by a predefined \texttt{order} property
+on the nodes to exactly match the original visualization. This \projectname specification 
 could easily be applied to other small food webs to produce a similar layout.
 However, as the food web gets more complex with more nodes associated with
 each trophic level, it may become necessary to relax the alignment
 constraints or introduce additional clustering to highlight other
 structures within the layout.
-
-\jheer{Is \texttt{id} the node \texttt{\_id}? I'm assuming not, but the similarity could be confusing.}
 
 One example of a larger ecological network is the Serengeti food web from
 Baskerville et al.~\cite{baskerville2011spatial}, which depicts the
@@ -189,6 +168,3 @@ web, though \emph{``hypothesize that the general conclusions will be
 the authors could reuse the layout specification to visualize future iterations
 of the Serengeti food web or explore similar structures across different
 ecological communities.
-
-\feedback{Younghoon}{If you have a space, could you explain why the Group 
-13 looks different between the original and the SetCoLa example?}

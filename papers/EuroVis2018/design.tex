@@ -8,21 +8,17 @@ The central abstraction in \projectname is a \textbf{set}. The
 simplest elements of a set are graph nodes; however, \projectname also
 supports hierarchical composition, with nested sets as elements.
 
-A \projectname specification comprises one or more \textbf{constraint definitions},
-which includes both a set definition and constraint application.
+A \projectname specification consists of one or more \textbf{constraint definitions},
+which include both a set definition and constraint application.
 \projectname provides a concise set of operators for defining
-sets based on node attributes, including structural relations in the graph.
+sets based on node attributes and structural relations in the graph.
 The result of a set definition produces one or more sets, which 
 can have either distinct or overlapping elements. Each constraint definition can 
-be subject to one or more constraints (e.g., for position, ordering, 
+include one or more constraints (e.g., for position, ordering, 
 or alignment), which are applied to the nodes within each separate set. 
-In other words, constraints for a constraint definition with multiple sets are 
+In other words, constraints created for a constraint definition with multiple sets are 
 applied to nodes \emph{within} each individual set, not \emph{between} 
 the sets in the constraint definition.
-
-\feedback{Matt}{It is confusing to me that a constraint and a constraint 
-definition don't have a 1-1 mapping. A constraint definition applies multiple 
-constraints over a set or multiple sets?}
 
 A \projectname specification consists of one or more constraint definitions, 
 along with an optional set of guides (reference elements that serve as 
@@ -46,23 +42,11 @@ and (3) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
 partitions or predicates, the constraint definition may also 
 designate a set from which the elements should be drawn; by default, the
-elements are simply graph nodes.
+elements are simply graph nodes. For each subsection, we show a sample
+\projectname constraint in the section header.
 
 \subsubsection{Partitioning Nodes into Sets}
-\constraint{Ex: \texttt{partition} by node \emph{depth}}
-
-\feedback{Matt}{I like what you're trying to do with the little code snippets 
-in the section headers, but as someone who doesn't know what they mean 
-I find them more confusing than helpful}
-
-\feedback{Younghoon}{Next to 4.n. subsection titles: what about showing 
-a sample spec in SetCoLa instead of WebCoLa? It might help to connect 
-the text to the example codes.}
-
-\todo{It is definitely not clear what these little annotations are so need
-to better explain/write those if it is something that we want to try and
-keep}
-
+\constraint{Ex: \texttt{partition} by \texttt{depth}}
 The partition operator creates a collection of disjoint sets based on
 properties of the node
 (e.g., Figure~\ref{fig:small-tree-example}, Line~\texttt{17}).
@@ -81,7 +65,7 @@ and only includes particular groups in each constraint definition to apply
 constraints relative to the tropic level of the nodes.
 
 \subsubsection{Specifying Sets with Predicates}
-\constraint{Ex: node \emph{depth}\texttt{ == 0}}
+\constraint{Ex: \texttt{node.depth == 2}}
 
 For more flexibility in the definition of sets, users
 can specify a concrete list of sets, each defined by an arbitrary boolean
@@ -103,7 +87,7 @@ unsatisfiable constraints.
 %node, \todo{finish this section}
 
 \subsubsection{Composing Previously Defined Sets}
-\constraint{Ex: \texttt{[} \emph{set1}, \emph{set2} \texttt{]}}
+\constraint{Ex: \texttt{[} \emph{``set1''}, \emph{``set2''} \texttt{]}}
 
 Sets may also be defined as hierarchical
 compositions of previously defined sets. For example, in

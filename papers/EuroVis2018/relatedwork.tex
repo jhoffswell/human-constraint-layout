@@ -19,14 +19,6 @@ A number of popular tools support graph drawing with various layout
 techniques, including D3.js~\cite{bostock:d3}, Gephi~\cite{bastian2009gephi},
 Graphviz~\cite{ellson2001graphviz}, and Cytoscape~\cite{shannon2003cytoscape}.
 
-To represent the hierarchy for trees in a more compact space, treemaps \cite{johnson1991tree}
-shed the node-link metaphor and represent the hierarchy via enclosure. 
-Icicle plots \cite{kruskal1983icicle} and sunburst diagrams \orange{citation} 
-use space filling nodes and represent the hierarchy as a subdivision of the parent nodes.
-Arc diagrams \orange{citation} and adjacency matrices \orange{citation}
-emphasize the links in more complex networks but it can be harder to trace
-paths through the network and the order of the nodes impacts the visual 
-patterns.
 Many of the previously mentioned techniques produce layouts based on structural
 properties of the graph, but there is also a large field of 
 related work surrounding graph layout techniques that emphasize particular
@@ -34,11 +26,11 @@ aesthetic properties. \textsc{hola} \cite{kieffer2016hola} produces orthogonal
 layouts similar to those produced by hand, informed by common aesthetic properties 
 used in manual layouts.
 
-\jheer{I don't think we need to include techniques for representations other than node-link diagrams. For example, we could drop treemaps, icicle trees, adjacency matrices, etc. Hola is (to my mind) in a totally different category and should be cited / discussed, and perhaps related to issues of domain-specificity. For example, what domains are orthogonal layouts important for?}
+\jheer{Hola is (to my mind) in a totally different category and should be cited / discussed, and perhaps related to issues of domain-specificity. For example, what domains are orthogonal layouts important for?}
 
 \subsection{Constraint-Based Layout Techniques}
 Extending an existing layout method to support \emph{constraints} enables customized layouts that may emphasize important
-structural or aesthetic properties of the graph. IPSep-CoLa~\jheer{cite?} extends
+structural or aesthetic properties of the graph. IPSep-CoLa~\cite{dwyer2006ipsep} extends
 force-directed layout to apply separation constraints on pairs of nodes.
 Dig-CoLa~\cite{dwyer2005dig} encodes the hierarchy of nodes as constraints
 and attempts to minimize the stress on the overall graph layout. 
