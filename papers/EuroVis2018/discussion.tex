@@ -1,6 +1,6 @@
 %!TEX root = constraint-layout.tex
 \section{Limitations \& Future Work}
-There are a number of useful areas for future work surrounding optimizations
+There are a number of useful areas for future work, including optimizations
 for the constraint generation procedure, the development of useful debugging
 tools to facilitate the user's understanding of unsatisfiable constraints,
 and the evolution of constraint solvers more closely integrated with \projectname.
@@ -24,8 +24,11 @@ be superfluous in the final layout. For example, in generating constraints
 for Figure \ref{fig:small-tree-example}, the current \projectname implementation
 for WebCoLa produces two constraints ($a.y < b.y$ and $a.y < c.y$) even though
 we also specify a constraint that says $b.y == c.y$. Future work could explore
-additional optimizations in order to
+whether these redundant constraints have a significant performance impact,
+and if they do, investigate additional optimizations to
 reduce the generation of unnecessary constraints.
+
+\todo{AB: does this matter? Added a phrase to qualify the future work item}
 
 \subsection{Debugging and Unsatisfiable Constraints in \projectname}
 For a \projectname specification, it is possible to create node sets that

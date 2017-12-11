@@ -54,9 +54,11 @@ and included a number of additional constraints on the layout apart
 from the separation constraints that are visible in the original image. In
 particular, we included a circle constraint on the group of young white
 women to more strongly enforce the result shown in the original figure and
-applied an alignment constraint on the two groups of young
+applied an alignment constraint on the two groups of
 men, as well as some additional padding. The \projectname specification
 is shown in Figure~\ref{fig:syphilis-spec}.
+
+\todo{AB: changed ``young men'' to just ``men'' -- is this correct?}
 
 The simplest recreation of this figure can be done with three constraint
 definitions and three \projectname constraints, which generate a total of
@@ -65,7 +67,7 @@ Our modified layout~(Figure~\ref{fig:syphilis-layout}b) includes
 five constraint definitions, nine \projectname constraints, and generates 
 $166$ WebCoLa constraints~(Figure~\ref{fig:constraints}). With a small 
 number of user-defined constraints, we can update the layout to produce
-one that more effectively communicates the ethnographic groupings. The
+one that more effectively communicates the sociological groupings. The
 alignment and circle constraints emphasize the group relationships by
 introducing shared visual properties amongst the nodes. The more grid-like
 layout also faciliates scanning of the nodes. The
@@ -89,6 +91,10 @@ at the very bottom of the figure and grouped by biological function. The result
 of Cerebral's layout on the TLR4 network is shown in Figure~\ref{fig:tlr4-layout}a.
 Our reproduction in \projectname is shown in Figure~\ref{fig:tlr4-layout}b,
 with the specification shown in Figure \ref{fig:tlr4-spec}.
+
+\todo{AB: delete the phrase ``while many layouts may be produced by hand''?
+  Why is this relevant \ldots presumably any layout can be produced by hand??}
+
 
 Our recreated layout includes five constraint definitions with eight \projectname
 constraints, which generates $363$ constraints in WebCoLa (Figure~\ref{fig:constraints}).
