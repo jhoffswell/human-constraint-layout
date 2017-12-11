@@ -8,7 +8,7 @@ In WebCoLa, constraints are defined based on the \texttt{\_id} of the
 graph node. We leverage two of WebCoLa's
 constraint types for our implementation: \emph{alignment} constraints 
 and \emph{position} constraints. For other \projectname constraints, we
-approximate the behavior by imputing additional edges or by applying
+approximate their behavior by imputing additional edges or by applying
 padding to the nodes in the layout. The current implementation of
 \projectname provides seven constraint types:
 \texttt{alignment}, \texttt{position}, \texttt{order}, \texttt{circle},
@@ -20,22 +20,25 @@ a sample \projectname constraint in the section header.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
-\constraint{Ex: \texttt{align} \emph{x} \texttt{axis}}
+\constraint{Example: \texttt{align} \emph{x} \texttt{axis}}
 Alignment constraints ensure that all nodes in the set share one of their
 coordinates. For this implementation, the constraint must specify the \texttt{axis}
-as either \texttt{x} or \texttt{y}. 
+as either \texttt{x} or \texttt{y}.
 The user may also optionally identify an \texttt{orientation} for the alignment.
-The orientation is useful for producing alignments when the size of the 
-elements do not match. By default, the orientation is defined as \texttt{center} 
-and aligns the center point of each element. When the axis is defined as \texttt{x} 
-the user may specify either \texttt{top} or \texttt{bottom} which introduces 
+The orientation is useful for producing alignments when the size of the
+elements do not match. By default, the orientation is defined as \texttt{center}
+and aligns the center point of each element. When the axis is defined as \texttt{x},
+the user may specify either \texttt{top} or \texttt{bottom}, which introduces
 an offset to align the top or bottom of the nodes. For \texttt{y} axis
 alignment, the user may specify either \texttt{right} or \texttt{left}.
 
-These constraints are defined as follows: The user defines the \texttt{axis} 
-as $x$ and the \texttt{orientation} as $top$. For all nodes $n_1$ and $n_2$ in $S$ 
-such that $n_1 \neq n_2$, then we produce a constraint that
-$n_1[y] - height(n_1)/2$ == $n_2[y] - height(n_2)/2$.
+These constraints are defined as follows.  Suppose that
+the user defines the \texttt{axis}
+as $x$ and the \texttt{orientation} as $top$.  Then, for all
+nodes $n_1$ and $n_2$ in $S$
+such that $n_1 \neq n_2$, we produce the constraint
+$n_1[y] - height(n_1)/2$ = $n_2[y] - height(n_2)/2$.  Analogous constraints
+are produced for the other possible combinations of axis and orientation.
 Alignment constraints are one of the constraint types natively supported in
 WebCoLa. The WebCoLa alignment constraint takes the \texttt{\_id} of all nodes
 that should be aligned and offsets for each node that enable changes to the
@@ -59,7 +62,7 @@ alignment orientation of the nodes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Position Constraints}
-\constraint{Ex: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
+\constraint{Example: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
 Position constraints ensure that all nodes in the set are positioned relative to
 a guide or previously named set. The user must specify the relative
 placement for the position as one of \texttt{left}, \texttt{right}, 
@@ -67,7 +70,8 @@ placement for the position as one of \texttt{left}, \texttt{right},
 The user may optionally prove a \texttt{gap} that enforces additional spacing
 between the nodes and identified guide.
 
-These constraints are defined as follows: The user defines the \texttt{position} as $left$,
+These constraints are defined as follows.  Supppose the user defines the
+\texttt{position} as \texttt{left},
 the \texttt{guide} as $g$, and the \texttt{gap} as $v$. For all nodes $n$
 in $S$, we define a constraint that $n[x] + v < g[x]$.
 Position constraints are one of the constraint types natively supported in
@@ -83,7 +87,7 @@ we produce one position constraint for each pair of nodes $(u, v)$ where $u \in 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Constraints}
-\constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
+\constraint{Example: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
 Order constraints enforce a sort order on the set elements. The user must 
 specify the \texttt{axis} as either \texttt{x} or \texttt{y} and must define
 the node property \texttt{by} which the order is determined. 
@@ -92,7 +96,7 @@ The user can optionally define an explicit list of values for a custom
 the specified property. The user may also indicate whether
 or not to \texttt{reverse} the order.
 
-These constraints are defined as follows: The user defines the \texttt{axis} as
+These constraints are defined as follows.  Suppose the user defines the \texttt{axis} as
 $x$ and the property to sort \texttt{by} as $depth$. For all nodes $n_1$ 
 and $n_2$ in $S$  such that $n_1 \neq n_2$ then $n_1[x]$ < $n_2[x]$
 if $n_1[depth] < n_2[depth]$. We optimize the implementation of this order
@@ -121,19 +125,22 @@ constraints at the start and end the ordering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circle Constraints}
-\constraint{Ex: \texttt{circle} \texttt{around} \emph{``center''}}
+\constraint{Example: \texttt{circle} \texttt{around} \emph{``center''}}
 Circle constraints allow the user to specify a ring layout for a set of
 elements. The use must define the value \texttt{around} which to compute 
 the layout. This value can be either a default ``center'' or a previously 
 named guide. The user may optionally define a \texttt{radius} which 
 determines the expected radius for the circle.
 
+\todo{AB: should ``center'' be \texttt{center}?  Not sure why the quotes \ldots}
+
 %\jheer{What does it mean to put an element in the center? Does this constraint work with sets of sets?}
 
-Circle constraints are not a supported constraint type in WebCoLa. To 
-demonstrate the utility of this constraint type we approximated the behavior
+Circle constraints are not a supported constraint type in WebCoLa. To
+demonstrate the utility of this constraint type we approximate the behavior
 in our WebCoLa implementation. To do this, we first add a temporary node
-or identify the guide to act as the center of the circle layout. We then add a link between each 
+or identify the guide to act as the center of the circle layout.  We
+then add a link between each
 node in the set and the center. Finally, we link the set nodes in the circle
 with additional temporary edges to produce a chain. We compute the expected
 length for each edge based on the number of nodes in the circle and the 
@@ -150,7 +157,7 @@ could cite?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cluster Constraints}
-\constraint{Ex: \texttt{cluster}} 
+\constraint{Example: \texttt{cluster}}
 Cluster constraints encourage a organic clustering of the nodes around
 a center point. This constraint should aim to minimize the distance between
 the nodes in the set.
@@ -161,21 +168,24 @@ which encourages the nodes to be drawn together.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
-\constraint{Ex: \texttt{hull}} 
+\constraint{Example: \texttt{hull}}
 Hull constraints create a boundary (hull) around the set elements and 
 prevent any other nodes from residing within that boundary. These 
 constraints are defined as follows: We produce a minimally enclosing rectangle 
 $B$ with properties $B.x1$, $B.x2$ $B.y1$, $B.y2$. For all nodes
-$n$ in $S$, we define constraints such that $B.x1 < n[x]$, $n[x] < B.x2$,
+$n$ in $S$, we define constraints such that $B.x1 < n[x]$,
+\mbox{$n[x] < B.x2$},
 $B.y1 < n[y]$, $n[y] < B.y2$. For all nodes $m$ not in $S$, we define
 constraints such that $m[x] < B[x1]$ $||$ $B[x2] < m[x]$ and $m[y] < B[y1]$ $||$ $B[y2] < m[x]$.
 We implement hull constraints in WebCoLa using its built-in support for 
 specifying \texttt{groups}, which produce a boundary around 
 the nodes defined by their \texttt{\_id}.
 
+% the \mbox above is to force a line break to avoid splitting the equation
+
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
-\constraint{Ex: \texttt{padding 5}} 
+\constraint{Example: \texttt{padding 5}}
 \constraintsFigure
 Padding constraints enforce a minimum spacing around an element.
 Padding introduces additional space around nodes without constraining the
@@ -210,7 +220,7 @@ all constraints can be safely applied at the same time.
 For example, the user may easily produce contradictions by defining constraints
 that are the reverse of one another (e.g., two order constraints, one with the
 ordering reversed). Similarly, an order constraint applied to both the \texttt{x}
-and \texttt{y} axis would force the nodes to share the same position despite
+and \texttt{y} axes would force the nodes to share the same position despite
 overall requirements to avoid node overlap. 
 
 While several strategies produce highly constraint or contradictory layouts, 
@@ -220,10 +230,13 @@ example, effectively combines alignment on nodes with a total ordering on sets
 to produce a simple specification for an aligned tree layout. Position constraints
 generally allow the user to shift the layout relative to global elements,
 whereas order constraints introduce additional requirements between nodes
-within a particular set. Combining multiple (non-contradictory), position
-constraints can allow the user to constrain node positions to particular
-areas of the graph and thus produce overall constraints on the size of the
+within a particular set. Combining multiple (non-contradictory) position
+constraints allows the user to constrain node positions to particular
+areas of the graph, and thus produce overall constraints on the size of the
 output graph or distinct regions of interest based on node properties.
+
+\todo{AB: what does ``While several strategies produce highly constraint
+  \ldots layouts'' mean?  Should this be overconstrained?  Or something else?}
 
 % \emph{Rationale.} Support for alignment on either the x or y axis allows
 % users to produce layouts that exhibit grid like layout properties similar
