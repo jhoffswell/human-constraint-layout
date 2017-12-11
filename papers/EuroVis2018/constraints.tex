@@ -21,56 +21,36 @@ a sample \projectname constraint in the section header.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
 \constraint{Ex: \texttt{align} \emph{x} \texttt{axis}}
-
 Alignment constraints ensure that all nodes in the set share one of their
 coordinates. For this implementation, the constraint must specify the \texttt{axis}
-as either \texttt{x} or \texttt{y}. These constraints are defined as:
-
-\begin{definition}
-Let $S$ be the set on which the constraint \texttt{align x axis} is applied.
-For all nodes $n_1$ and $n_2$ in $S$ such that $n_1 != n_2$, we define 
-a constraint such that $n_1[y]$ == $n_2[y]$.
-\end{definition}
-
-\todo{Is it helpful to have a description like this? Is there a better way
-to write this up?}
-
-\jheer{I like having the formal description. I think the numbering is unnecessary though. Simply including the formal description as part of the writing may suffice.}
-
-\feedback{Matt}{I'm torn about all the mathematical definitions. Here's what I initially wrote:
-``\emph{If you can specify something in words as concisely as you can with an
-equation, probably no need for the equation... although if you want it to 
-be more mathy the mathematical definitions probably don't hurt?}''
-But then after reading through 4.2 and 4.3 the definitions seemed kind of 
-nice. But then there kept being more definitions and it got really tedious 
-to read, when really the plane descriptions were much more useful for me 
-to think about it. I think I'd prefer to see a small figure for each type, 
-showing it visually. maybe  annotated to show the most important parts 
-of the math graphically?}
-
-\feedback{Younghoon}{I'm not sure the formal definition in WebCoLa language 
-is important. The information I wanted to get was what this term can 
-express/visualize/act in graph layout.}
-
+as either \texttt{x} or \texttt{y}. 
 The user may also optionally identify an \texttt{orientation} for the alignment.
 The orientation is useful for producing alignments when the size of the 
 elements do not match. By default, the orientation is defined as \texttt{center} 
-with the behavior described above. When the axis is defined as \texttt{x} 
+and aligns the center point of each element. When the axis is defined as \texttt{x} 
 the user may specify either \texttt{top} or \texttt{bottom} which introduces 
 an offset to align the top or bottom of the nodes. For \texttt{y} axis
 alignment, the user may specify either \texttt{right} or \texttt{left}.
 
-\emph{Implementation.}
+These constraints are defined as follows: The user defines the \texttt{axis} 
+as $x$ and the \texttt{orientation} as $top$. For all nodes $n_1$ and $n_2$ in $S$ 
+such that $n_1 \neq n_2$, then we produce a constraint that
+$n_1[y] - height(n_1)/2$ == $n_2[y] - height(n_2)/2$.
 Alignment constraints are one of the constraint types natively supported in
 WebCoLa. The WebCoLa alignment constraint takes the \texttt{\_id} of all nodes
 that should be aligned and offsets for each node that enable changes to the
 alignment orientation of the nodes.
 
-\emph{Rationale.} Support for alignment on either the x or y axis allows
-users to produce layouts that exhibit grid like layout properties similar
-to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
-
-\jheer{This is not a true rationale. Focus on the user needs this meets. Why are grid-like layouts needed or desirable? Why is the fact that Kieffer et al. produce them relevant here? One alternative you could consider is moving your rationale to a dedicated subsection at the end of this section. Some designs are achieved by combining constraints, but listing rationales one-by-one may make it harder to talk about what can be achieved via constraint composition.}
+% \feedback{Matt}{I'm torn about all the mathematical definitions. Here's what I initially wrote:
+% ``\emph{If you can specify something in words as concisely as you can with an
+% equation, probably no need for the equation... although if you want it to 
+% be more mathy the mathematical definitions probably don't hurt?}''
+% But then after reading through 4.2 and 4.3 the definitions seemed kind of 
+% nice. But then there kept being more definitions and it got really tedious 
+% to read, when really the plane descriptions were much more useful for me 
+% to think about it. I think I'd prefer to see a small figure for each type, 
+% showing it visually. maybe  annotated to show the most important parts 
+% of the math graphically?}
 
 %\jheer{Why only x/y axes? Why not polar coordinates, for example? Or along arbitrary line segments defined as guides? I'm not saying you *should* support these, only that it's not clear why you focus where you do. Also I don't totally understand what alignment means here (nor what the default would be if unspecified). Readers may be confused about what you mean by applied to nodes vs. applied to sets, as earlier we talk about sets as the units that constraints are applied to. Also, centroid or boundary, which is used when and why?}
 
@@ -80,37 +60,21 @@ to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Position Constraints}
 \constraint{Ex: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
-
 Position constraints ensure that all nodes in the set are positioned relative to
-a guide \orange{or previously named set}. The user must specify the relative
+a guide or previously named set. The user must specify the relative
 placement for the position as one of \texttt{left}, \texttt{right}, 
-\texttt{above}, or \texttt{below}. These constraints are defined as:
-
-\begin{definition}
-Let $S$ be the set on which the constraint \texttt{position left of guide g} is applied.
-For all nodes $n$ in $S$, we define a constraint such that $n[x]$ < $g[x]$.
-\end{definition}
-
+\texttt{above}, or \texttt{below}.
 The user may optionally prove a \texttt{gap} that enforces additional spacing
-between the nodes and identified guide. This property produces the following
-definition:
+between the nodes and identified guide.
 
-\begin{definition}
-Let $S$ be the set on which the constraint \texttt{position left of guide g with gap 20} is applied.
-For all nodes $n$ in $S$, we define a constraint such that $(n[x]$ + 20) < $g[x]$.
-\end{definition}
-
-\emph{Implementation.}
+These constraints are defined as follows: The user defines the \texttt{position} as $left$,
+the \texttt{guide} as $g$, and the \texttt{gap} as $v$. For all nodes $n$
+in $S$, we define a constraint that $n[x] + v < g[x]$.
 Position constraints are one of the constraint types natively supported in
 WebCoLa, including a \texttt{gap} parameter. For each node
 in set $S_1$, we produce one position constraint relative to the specified guide.
-\orange{When the position constraint is defined relative to a named set $S_2$,
-we produce one position constraint for each pair of nodes $(u, v)$ where $u \in S_1$ and $v \in S_2$.}
-
-\emph{Rationale.} Position constraints allow the user to provide
-overarching constraints relative to global elements such as guides. These
-can be used to constrain the overall size of the graph or to section off
-different areas.
+When the position constraint is defined relative to a named set $S_2$,
+we produce one position constraint for each pair of nodes $(u, v)$ where $u \in S_1$ and $v \in S_2$.
 
 %\jheer{Why only relative guides? Why can't relative position constraints be applied between sets?}
 % \todo{This isn't implemented, but probably could be fairly easily. Orange above.}
@@ -120,148 +84,112 @@ different areas.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Constraints}
 \constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
-
 Order constraints enforce a sort order on the set elements. The user must 
 specify the \texttt{axis} as either \texttt{x} or \texttt{y} and must define
-the node property \texttt{by} which the order is determined. These 
-constraints are defined as follows:
-
-\begin{definition}
-Let $S$ be the set on which the constraint \texttt{order x axis by `depth'} is applied.
-For all nodes $n_1$ and $n_2$ in $S$, we define a constraint such that $n_1[x]$ < $n_2[x]$
-if $n_1[depth] < n_2[depth]$.
-\end{definition}
-
+the node property \texttt{by} which the order is determined. 
 The user can optionally define an explicit list of values for a custom
 \texttt{order}; otherwise, the elements are ordered lexicographically \texttt{by}
 the specified property. The user may also indicate whether
-or not to \texttt{reverse} the order. Users may specify an optional
+or not to \texttt{reverse} the order.
+
+These constraints are defined as follows: The user defines the \texttt{axis} as
+$x$ and the property to sort \texttt{by} as $depth$. For all nodes $n_1$ 
+and $n_2$ in $S$  such that $n_1 \neq n_2$ then $n_1[x]$ < $n_2[x]$
+if $n_1[depth] < n_2[depth]$. We optimize the implementation of this order
+constraint by only producing constraints between adjacent nodes in the sorted 
+order; in other words, for a set $S$ with $N$ nodes we produce $O(N)$ 
+constraints on the node position.
+
+When applying constraints to elements that are sets rather than to nodes
+directly, we create temporary boundary nodes and compute constraints relative to
+these boundaries. Consider a constraint definition that includes $s$ sets. 
+In this case, we define $s-1$ boundary guides $b_1, b_2, ..., b_{s-1}$. We then
+identify the order of the sets and produce constraints with the internal
+nodes for the set. For constraint definition $C$ with $s$ sets, let $S_1$ and
+$S_2$ be two adjacent sets such that $S_1 < S_2$ in the sort order. Let $b_1$ be
+the boundary between these two sets. We produce constraints such that for all
+nodes $n \in S_1$ then $n[x] < b_1[x]$ and for all nodes $m \in S_2$ then $b_1[x] < m[x]$.
+
+Users may also specify an optional
 \texttt{band} property for the constraint that determines a size for each
 set region. For the \texttt{band} property, users can introduce fixed spacing
-to the order of the elements by introducing boundaries between elements.
-Constraints with the \texttt{band} property are defined as follows:
-
-\begin{definition}
-Let $S$ be the set with $N$ elements on which the constraint 
-\texttt{order x axis by `depth' with band 200} is applied.
-We define $N+1$ boundary guides: $b_1, b_2, ..., b_{N+1}$ where
-$b_1[x] + 200 == b_2[x]$. We then sort the elements by the depth.
-Let $n_1$ be the element with the smallest depth and $n_2$ be the element 
-with the next smallest depth. We then produce constraints such that
-$b_1[x] < n_1[x]$ and $n_1[x] < b_2[x]$ and $b_2[x] < n_2[x]$.
-\end{definition}
-
-\emph{Implementation}
-We define order constraints by defining WebCoLa position constraints based
-on the definitions defined above. \todo{Confirm definitions/implementation.}
+to the order of the elements by introducing boundaries between elements. In
+this case, we create $s+1$ boundary guides such that we create additional 
+constraints at the start and end the ordering.
 
 %\jheer{Similar question as above regarding x/y vs. other possible options.}
-
-\emph{Rationale.} Unlike position constraints, order constraints allow the
-user to specify the overall sort order for the layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circle Constraints}
 \constraint{Ex: \texttt{circle} \texttt{around} \emph{``center''}}
-
 Circle constraints allow the user to specify a ring layout for a set of
-elements. The constraint must include which element the set elements should
-be positioned around or may specify ``center'' for a generic center point
-to be used.
+elements. The use must define the value \texttt{around} which to compute 
+the layout. This value can be either a default ``center'' or a previously 
+named guide. The user may optionally define a \texttt{radius} which 
+determines the expected radius for the circle.
 
-\todo{Formal definition of this constraint?}
+%\jheer{What does it mean to put an element in the center? Does this constraint work with sets of sets?}
 
-\jheer{I'm confused regarding the center. What is a generic center point? Can one specify a x,y point or related guide? What does it mean to put an element in the center? Does this constraint work with sets of sets?}
-
-\emph{Implementation.}
 Circle constraints are not a supported constraint type in WebCoLa. To 
 demonstrate the utility of this constraint type we approximated the behavior
 in our WebCoLa implementation. To do this, we first add a temporary node
-to act as the center of the circle layout. We then add a link between each 
-node in the set and the temporary center. \todo{Finish and confirm description of procedure.}
+or identify the guide to act as the center of the circle layout. We then add a link between each 
+node in the set and the center. Finally, we link the set nodes in the circle
+with additional temporary edges to produce a chain. We compute the expected
+length for each edge based on the number of nodes in the circle and the 
+\texttt{radius} defined by the user. This strategy approximates a circular
+layout (Figure~\ref{fig:syphilis-layout}), though future work should
+explore improved techniques for constraining nodes into a ring layout. 
+\todo{Is this something covered by one of Tim's previous projects that we
+could cite?}
 
-\todo{I've looked into two ways of approximating the circle procedure. 
-(1) Add edges between each node in the circle and the center, and around
-the circle edge. (2) Produce the layout with position constraints and 
-then convert to polar coordinates.}
-
-\emph{Rationale.} Circular structures are a common layout requirement of
-existing strategies \todo{citation} and can be crucial for relating
-properties of the underlying structure.
+%\todo{I've looked into two ways of approximating the circle procedure. 
+% (1) Add edges between each node in the circle and the center, and around
+% the circle edge. (2) Produce the layout with position constraints and 
+% then convert to polar coordinates.}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cluster Constraints}
 \constraint{Ex: \texttt{cluster}} 
-
 Cluster constraints encourage a organic clustering of the nodes around
-a center point.
-
-\todo{Formal definition of this constraint?}
-
-\emph{Implementation.}
+a center point. This constraint should aim to minimize the distance between
+the nodes in the set.
 Cluster constraints are not currently supported in WebCoLa. In order to
 produce a clustered appearance, we add temporary edges between all nodes
-in the set to produce a clique and require the edges to have shorter length.
-
-\emph{Rationale.}
-Cluster constraints do not have as strong an impact as alignment or
-position constraints, but encourage the nodes to be attracted to one
-another to produce a more inherent grouping than may otherwise occur.
-This behavior is similar to many force-directed techniques in which
-nodes are attracted to others of similar type.
-
-\jheer{I don't think many (any?) force-directed techniques actually have nodes of the same type attact each other. You might instead explicitly cite d3-force, which uses x, y forces to attract certain nodes to a given point (much like a guide). Note that there is no attractive force between nodes. Rather, a proportionally-balanced repulsive (n-body) repulsive force and/or collision force is used to prevent overlap among nodes attracted to the same point.}
+in the set to produce a clique and require the edges to have a shorter length,
+which encourages the nodes to be drawn together.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
 \constraint{Ex: \texttt{hull}} 
-
-Hull constraints create a boundary (hull) around the set elements and prevent any other nodes from residing within that boundary. These 
-constraints are defined as follows:
-
-\begin{definition}
-Let $S$ be the set on which the constraint \texttt{hull} is applied. We produce a minimally enclosing rectangle $B$ with properties $B.x1$, $B.x2$ $B.y1$, $B.y2$. For all nodes
+Hull constraints create a boundary (hull) around the set elements and 
+prevent any other nodes from residing within that boundary. These 
+constraints are defined as follows: We produce a minimally enclosing rectangle 
+$B$ with properties $B.x1$, $B.x2$ $B.y1$, $B.y2$. For all nodes
 $n$ in $S$, we define constraints such that $B.x1 < n[x]$, $n[x] < B.x2$,
-$B.y1 < n[y]$, $n[y] < B.y2$. For all nodes $m$ \emph{not} in $S$, we define
-constraints such that $m[x] < B[x1] || B[x2] < m[x]$ and $m[y] < B[y1] || B[y2] < m[x]$.
-\end{definition}
-
-\emph{Implementation.}
+$B.y1 < n[y]$, $n[y] < B.y2$. For all nodes $m$ not in $S$, we define
+constraints such that $m[x] < B[x1]$ $||$ $B[x2] < m[x]$ and $m[y] < B[y1]$ $||$ $B[y2] < m[x]$.
 We implement hull constraints in WebCoLa using its built-in support for 
-specifying \texttt{groups} in the layout which produce a boundary around 
+specifying \texttt{groups}, which produce a boundary around 
 the nodes defined by their \texttt{\_id}.
-
-\emph{Rationale.}
-Hull constraints allow users to create enclosed regions of the graph in
-which the set elements do not interleave with elements outside the set. This
-constraint enforces spatial separation of nodes in different sets.
-
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
 \constraint{Ex: \texttt{padding 5}} 
-
-Padding constraints enforce minimum spacing around an element relative
-to other elements in the set. These constraints are defined as follows:
-
-\todo{Formal definition of this constraint?}
 \constraintsFigure
-
-\emph{Implementation.}
+Padding constraints enforce a minimum spacing around an element.
 Padding introduces additional space around nodes without constraining the
 axis on which the padding is added. Our current implementation adds a
 padding to the node geometry which essentially increases the size of the element
 when WebCoLa's non-overlap behavior is applied. In this implementation
-padding can only be specified once and applies to all nodes, not just nodes
-in the specified set. Additional work is required to develop constraints that
+padding can only be specified to a given node once and impacts the spacing
+relative to all other nodes in the layout.
+Additional work is required to develop constraints that
 respect the padding only relative to certain set elements.
 
-\jheer{Is the issue here one of applying spacing respected by elements within a set, but which is otherwsie ignored by elements of other sets? If so, this seems like a minor shortcoming (if even a shortcoming at all). I feel like this doesn't really follow our set-based model, but rather serves as a form of global constraint (i.e., applied on the set containing all nodes). Also, if I wanted to give different padding values to different types of nodes (which is then globally respected by the layout) is this possible?}
+% \jheer{Is the issue here one of applying spacing respected by elements within a set, but which is otherwsie ignored by elements of other sets? If so, this seems like a minor shortcoming (if even a shortcoming at all). I feel like this doesn't really follow our set-based model, but rather serves as a form of global constraint (i.e., applied on the set containing all nodes). Also, if I wanted to give different padding values to different types of nodes (which is then globally respected by the layout) is this possible?}
 
-\emph{Rationale.}
-To support the overall legibility of the graph, additional padding can be
-beneficial to ensure that nodes are not placed to close together.
-
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Creating Guides in WebCoLa}
 
 In \projectname, the user may define guides to control the graph layout.
@@ -270,5 +198,35 @@ for each guide and generate constraints relative to this node. These
 temporary nodes are included in WebCoLa's layout but are hidden from the
 final visualization of the graph layout.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Application of Multiple Constraints}
-\todo{Describe the interplay of different constraints for the specification.}
+For this version of \projectname, we selected these constraints to enable
+expressive layouts for a variety of real-world examples. These constraints
+can be combined in various ways to produce highly flexible graph layouts.
+The current implementation of \projectname does not limit or control which
+constraints can be applied within a constraint definition, however, not
+all constraints can be safely applied at the same time.
+
+For example, the user may easily produce contradictions by defining constraints
+that are the reverse of one another (e.g., two order constraints, one with the
+ordering reversed). Similarly, an order constraint applied to both the \texttt{x}
+and \texttt{y} axis would force the nodes to share the same position despite
+overall requirements to avoid node overlap. 
+
+While several strategies produce highly constraint or contradictory layouts, 
+there are a variety of constraint combinations that can enable highly 
+expressive layouts. The small tree in Figure~\ref{fig:small-tree-example}, for 
+example, effectively combines alignment on nodes with a total ordering on sets 
+to produce a simple specification for an aligned tree layout. Position constraints
+generally allow the user to shift the layout relative to global elements,
+whereas order constraints introduce additional requirements between nodes
+within a particular set. Combining multiple (non-contradictory), position
+constraints can allow the user to constrain node positions to particular
+areas of the graph and thus produce overall constraints on the size of the
+output graph or distinct regions of interest based on node properties.
+
+% \emph{Rationale.} Support for alignment on either the x or y axis allows
+% users to produce layouts that exhibit grid like layout properties similar
+% to those produced by Kieffer et al.\ \cite{kieffer2016hola}.
+
+% \jheer{This is not a true rationale. Focus on the user needs this meets. Why are grid-like layouts needed or desirable? Why is the fact that Kieffer et al. produce them relevant here? One alternative you could consider is moving your rationale to a dedicated subsection at the end of this section. Some designs are achieved by combining constraints, but listing rationales one-by-one may make it harder to talk about what can be achieved via constraint composition.}
