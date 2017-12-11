@@ -11,6 +11,7 @@ var EXAMPLES = {
     {"name": "serengeti-foodWeb"},
     {"name": "medium-clusters"},
     {"name": "tlr4"},
+    {"name": "tlr4-paper"},
     {"name": "syphilis"},
     {"name": "small-order-wineAndCheese"},
     {"name": "small-position-wineAndCheese"},

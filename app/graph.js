@@ -188,7 +188,7 @@ graph.getStroke = function(node) {
   var value = "white";
   if(node.guide) return node.stroke || "#f6c5c5";
   if(node.temp) return node.stroke || "#ddd";
-  return node.stroke || value;
+  return node.stroke || style.nodeStroke(node) || value;
 };
 
 graph.getPadding = function(node) {
