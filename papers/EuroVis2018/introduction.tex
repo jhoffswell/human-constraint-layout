@@ -1,15 +1,16 @@
 %!TEX root = constraint-layout.tex
 \section{Introduction}
 With an appropriate graph layout, node-link diagrams can
-can effectively convey properties of an underlying
-network structure, such as hierarchy or connectedness. Such visualizations are common across domains including ecological networks
+effectively convey properties of an underlying
+network structure, such as hierarchy or connectedness. Such visualizations
+are common across a variety of domains, including ecological networks
 \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher,kruger2017},
 biological systems
 \cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph},
 and social networks
 \cite{scott1988social,rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv}, 
 among many others. A graph layout may utilize
-domain-specific details in order to emphasize relevant patterns in the
+domain-specific properties in order to emphasize relevant patterns in the
 data. 
 %In an ecological network for example, nodes could be split by trophic
 %level (e.g., its positition in the food chain) to highlight the hierarchy
@@ -17,7 +18,7 @@ data.
 %(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
 %layout: a unique layout that leverages knowledge of the data domain for
 %node placement and understanding of the graph structure.
-In a biological pathway, nodes could be layered by their 
+In a biological pathway, nodes can be layered by their
 subcellular location to provide an overview of the cellular structure
 (Figure~\ref{fig:tlr4-layout}). The additional ``downstream genes'' layer
 can further show the outcomes of this network, clustered by molecular function.
@@ -26,7 +27,7 @@ can further show the outcomes of this network, clustered by molecular function.
 
 Many domain-specific layout techniques address particular needs
 for customized layouts~\cite{barsky2008cerebral,genc2003constrained,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
-techniques leverage common structural details that are significant to the
+techniques leverage common structural properties that are significant to the
 domain, such as known data hierarchies including cellular 
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
 (Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
@@ -64,7 +65,7 @@ layout. To demonstrate the expressiveness of our language, we
 recreate a number of customized layouts found in the scientific research 
 literature. We
 show that users can compactly specify complex graph layouts that resemble
-those produced by customized layout engines, and can reapply layout
+those produced by customized layout engines, and can reapply these
 specifications across different graphs. Our \projectname specifications
 can reduce the number of constraints written by the user by up to a 
 factor of 90.

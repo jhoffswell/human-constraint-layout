@@ -9,9 +9,11 @@ simplest elements of a set are graph nodes; however, \projectname also
 supports hierarchical composition, with nested sets as elements.
 
 A \projectname specification consists of one or more \textbf{constraint definitions},
-which include both a set definition and constraint application.
+along with an optional set of guides (reference elements that serve as 
+positional anchors).  Each constraint definition
+includes a set definition and constraint application.
 \projectname provides a concise set of operators for defining
-sets based on node attributes and structural relations in the graph.
+these sets based on node attributes and structural relations in the graph.
 The result of a set definition produces one or more sets, which 
 can have either distinct or overlapping elements. Each constraint definition can 
 include one or more constraints (e.g., for position, ordering, 
@@ -20,9 +22,8 @@ In other words, constraints created for a constraint definition with multiple se
 applied to nodes \emph{within} each individual set, not \emph{between} 
 the sets in the constraint definition.
 
-A \projectname specification consists of one or more constraint definitions, 
-along with an optional set of guides (reference elements that serve as 
-positional anchors). The \projectname compiler then takes an input graph 
+Given a \projectname specification,
+the \projectname compiler then takes an input graph 
 and specification and produces a set of instance-level constraints for 
 an existing constrained graph layout solver. In the following sections, 
 we discuss the design of \projectname including the process for 
