@@ -20,7 +20,7 @@ a sample \projectname constraint in the section header.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Alignment Constraints}
-\constraint{Example: \texttt{align} \emph{x} \texttt{axis}}
+\constraint{Ex: \texttt{align} \emph{x} \texttt{axis}}
 Alignment constraints ensure that all nodes in the set share one of their
 coordinates. For this implementation, the constraint must specify the \texttt{axis}
 as either \texttt{x} or \texttt{y}.
@@ -62,7 +62,7 @@ alignment orientation of the nodes.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Position Constraints}
-\constraint{Example: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
+\constraint{Ex: \texttt{position} \emph{right} \texttt{of} \emph{``top\_guide''}}
 Position constraints ensure that all nodes in the set are positioned relative to
 a guide or previously named set. The user must specify the relative
 placement for the position as one of \texttt{left}, \texttt{right}, 
@@ -87,7 +87,7 @@ we produce one position constraint for each pair of nodes $(u, v)$ where $u \in 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Constraints}
-\constraint{Example: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
+\constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
 Order constraints enforce a sort order on the set elements. The user must 
 specify the \texttt{axis} as either \texttt{x} or \texttt{y} and must define
 the node property \texttt{by} which the order is determined. 
@@ -125,7 +125,7 @@ constraints at the start and end the ordering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circle Constraints}
-\constraint{Example: \texttt{circle} \texttt{around} \emph{``center''}}
+\constraint{Ex: \texttt{circle} \texttt{around} \emph{``center''}}
 Circle constraints allow the user to specify a ring layout for a set of
 elements. The use must define the value \texttt{around} which to compute 
 the layout. This value can be either a default ``center'' or a previously 
@@ -157,7 +157,7 @@ could cite?}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Cluster Constraints}
-\constraint{Example: \texttt{cluster}}
+\constraint{Ex: \texttt{cluster}}
 Cluster constraints encourage a organic clustering of the nodes around
 a center point. This constraint should aim to minimize the distance between
 the nodes in the set.
@@ -168,7 +168,7 @@ which encourages the nodes to be drawn together.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
-\constraint{Example: \texttt{hull}}
+\constraint{Ex: \texttt{hull}}
 Hull constraints create a boundary (hull) around the set elements and 
 prevent any other nodes from residing within that boundary. These 
 constraints are defined as follows: We produce a minimally enclosing rectangle 
@@ -185,7 +185,7 @@ the nodes defined by their \texttt{\_id}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
-\constraint{Example: \texttt{padding 5}}
+\constraint{Ex: \texttt{padding 5}}
 \constraintsFigure
 Padding constraints enforce a minimum spacing around an element.
 Padding introduces additional space around nodes without constraining the

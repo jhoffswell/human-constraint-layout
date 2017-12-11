@@ -40,7 +40,7 @@ Rothenberg et al.\ discuss an ethnographic approach for identifying the
 ``core'' groups in a social network to better understand the transmission
 of syphilis amongst sexual partners~\cite{rothenberg1998using}. They found
 that there were three primary groups involved in the sexual network under study:
-affluent white men, younger white women, and African-American men, 
+young affluent white men, younger white women, and young African-American men,
 which are visualized from left to right in Figure~\ref{fig:syphilis-layout}a. 
 The authors note that a number of outsiders to these ``core'' groups
 (visualized as the top cluster of Figure~\ref{fig:syphilis-layout}a) 
@@ -52,13 +52,11 @@ particular, \emph{``Visualization of these groups and all their sex
 We reproduced this visualization with \projectname~(Figure~\ref{fig:syphilis-layout}b) 
 and included a number of additional constraints on the layout apart
 from the separation constraints that are visible in the original image. In
-particular, we included a circle constraint on the group of young white
+particular, we included a circle constraint on the group of white
 women to more strongly enforce the result shown in the original figure and
 applied an alignment constraint on the two groups of
 men, as well as some additional padding. The \projectname specification
 is shown in Figure~\ref{fig:syphilis-spec}.
-
-\todo{AB: changed ``young men'' to just ``men'' -- is this correct?}
 
 The simplest recreation of this figure can be done with three constraint
 definitions and three \projectname constraints, which generate a total of
@@ -72,10 +70,10 @@ alignment and circle constraints emphasize the group relationships by
 introducing shared visual properties amongst the nodes. The more grid-like
 layout also faciliates scanning of the nodes. The
 WebCoLa constraint solver includes a procedure to reduce the length of
-edges to a user-defined length. This behavior encourages the circle of young women
-to shift towards the group of African-American men further demonstrating
-the \emph{``intensity of interaction''} between the two groups, as described in
-the original paper.
+edges to a user-defined length. This behavior encourages the circle of women
+to shift towards the group of African-American men, further demonstrating
+the relatively larger number of interactions between the two groups,
+as described in the original paper.
 
 \subsection{TLR4 Network}
 \tlrfourSpec
