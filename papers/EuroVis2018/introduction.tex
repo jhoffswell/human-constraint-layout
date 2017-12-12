@@ -32,19 +32,21 @@ domain, such as known data hierarchies including cellular
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
 (Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
-which they were designed. As such, there are other domains in which customized 
-layouts would be useful but for which such tools are currently unavailable. 
-When a layout technique does not exist for the
-domain of interest, users are required to either fit their data
-to available techniques or devise a new algorithm. Creating a
-customized layout algorithm requires both
+which they were designed, and there are numerous
+other domains for which customized layouts would be useful
+but for which tools that provide them are unavailable.
+Thus, when a layout technique does not exist for the
+domain of interest, users must either fit their data
+to available techniques or design and implement a new algorithm.
+Creating a customized layout algorithm requires both
 domain and programming expertise, and so introduces a gap between 
-analysis needs and the availability of techniques to
-handle those needs.
+analysis needs and the techniques available to handle those needs.
 
-Constraints can be used to specify desired properties for a layout, as 
-the designer can think about how domain-specific properties should control 
-the positions of nodes. However, many existing techniques
+\todo{AB: claimed ``numerous'' other domains.  OK, or overclaiming?}
+
+Constraints can be used to specify desired properties for a layout by
+allowing the designer to control the positions of nodes using
+domain-specific information.  However, many existing techniques
 for constraint layout require the user to define constraints
 on individual nodes or node pairs in the graph. This process can be labor
 intensive, requiring thousands of similar constraints and careful reasoning

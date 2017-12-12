@@ -44,7 +44,7 @@ be easier to understand why the conflicts are occurring. For example, we may
 note that some nodes occur in multiple sets with conflicting constraints
 or that multiple constraints on a particular set are generally in conflict.
 
-\subsection{Limitations of WebCoLa as the Constraint Solver}
+\subsection{Limitations Arising from the Underlying Constraint Solver}
 
 % remember to be generous with WebCoLa when discussing limitations; using a
 % system like this makes it easier to uncover bugs or identify
@@ -58,10 +58,13 @@ or that multiple constraints on a particular set are generally in conflict.
 Our implementation with WebCoLa allows us to demonstrate the utility of
 \projectname for creating customized domain-specific layouts that can be
 reapplied to multiple graphs in the same domain. However, our current
-implementation was partially limited by what WebCoLa currently supports. For
+implementation was limited in part by what WebCoLa currently supports. For
 example, we were unable to directly express \projectname's circle constraints in
-WebCoLa. WebCoLa does not currently include such a constraint type, though it
-has been identified in the wiki as an area of future work. Our work contributes new strategies for the
+WebCoLa.  However, circle constraints have been identified in the WebCoLa
+wiki as an area of future work, and once they are supported in the
+underlying constraint solver, it should be straightforward to make use of
+this improved support in \projectname.
+Our work contributes new strategies for the
 specification of graph layout constraints, but does not aim to create a
 highly optimized constraint solver for the language. WebCoLa is a useful
 library on which to build and demonstrate our approach, but 
@@ -84,21 +87,31 @@ women and the African-American men than between the women and
 the white men, which emphasizes the strength of these
 connections.
 
-However, some layouts require node positioning that should be
-independent of the graph structure. Revisting the syphilis social network
+However, some layouts require node positioning that should be independent
+of the graph structure. Revisting the syphilis social network
 (Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
 are drawn to the lower position allowed by the boundary guide in an attempt
-to shorten the link length, thus producing an alignment unspecified in the
-layout. The underlying constraint solver can thus significantly impact the
-behavior of the layout since it may encode additional preferences based on
-the underlying solver. In future work, it may be useful for the user to be able
-to specify the type of underlying solver or additional parameters expressing
-global preferences for the graph layout.
+to shorten the link length, thus producing an alignment that satisfies the
+\projectname constraints but not all of whose properties are explicitly
+specified in the layout. The underlying constraint solver can thus
+significantly impact the resulting layout, since it may implicitly encode
+additional preferences.  In future work, it may be useful to support
+additional parameters expressing global preferences for the graph layout,
+which would then be passed on to the underlying solver.  Another direction
+would be to accommodate multiple solvers, which might encode different
+preferences of these kinds, and to select among them, either automatically
+or as specified by the user.
+
+\todo{AB: check the above. I wanted to continue to separate out the
+  specification of the constraints from the impleentation. Or did I
+  misinterpret the previous version (which instead implied that the layout
+  didn't satisfy all the SetCoLa constraints?)  The first sentence probably
+should be revised if my rewrite is OK.}
 
 Another interesting behavior of WebCoLa is that a global non-overlap constraint
 may be applied to the nodes at the start of the overall layout. This constraint
 prevents nodes from overlapping even at intermediate stages of the layout and
-may thus cause the layout to become stuck in a local optima that still
+may thus cause the layout to become stuck in a local optimum that still
 includes unsatisfied constraints. Furthermore, our use of
 dummy guide nodes with a fixed position may further complicate issues
 with local maxima. Future work might explore additional procedures for
