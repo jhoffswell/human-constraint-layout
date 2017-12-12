@@ -10,32 +10,35 @@ supports hierarchical composition, with nested sets as elements.
 
 A \projectname specification consists of one or more \textbf{constraint definitions},
 along with an optional set of guides (reference elements that serve as 
-positional anchors).  Each constraint definition
-includes a set definition and constraint application.
-\projectname provides a concise set of operators for defining
-these sets based on node attributes and structural relations in the graph.
+positional anchors). An example \projectname specification for a small tree 
+layout is shown in Figure~\ref{fig:small-tree-example}. Each constraint 
+definition includes a set definition and constraint application.
+\projectname provides several operators for defining
+sets based on node attributes and structural relations in the graph.
 The result of a set definition produces one or more sets, which 
 can have either distinct or overlapping elements. Each constraint definition can 
-include one or more constraints (e.g., for position, ordering, 
+define one or more constraints (e.g., for position, ordering, 
 or alignment), which are applied to the nodes within each separate set. 
 In other words, constraints created for a constraint definition with multiple sets are 
 applied to nodes \emph{within} each individual set, not \emph{between} 
 the sets in the constraint definition.
 
-Given a \projectname specification,
-the \projectname compiler then takes an input graph 
-and specification and produces a set of instance-level constraints for 
-an existing constrained graph layout solver. In the following sections, 
+The \projectname compiler takes an input graph 
+and specification, and produces a set of instance-level constraints for 
+an existing constrained graph layout solver. In this work, we target 
+Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
+interactive, web-based layouts. In the following sections, 
 we discuss the design of \projectname including the process for 
-specifying sets and applying constraints. The data and \projectname 
-specification for a small tree layout is shown in Figure~\ref{fig:small-tree-example}.
+specifying sets, the types of constraints currently supported in \projectname, 
+and how such constraints are applied over node sets.
 
-\smallTreeExample
+% \smallTreeExample
+\smallTreeExampleWebCoLa
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Specifying Sets in \projectname}
-There are several operators for defining sets based on node attributes 
+We define several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
 into disjoint sets, (2) specifying (potentially overlapping) sets via
 \emph{predicates}, (3) \emph{joining} sets based on key expressions,
@@ -61,10 +64,9 @@ For each node, we identify a key based on the node values for the partition
 properties and create sets based on the key. The \emph{include} parameter allows
 the user to identify particular node values to look for when partitioning
 and includes only those values; the exclude property does the opposite. 
-For example in Figure~\ref{fig:serengeti-layout}, Lines~\texttt{11}, \texttt{28},
-\& \texttt{46}, the user partitions the nodes by the \texttt{group} property
-and only includes particular groups in each constraint definition to apply
-constraints relative to the tropic level of the nodes.
+For example in Figure~\ref{fig:syphilis-spec}, Line~\texttt{5}, the user
+partitions the nodes by the \texttt{group} property and ignores the nodes
+for which the value of \texttt{group} is \emph{``other''}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Specifying Sets with Predicates}
@@ -74,7 +76,12 @@ can specify a concrete list of sets, each defined by an arbitrary boolean
 expression. For each expression, nodes are evaluated by the expression
 to determine if it should be included in the set. The user may
 refer to properties of the node using dot syntax; for example,
-\texttt{node.depth} refers to the depth property. Users may also optionally 
+\texttt{node.depth} refers to the depth property. For example, in 
+Figure~\ref{fig:syphilis-spec},~Lines~\texttt{13},~\texttt{14},~and~\texttt{15},
+we produce three sets based on the \texttt{group} property of the nodes.
+The set on Line \texttt{14} includes nodes that are in the group 
+\emph{``young white women''} and nodes in the group \emph{``other.''}
+Users may optionally 
 specify a \texttt{name} for the set, which may be referred to in subsequent
 composite set definitions. With this specification strategy, it is possible
 to create node sets that are not disjoint, and may thus lead to
@@ -87,7 +94,7 @@ To combine the flexibility of \emph{predicates} with the automation of
 \emph{partition}, users may specify sets as a join based on key expressions.
 For each key expression in the join, nodes are evaluated to extract one 
 or more keys, which are used to split nodes into (potentially overlapping) 
-sets. For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{35}, the 
+sets. For example, in Figure~\ref{fig:syphilis-spec},~Line~\texttt{35}, the 
 user creates a new set that includes two key expressions: one identifies
 the \texttt{\_id} of the node, the other identifies the \texttt{\_id}s of
 the neighboring nodes. Each node is placed in the sets corresponding to

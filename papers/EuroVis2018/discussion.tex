@@ -13,7 +13,7 @@ and the evolution of constraint solvers more closely integrated with \projectnam
 to groups of nodes in a graph rather than applying constraints to individual
 nodes one at a time. By deferring this complexity to the underlying constraint
 solver, the user can more easily prototype the layout and make changes that
-have a large overall impact with a small number of constraints or changes.
+have a large overall impact with a small number of constraints.
 As shown in Figure~\ref{fig:constraints},
 the number of \projectname constraints is a small fraction of the WebCoLa constraints.
 
@@ -28,13 +28,10 @@ whether these redundant constraints have a significant performance impact,
 and if they do, investigate additional optimizations to
 reduce the generation of unnecessary constraints.
 
-\todo{AB: does this matter? Added a phrase to qualify the future work item}
-
 \subsection{Debugging and Unsatisfiable Constraints in \projectname}
 For a \projectname specification, it is possible to create node sets that
-are \emph{not} disjoint and may thus be susceptible to the
-specification of unsatisfiable constraints. Furthermore, it is
-possible for the user to specify unsatisfiable constraints indirectly through
+are \emph{not} disjoint and may thus produce unsatisfiable constraints. Furthermore, 
+the user may specify unsatisfiable constraints indirectly through
 combinations of set definitions and constraint applications. These concerns
 are not exclusive to \projectname, as they can also arise
 in WebCoLa and other constraint-based layout tools.
@@ -64,8 +61,7 @@ reapplied to multiple graphs in the same domain. However, our current
 implementation was partially limited by what WebCoLa currently supports. For
 example, we were unable to directly express \projectname's circle constraints in
 WebCoLa. WebCoLa does not currently include such a constraint type, though it
-has been identified in the wiki as an area of future work
-\todo{citation?}. Our work contributes new strategies for the
+has been identified in the wiki as an area of future work. Our work contributes new strategies for the
 specification of graph layout constraints, but does not aim to create a
 highly optimized constraint solver for the language. WebCoLa is a useful
 library on which to build and demonstrate our approach, but 

@@ -1,13 +1,23 @@
 %!TEX root = constraint-layout.tex
 \section{\projectname Constraints and WebCoLa Implementation}
 \label{sec:constraints}
+\constraintsFigure
+Users may specify one or more constraints for each constraint definition
+that apply to the nodes within each set identified by the set definition.
+The \projectname compiler converts each \projectname constraint into multiple
+constraints in Dwyer et al.'s WebCoLa library \cite{WebCoLa}, which computes
+the final layout of the graph. Figure \ref{fig:constraints} shows the number
+of \textbf{Constraint Definitions} and \textbf{\projectname} constraints written
+by the user. For some \projectname constraints, WebCoLa does not currently
+support the desired behavior so we approximate the resulting behavior and 
+exclude these constraints from the final comparison (\textbf{Excluded Constraints}). 
+Finally, we compare the number of remaining constraints (\textbf{\projectname*}) 
+to the number of constraints generated for \textbf{WebCoLa}, which results
+in a increase factor denoted by the \textbf{Ratio}.
 
-We target  Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
-interactive, web-based layouts.
-In WebCoLa, constraints are defined based on the \texttt{\_id} of the
-graph node. We leverage two of WebCoLa's
-constraint types for our implementation: \emph{alignment} constraints 
-and \emph{position} constraints. For other \projectname constraints, we
+In WebCoLa, constraints are defined based on the \texttt{\_id} of the graph 
+node. We leverage two of WebCoLa's constraint types for our implementation: 
+\emph{alignment} constraints and \emph{position} constraints. For other \projectname constraints, we
 approximate their behavior by imputing additional edges or by applying
 padding to the nodes in the layout. The current implementation of
 \projectname provides seven constraint types:
@@ -23,7 +33,7 @@ a sample \projectname constraint in the section header.
 \constraint{Ex: \texttt{align} \emph{x} \texttt{axis}}
 Alignment constraints ensure that all nodes in the set share one of their
 coordinates. For this implementation, the constraint must specify the \texttt{axis}
-as either \texttt{x} or \texttt{y}.
+as either \texttt{x} or \texttt{y} (Figure \ref{fig:small-tree-example}, Line~\texttt{18}).
 The user may also optionally identify an \texttt{orientation} for the alignment.
 The orientation is useful for producing alignments when the size of the
 elements do not match. By default, the orientation is defined as \texttt{center}
@@ -87,14 +97,15 @@ we produce one position constraint for each pair of nodes $(u, v)$ where $u \in 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Order Constraints}
-\constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{``depth''}}
+\constraint{Ex: \texttt{order} \emph{y} \texttt{axis} \texttt{by} \emph{depth}}
 Order constraints enforce a sort order on the set elements. The user must 
 specify the \texttt{axis} as either \texttt{x} or \texttt{y} and must define
-the node property \texttt{by} which the order is determined. 
+the node property \texttt{by} which the order is determined 
+(Figure \ref{fig:small-tree-example}, Line~\texttt{23}). 
 The user can optionally define an explicit list of values for a custom
 \texttt{order}; otherwise, the elements are ordered lexicographically \texttt{by}
 the specified property. The user may also indicate whether
-or not to \texttt{reverse} the order.
+or not to \texttt{reverse} the order of the elements.
 
 These constraints are defined as follows.  Suppose the user defines the \texttt{axis} as
 $x$ and the property to sort \texttt{by} as $depth$. For all nodes $n_1$ 
@@ -125,14 +136,12 @@ constraints at the start and end the ordering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Circle Constraints}
-\constraint{Ex: \texttt{circle} \texttt{around} \emph{``center''}}
+\constraint{Ex: \texttt{circle} \texttt{around} \emph{center}}
 Circle constraints allow the user to specify a ring layout for a set of
 elements. The use must define the value \texttt{around} which to compute 
-the layout. This value can be either a default ``center'' or a previously 
+the layout. This value can be either a default \texttt{center} or a previously 
 named guide. The user may optionally define a \texttt{radius} which 
 determines the expected radius for the circle.
-
-\todo{AB: should ``center'' be \texttt{center}?  Not sure why the quotes \ldots}
 
 %\jheer{What does it mean to put an element in the center? Does this constraint work with sets of sets?}
 
@@ -146,9 +155,7 @@ with additional temporary edges to produce a chain. We compute the expected
 length for each edge based on the number of nodes in the circle and the 
 \texttt{radius} defined by the user. This strategy approximates a circular
 layout (Figure~\ref{fig:syphilis-layout}), though future work should
-explore improved techniques for constraining nodes into a ring layout. 
-\todo{Is this something covered by one of Tim's previous projects that we
-could cite?}
+explore improved techniques for circle layouts.
 
 %\todo{I've looked into two ways of approximating the circle procedure. 
 % (1) Add edges between each node in the circle and the center, and around
@@ -164,7 +171,8 @@ the nodes in the set.
 Cluster constraints are not currently supported in WebCoLa. In order to
 produce a clustered appearance, we add temporary edges between all nodes
 in the set to produce a clique and require the edges to have a shorter length,
-which encourages the nodes to be drawn together.
+which encourages the nodes to be drawn together. These temporary edges
+remain a part of the layout but are hidden from the user.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Hull Constraints}
@@ -186,7 +194,6 @@ the nodes defined by their \texttt{\_id}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Padding Constraints}
 \constraint{Ex: \texttt{padding 5}}
-\constraintsFigure
 Padding constraints enforce a minimum spacing around an element.
 Padding introduces additional space around nodes without constraining the
 axis on which the padding is added. Our current implementation adds a
@@ -210,20 +217,21 @@ final visualization of the graph layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Application of Multiple Constraints}
+\syphilisLayout
+\syphilisSpec
 For this version of \projectname, we selected these constraints to enable
 expressive layouts for a variety of real-world examples. These constraints
 can be combined in various ways to produce highly flexible graph layouts.
 The current implementation of \projectname does not limit or control which
 constraints can be applied within a constraint definition, however, not
-all constraints can be safely applied at the same time.
-
+all combinations of constraints produce desirable or satisfiable layouts.
 For example, the user may easily produce contradictions by defining constraints
 that are the reverse of one another (e.g., two order constraints, one with the
 ordering reversed). Similarly, an order constraint applied to both the \texttt{x}
 and \texttt{y} axes would force the nodes to share the same position despite
 overall requirements to avoid node overlap. 
 
-While several strategies produce highly constraint or contradictory layouts, 
+While some combinations produce contradictory or overconstrained layouts,
 there are a variety of constraint combinations that can enable highly 
 expressive layouts. The small tree in Figure~\ref{fig:small-tree-example}, for 
 example, effectively combines alignment on nodes with a total ordering on sets 
@@ -234,9 +242,6 @@ within a particular set. Combining multiple (non-contradictory) position
 constraints allows the user to constrain node positions to particular
 areas of the graph, and thus produce overall constraints on the size of the
 output graph or distinct regions of interest based on node properties.
-
-\todo{AB: what does ``While several strategies produce highly constraint
-  \ldots layouts'' mean?  Should this be overconstrained?  Or something else?}
 
 % \emph{Rationale.} Support for alignment on either the x or y axis allows
 % users to produce layouts that exhibit grid like layout properties similar

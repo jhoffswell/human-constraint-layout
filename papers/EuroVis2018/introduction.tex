@@ -32,9 +32,9 @@ domain, such as known data hierarchies including cellular
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
 (Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
-which they were designed. There thus exists a mismatch between domains
-where customized layouts would be useful and the availability of tools to
-support those domains. When a layout technique does not exist for the
+which they were designed. As such, there are other domains in which customized 
+layouts would be useful but for which such tools are currently unavailable. 
+When a layout technique does not exist for the
 domain of interest, users are required to either fit their data
 to available techniques or devise a new algorithm. Creating a
 customized layout algorithm requires both
@@ -42,27 +42,30 @@ domain and programming expertise, and so introduces a gap between
 analysis needs and the availability of techniques to
 handle those needs.
 
-Constraints can be used to specify desired properties for a layout, as the designer can think about how domain-specific properties should control the positions of nodes. However, many existing techniques
+Constraints can be used to specify desired properties for a layout, as 
+the designer can think about how domain-specific properties should control 
+the positions of nodes. However, many existing techniques
 for constraint layout require the user to define constraints
 on individual nodes or node pairs in the graph. This process can be labor
 intensive, requiring thousands of similar constraints and careful reasoning
-about which nodes should be constrained. Moreover, instance-level constraints (e.g., defined \emph{extensionally} via node indices) prevent
+about which nodes should be constrained. Moreover, instance-level constraints 
+(e.g., defined \emph{extensionally} via node indices) prevent
 reuse of a layout for various graphs from the same domain.
 
 To enable customized domain-specific layouts with reduced
-programming effort, we contribute \projectname: a domain specific language for
+programming effort, we contribute \projectname: a domain-specific language for
 specifying high-level constraints for graph layout. Users partition nodes
 into sets based on node or graph properties, and apply layout constraints
 to these sets. This approach allows users to specify layout
-requirements at a high-level, deferring the generation of
+requirements at a high level, deferring the generation of
 instance-level constraints to the underlying runtime system. These constraint
 definitions reduce specification effort while enabling highly
 customized and reusbale graph layouts.
 
 Our implementation of \projectname generates instance-level constraints for
-WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint based graph
+WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint-based graph
 layout. To demonstrate the expressiveness of our language, we
-recreate a number of customized layouts found in the scientific research 
+recreate several customized layouts found in the scientific research 
 literature. We
 show that users can compactly specify complex graph layouts that resemble
 those produced by customized layout engines, and can reapply these

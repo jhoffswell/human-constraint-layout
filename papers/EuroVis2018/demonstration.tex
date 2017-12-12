@@ -24,8 +24,7 @@ that are not directly translated to WebCoLa constraints (purple).
 % our demo uses domain props whereas low-level constraints in _id (separate from original intent)
 
 \subsection{Syphilis Social Network}
-\syphilisLayout
-\syphilisSpec
+\tlrfourSpec
 
 Social networks can be a powerful way to understand inter-personal
 relationships and are useful for tracking the spread of diseases that
@@ -76,23 +75,17 @@ the relatively larger number of interactions between the two groups,
 as described in the original paper.
 
 \subsection{TLR4 Network}
-\tlrfourSpec
-
 Biological networks are a common domain requiring customized visualizations
 to capture the cellular structure of the nodes in addition to the links
 contained in the network. Cerebral \cite{barsky2008cerebral} is a visualization
 tool designed to show variations in biological networks across experimental
-conditions. While many layouts may be produced by hand, Barsky et al.\ show that 
+conditions. While such layouts are commonly produced by hand, Barsky et al.\ show that 
 Cerebral can automatically and efficiently arrange the nodes by the location
 of the biomolecule within a cell. The immune response outcomes are positioned
 at the very bottom of the figure and grouped by biological function. The result
 of Cerebral's layout on the TLR4 network is shown in Figure~\ref{fig:tlr4-layout}a.
 Our reproduction in \projectname is shown in Figure~\ref{fig:tlr4-layout}b,
 with the specification shown in Figure \ref{fig:tlr4-spec}.
-
-\todo{AB: delete the phrase ``while many layouts may be produced by hand''?
-  Why is this relevant \ldots presumably any layout can be produced by hand??}
-
 
 Our recreated layout includes five constraint definitions with eight \projectname
 constraints, which generates $363$ constraints in WebCoLa (Figure~\ref{fig:constraints}).
@@ -115,7 +108,8 @@ interconnected organisms. In such cases, a customized layout may be useful
 for reasoning about the structure of the ecological system.
 
 Small food webs exhibit several of the properties of larger food webs, such
-as a node hierarchy arranged by the trophic level.
+as a node hierarchy arranged by the trophic level (e.g.,~the element's 
+position within the food web).
 For example, Figure~\ref{fig:kruger-layout}a visualizes a subset of the
 species found in Kruger National Park~\cite{kruger2017}. We can easily 
 recreate the layout~(Figure~\ref{fig:kruger-layout}b) with a small 
@@ -141,8 +135,7 @@ customized layout showing both the trophic hierarchy and
 the group clustering~(Figure \ref{fig:serengeti-layout}a). The Bayesian
 analysis approach and customized visualization highlight relationships between
 the plant habitats and underlying network structure that may be hard to identify
-from the data alone. In particular, \todo{pull in example conclusion from
-Baskerville paper to discuss figure}.
+from the data alone.
 
 We reproduce this layout in \projectname~(Figure~\ref{fig:serengeti-layout}b).
 For this specification~(Figure \ref{fig:serengeti-spec}), we author six constraint 
