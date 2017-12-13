@@ -1,6 +1,5 @@
 %!TEX root = constraint-layout.tex
 \section{Examples Reproduced in \projectname}
-\label{sec:examples}
 
 To demonstrate the conciseness and expressiveness of \projectname for domain-specific
 graph layout, we reproduce several real-world examples visualizing social 
@@ -24,6 +23,7 @@ that are not directly translated to WebCoLa constraints (purple).
 % our demo uses domain props whereas low-level constraints in _id (separate from original intent)
 
 \subsection{Syphilis Social Network}
+\label{sec:syphilis-example}
 Social networks can be a powerful way to understand inter-personal
 relationships and are useful for tracking the spread of diseases that
 result from personal contact \cite{rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv}.
@@ -136,7 +136,7 @@ the plant habitats and underlying network structure that may be hard to identify
 from the data alone.
 
 We reproduce this layout in \projectname~(Figure~\ref{fig:serengeti-layout}b).
-For this specification~(Figure \ref{fig:serengeti-spec}), we author six constraint 
+For this specification~(Figure \ref{fig:serengeti-spec}c), we author six constraint 
 definitions that create sets for each group in the layout and sets 
 representing each tropic level. For the carnivores and herbivores,
 we constrain the position of the nodes within the visualization region,
