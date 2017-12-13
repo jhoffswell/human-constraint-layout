@@ -1,7 +1,7 @@
 %!TEX root = constraint-layout.tex
 \section{Limitations \& Future Work}
 There are a number of useful areas for future work, including optimizations
-for the constraint generation procedure, the development of useful debugging
+for the current constraint generation procedure, the development of useful debugging
 tools to facilitate the user's understanding of unsatisfiable constraints,
 and the evolution of constraint solvers more closely integrated with \projectname.
 
@@ -18,15 +18,16 @@ As shown in Figure~\ref{fig:constraints},
 the number of \projectname constraints is a small fraction of the WebCoLa constraints.
 
 The current WebCoLa implementation is not completely optimized to reduce the
-number of constraints. In particular, the current procedure for generating
-order constraints introduces a number of inter-node constraints that could
-be superfluous in the final layout. For example, in generating constraints
-for Figure \ref{fig:small-tree-example}, the current \projectname implementation
-for WebCoLa produces two constraints ($a.y < b.y$ and $a.y < c.y$) even though
-we also specify a constraint that says $b.y == c.y$. Future work could explore
-whether these redundant constraints have a significant performance impact,
-and if they do, investigate additional optimizations to
-reduce the generation of unnecessary constraints.
+number of constraints. In particular, the procedure for generating
+order constraints adds a number of potentially superfluous inter-node 
+constraints. For the small tree example, the current \projectname implementation 
+produces 11 WebCoLa constraints (Figure \ref{fig:small-tree-example}c). For example,
+the \projectname compiler creates two constraints: $b.y < boundary1.y$ (Line~\texttt{44}) 
+and $c.y < boundary1.y$ (Line~\texttt{46}), even though we also specify
+a constraint that says $b.y == c.y$ (Line~\texttt{32}-\texttt{36}). 
+Future work could explore whether these redundant constraints have a 
+significant performance impact, and if they do, investigate additional 
+optimizations to reduce the generation of unnecessary constraints.
 
 \subsection{Debugging and Unsatisfiable Constraints in \projectname}
 For a \projectname specification, it is possible to create node sets that
@@ -44,7 +45,7 @@ be easier to understand why the conflicts are occurring. For example, we may
 note that some nodes occur in multiple sets with conflicting constraints
 or that multiple constraints on a particular set are generally in conflict.
 
-\subsection{Limitations Arising from the Underlying Constraint Solver}
+\subsection{Limitations Arising from the Constraint Solver}
 
 % remember to be generous with WebCoLa when discussing limitations; using a
 % system like this makes it easier to uncover bugs or identify
@@ -87,8 +88,7 @@ women and the African-American men than between the women and
 the white men, which emphasizes the strength of these
 connections.
 
-However, some layouts require node positioning that should be independent
-of the graph structure. Revisting the syphilis social network
+Revisting the syphilis social network
 (Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
 are drawn to the lower position allowed by the boundary guide in an attempt
 to shorten the link length, thus producing an alignment that satisfies the
@@ -102,12 +102,6 @@ would be to accommodate multiple solvers, which might encode different
 preferences of these kinds, and to select among them, either automatically
 or as specified by the user.
 
-\todo{AB: check the above. I wanted to continue to separate out the
-  specification of the constraints from the impleentation. Or did I
-  misinterpret the previous version (which instead implied that the layout
-  didn't satisfy all the SetCoLa constraints?)  The first sentence probably
-should be revised if my rewrite is OK.}
-
 Another interesting behavior of WebCoLa is that a global non-overlap constraint
 may be applied to the nodes at the start of the overall layout. This constraint
 prevents nodes from overlapping even at intermediate stages of the layout and
@@ -118,4 +112,5 @@ with local maxima. Future work might explore additional procedures for
 iteratively adding constraints to the graph layout, building up the final
 result incrementally. This technique would help to reduce some of the burdens
 on the layout to resolve all constraints at once and allow the user to
-incrementally improve the layout.
+incrementally improve the layout through the addition of new constraints
+that restart the underlying solver.

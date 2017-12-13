@@ -3,14 +3,14 @@
 \label{sec:examples}
 
 To demonstrate the conciseness and expressiveness of \projectname for domain-specific
-graph layout, we reproduce several real-world examples from social 
+graph layout, we reproduce several real-world examples visualizing social 
 networks~\cite{rothenberg1998using}, biological systems~\cite{barsky2008cerebral}, 
 and ecological networks~\cite{kruger2017,baskerville2011spatial}. 
 We compare our recreated visualizations to the original layouts and 
 discuss the benefits of our technique for creating highly customized graph layouts.
 For each recreated example, the layout of the nodes is produced
-entirely in \projectname. However, we added additional labeling to the 
-final figures to better match the originals.
+entirely in \projectname. However, we manually added labels to the final 
+figures to better match the originals.
 
 We include the specification for each of our three major examples 
 (Figure~\ref{fig:syphilis-spec}, \ref{fig:tlr4-spec}, \ref{fig:serengeti-spec}),
@@ -32,8 +32,8 @@ result from personal contact \cite{rothenberg1998using,fitzpatrick2001preventabl
 The ability to track and identify individuals at risk can help
 lead to treatment and manage the spread of the disease. In
 addition to the links between individuals, structuring the layout by
-properties such as social group may reveal additional details about
-how the disease is spread.
+properties such as social or ethnographically-identified group may reveal 
+additional details about how the disease is spread.
 
 Rothenberg et al.\ discuss an ethnographic approach for identifying the
 ``core'' groups in a social network to better understand the transmission
@@ -51,15 +51,15 @@ particular, \emph{``Visualization of these groups and all their sex
 We reproduced this visualization with \projectname~(Figure~\ref{fig:syphilis-layout}b) 
 and included a number of additional constraints on the layout apart
 from the separation constraints that are visible in the original image. In
-particular, we included a circle constraint on the group of white
+particular, we included a circle constraint on the group of younger white
 women to more strongly enforce the result shown in the original figure and
-applied an alignment constraint on the two groups of
+applied an alignment constraint on the two groups of young
 men, as well as some additional padding. The \projectname specification
 is shown in Figure~\ref{fig:syphilis-spec}.
 
 The simplest recreation of this figure can be done with three constraint
 definitions and three \projectname constraints, which generate a total of
-$123$ WebCoLa constraints~(Figure~\ref{fig:constraints}).
+$123$ WebCoLa constraints.
 Our modified layout~(Figure~\ref{fig:syphilis-layout}b) includes 
 five constraint definitions, nine \projectname constraints, and generates 
 $166$ WebCoLa constraints~(Figure~\ref{fig:constraints}). With a small 
@@ -67,7 +67,7 @@ number of user-defined constraints, we can update the layout to produce
 one that more effectively communicates the groupings. The
 alignment and circle constraints emphasize the group relationships by
 introducing shared visual properties amongst the nodes. The more grid-like
-layout also faciliates scanning of the nodes. The
+layout also facilitates scanning of the nodes. The
 WebCoLa constraint solver includes a procedure to reduce the length of
 edges to a user-defined length. This behavior encourages the circle of women
 to shift towards the group of African-American men, further demonstrating
@@ -102,18 +102,19 @@ by the layout.
 Food webs visualize complex producer-consumer relationships in ecological
 systems. Despite the challenges in creating an informative
 visualization \cite{kearney2016blog}, food webs are a common presentation strategy for this information
-\cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,benson2016higher,kruger2017}. Small or simplified food webs may be
-drawn by hand, but many real world ecosystems can have hunderds of
+\cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,benson2016higher,kruger2017,kearney2013amplification,kearney2012coupling}.
+Small or simplified food webs may be
+drawn by hand, but many real world ecosystems can have hundreds of
 interconnected organisms. In such cases, a customized layout may be useful
 for reasoning about the structure of the ecological system.
 
 Small food webs exhibit several of the properties of larger food webs, such
 as a node hierarchy arranged by the trophic level (e.g.,~the element's 
-position within the food web).
+role within the food web).
 For example, Figure~\ref{fig:kruger-layout}a visualizes a subset of the
 species found in Kruger National Park~\cite{kruger2017}. We can easily 
 recreate the layout~(Figure~\ref{fig:kruger-layout}b) with a small 
-number of constraints on the nodes; for this specification, we specify 
+number of constraints on the nodes; for this specification, we include 
 two constraint definitions with three constraints~(Figure~\ref{fig:constraints}).
 In particular, we constrain each trophic level to be aligned and enforce an
 ordering of the layers that respects the food web hierarchy. We also
@@ -129,8 +130,7 @@ One example of a larger ecological network is the Serengeti food web from
 Baskerville et al.~\cite{baskerville2011spatial}, which depicts the
 relationships among $161$ plants, herbivores, and carnivores with $592$ links
 between entities. Baskerville et al.\ employ a Bayesian analysis method to
-produce related clusters in each trophic level for the Serengeti food web.
-Baskerville et al.\ then visualize the results with a
+produce related clusters in each trophic level. They then visualize the results with a
 customized layout showing both the trophic hierarchy and
 the group clustering~(Figure \ref{fig:serengeti-layout}a). The Bayesian
 analysis approach and customized visualization highlight relationships between
@@ -146,7 +146,14 @@ introduce alignments on the nodes, and manage the order with which they
 are displayed. For the plant sets, we apply cluster constraints
 to enforce a tighter grouping of the nodes. For this specification,
 we define a total of $18$ \projectname constraints, which generate $939$
-WebCoLa constraints~(Figure~\ref{fig:constraints}).
+WebCoLa constraints~(Figure~\ref{fig:constraints}). One noticeable different
+in the \projectname layout is that the nodes for groups \texttt{7} through
+\texttt{14} form grid-like rather than ``organic'' clusters. This behavior
+seems to result from the current implementation of the cluster constraint
+which approximates the layout by adding additional edges. The node
+positions are also impacted by various position constraints, the edges to 
+nodes outside each group, and the non-overlap constraint.
+
 The original visualization was published in \textsc{Plos} Computational
 Biology \cite{baskerville2011spatial}, and an interactive version of the
 figure was created with D3 \cite{baskerville2011interactive}. The
@@ -161,7 +168,7 @@ Baskerville et al.\ note that \emph{``We have not included invertebrates
   (insects and parasitic helminths) or birds''} in their published food
 web, though \emph{``hypothesize that the general conclusions will be
   largely robust to the addition of more species.''} One advantage of
-\projectname~is that the layout is independant of the individual nodes, so
+\projectname~is that the layout is independent of the individual nodes, so
 the authors could reuse the layout specification to visualize future iterations
 of the Serengeti food web or explore similar structures across different
 ecological communities.
