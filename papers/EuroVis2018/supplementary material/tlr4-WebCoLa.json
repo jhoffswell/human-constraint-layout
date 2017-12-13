@@ -1,0 +1,3187 @@
+{
+  "nodes": [
+    {
+      "id": "-91",
+      "label": "IL13",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "white",
+      "_id": 0,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 0,
+          "label": "NFKB1 (transregulation) IL13"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-90",
+      "label": "CCL11",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 1,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 1,
+          "label": "NFKB1 (transregulation) CCL11"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-89",
+      "label": "APOE",
+      "showLabel": "APOE",
+      "type": "downstream genes",
+      "group": "Transport/cargo",
+      "color": "white",
+      "_id": 2,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 2,
+          "label": "SRF (transregulation) APOE"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-88",
+      "label": "IRAK2",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "#F9BE72",
+      "_id": 3,
+      "neighbors": [
+        {
+          "source": 17,
+          "target": 3,
+          "label": "TRAF6 (binding) IRAK2"
+        },
+        {
+          "source": 3,
+          "target": 29,
+          "label": "IRAK2 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-87",
+      "label": "IRF3",
+      "showLabel": "IRF3",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 4,
+      "neighbors": [
+        {
+          "source": 15,
+          "target": 4,
+          "label": "TBK1 (phosphorylation) IRF3"
+        },
+        {
+          "source": 21,
+          "target": 4,
+          "label": "EP300 (binding) IRF3"
+        },
+        {
+          "source": 37,
+          "target": 4,
+          "label": "IKBKE (phosphorylation) IRF3"
+        },
+        {
+          "source": 44,
+          "target": 4,
+          "label": "CREBBP (binding) IRF3"
+        },
+        {
+          "source": 4,
+          "target": 72,
+          "label": "IRF3 (binding) TICAM1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-86",
+      "label": "MAP2K6",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 5,
+      "neighbors": [
+        {
+          "source": 56,
+          "target": 5,
+          "label": "NR2C2 (phosphorylation) MAP2K6"
+        },
+        {
+          "source": 5,
+          "target": 82,
+          "label": "MAP2K6 (phosphorylation) MAPK1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-85",
+      "label": "RELA",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 6,
+      "neighbors": [
+        {
+          "source": 59,
+          "target": 6,
+          "label": "NFKB2 (binding) RELA"
+        },
+        {
+          "source": 6,
+          "target": 41,
+          "label": "RELA (transregulation) CCR5"
+        },
+        {
+          "source": 6,
+          "target": 75,
+          "label": "RELA (transregulation) CCL5"
+        },
+        {
+          "source": 6,
+          "target": 73,
+          "label": "RELA (transregulation) MEFV"
+        },
+        {
+          "source": 6,
+          "target": 13,
+          "label": "RELA (transregulation) CCL2"
+        },
+        {
+          "source": 6,
+          "target": 22,
+          "label": "RELA (transregulation) IL12B"
+        },
+        {
+          "source": 6,
+          "target": 20,
+          "label": "RELA (transregulation) TNF"
+        },
+        {
+          "source": 6,
+          "target": 24,
+          "label": "RELA (transregulation) IFNG"
+        },
+        {
+          "source": 6,
+          "target": 79,
+          "label": "RELA (transregulation) ICAM1"
+        },
+        {
+          "source": 6,
+          "target": 18,
+          "label": "RELA (transregulation) IL2RA"
+        },
+        {
+          "source": 6,
+          "target": 31,
+          "label": "RELA (transregulation) IFNB1"
+        },
+        {
+          "source": 6,
+          "target": 54,
+          "label": "RELA (transregulation) CXCL10"
+        },
+        {
+          "source": 6,
+          "target": 69,
+          "label": "RELA (transregulation) COL1A2"
+        },
+        {
+          "source": 6,
+          "target": 53,
+          "label": "RELA (transregulation) VCAM1"
+        },
+        {
+          "source": 6,
+          "target": 85,
+          "label": "RELA (transregulation) IL6"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-84",
+      "label": "ATF2",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 7,
+      "neighbors": [
+        {
+          "source": 8,
+          "target": 7,
+          "label": "MAPK11 (phosphorylation) ATF2"
+        },
+        {
+          "source": 70,
+          "target": 7,
+          "label": "MAPK9 (binding) ATF2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-83",
+      "label": "MAPK11",
+      "showLabel": "MAPK11",
+      "type": "nucleus",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 8,
+      "neighbors": [
+        {
+          "source": 8,
+          "target": 76,
+          "label": "MAPK11 (phosphorylation) STAT1"
+        },
+        {
+          "source": 8,
+          "target": 12,
+          "label": "MAPK11 (phosphorylation) MBP"
+        },
+        {
+          "source": 8,
+          "target": 87,
+          "label": "MAPK11 (phosphorylation) ELK1"
+        },
+        {
+          "source": 8,
+          "target": 7,
+          "label": "MAPK11 (phosphorylation) ATF2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-82",
+      "label": "NFKBIB",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "NFKB repression",
+      "color": "white",
+      "_id": 9,
+      "neighbors": [
+        {
+          "source": 55,
+          "target": 9,
+          "label": "IKBKB (binding) NFKBIB"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-81",
+      "label": "IRAK1",
+      "showLabel": "IRAK1",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 10,
+      "neighbors": [
+        {
+          "source": 74,
+          "target": 10,
+          "label": "BTK (binding) IRAK1"
+        },
+        {
+          "source": 10,
+          "target": 57,
+          "label": "IRAK1 (binding) MYD88"
+        },
+        {
+          "source": 10,
+          "target": 30,
+          "label": "IRAK1 (binding) IRAK4"
+        },
+        {
+          "source": 10,
+          "target": 29,
+          "label": "IRAK1 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-80",
+      "label": "MAP3K7IP1",
+      "showLabel": "MAP3K7IP1",
+      "type": "cytoplasm",
+      "group": "Adaptor",
+      "color": "white",
+      "_id": 11,
+      "neighbors": [
+        {
+          "source": 17,
+          "target": 11,
+          "label": "TRAF6 (binding) MAP3K7IP1"
+        },
+        {
+          "source": 11,
+          "target": 56,
+          "label": "MAP3K7IP1 (binding) NR2C2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-79",
+      "label": "MBP",
+      "showLabel": "",
+      "type": "plasma membrane",
+      "group": "Structural",
+      "color": "white",
+      "_id": 12,
+      "neighbors": [
+        {
+          "source": 8,
+          "target": 12,
+          "label": "MAPK11 (phosphorylation) MBP"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-78",
+      "label": "CCL2",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 13,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 13,
+          "label": "RELA (transregulation) CCL2"
+        },
+        {
+          "source": 80,
+          "target": 13,
+          "label": "NFKB1 (transregulation) CCL2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-77",
+      "label": "CXCL5",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 14,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 14,
+          "label": "NFKB1 (transregulation) CXCL5"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-76",
+      "label": "TBK1",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 15,
+      "neighbors": [
+        {
+          "source": 15,
+          "target": 16,
+          "label": "TBK1 (phosphorylation) IRF7"
+        },
+        {
+          "source": 15,
+          "target": 4,
+          "label": "TBK1 (phosphorylation) IRF3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-75",
+      "label": "IRF7",
+      "showLabel": "IRF7",
+      "type": "cytoplasm",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 16,
+      "neighbors": [
+        {
+          "source": 15,
+          "target": 16,
+          "label": "TBK1 (phosphorylation) IRF7"
+        },
+        {
+          "source": 37,
+          "target": 16,
+          "label": "IKBKE (phosphorylation) IRF7"
+        },
+        {
+          "source": 16,
+          "target": 72,
+          "label": "IRF7 (binding) TICAM1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-74",
+      "label": "TRAF6",
+      "showLabel": "TRAF6",
+      "type": "cytoplasm",
+      "group": "Adaptor",
+      "color": "#F9BE72",
+      "_id": 17,
+      "neighbors": [
+        {
+          "source": 60,
+          "target": 17,
+          "label": "ECSIT (binding) TRAF6"
+        },
+        {
+          "source": 17,
+          "target": 11,
+          "label": "TRAF6 (binding) MAP3K7IP1"
+        },
+        {
+          "source": 17,
+          "target": 56,
+          "label": "TRAF6 (binding) NR2C2"
+        },
+        {
+          "source": 17,
+          "target": 3,
+          "label": "TRAF6 (binding) IRAK2"
+        },
+        {
+          "source": 17,
+          "target": 33,
+          "label": "TRAF6 (binding) MAP3K7IP2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-73",
+      "label": "IL2RA",
+      "showLabel": "IL2RA",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#F9BE72",
+      "_id": 18,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 18,
+          "label": "RELA (transregulation) IL2RA"
+        },
+        {
+          "source": 77,
+          "target": 18,
+          "label": "REL (transregulation) IL2RA"
+        },
+        {
+          "source": 80,
+          "target": 18,
+          "label": "NFKB1 (transregulation) IL2RA"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-72",
+      "label": "MAPK13",
+      "showLabel": "MAPK13",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 19,
+      "neighbors": [
+        {
+          "source": 19,
+          "target": 87,
+          "label": "MAPK13 (phosphorylation) ELK1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-71",
+      "label": "TNF",
+      "showLabel": "TNF",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#F9BE72",
+      "_id": 20,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 20,
+          "label": "RELA (transregulation) TNF"
+        },
+        {
+          "source": 77,
+          "target": 20,
+          "label": "REL (transregulation) TNF"
+        },
+        {
+          "source": 80,
+          "target": 20,
+          "label": "NFKB1 (transregulation) TNF"
+        },
+        {
+          "source": 87,
+          "target": 20,
+          "label": "ELK1 (transregulation) TNF"
+        },
+        {
+          "source": 20,
+          "target": 32,
+          "label": "TNF (transregulation) TNFAIP2"
+        },
+        {
+          "source": 20,
+          "target": 64,
+          "label": "TNF (transregulation) TNFAIP1"
+        },
+        {
+          "source": 20,
+          "target": 52,
+          "label": "TNF (transregulation) TNFAIP6"
+        },
+        {
+          "source": 20,
+          "target": 78,
+          "label": "TNF (transregulation) TNFAIP3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-70",
+      "label": "EP300",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 21,
+      "neighbors": [
+        {
+          "source": 21,
+          "target": 4,
+          "label": "EP300 (binding) IRF3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-69",
+      "label": "IL12B",
+      "showLabel": "IL12B",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#DF812C",
+      "_id": 22,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 22,
+          "label": "RELA (transregulation) IL12B"
+        },
+        {
+          "source": 77,
+          "target": 22,
+          "label": "REL (transregulation) IL12B"
+        },
+        {
+          "source": 80,
+          "target": 22,
+          "label": "NFKB1 (transregulation) IL12B"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-68",
+      "label": "BIRC3",
+      "showLabel": "BIRC3",
+      "type": "downstream genes",
+      "group": "Apoptosis",
+      "color": "#F9BE72",
+      "_id": 23,
+      "neighbors": [
+        {
+          "source": 77,
+          "target": 23,
+          "label": "REL (transregulation) BIRC3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-67",
+      "label": "IFNG",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#F9BE72",
+      "_id": 24,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 24,
+          "label": "RELA (transregulation) IFNG"
+        },
+        {
+          "source": 80,
+          "target": 24,
+          "label": "NFKB1 (transregulation) IFNG"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-66",
+      "label": "MAP3K1",
+      "showLabel": "MAP3K1",
+      "type": "cytoplasm",
+      "group": "Unknown",
+      "color": "white",
+      "_id": 25,
+      "neighbors": [
+        {
+          "source": 25,
+          "target": 28,
+          "label": "MAP3K1 (binding) MAPK8IP3"
+        },
+        {
+          "source": 25,
+          "target": 27,
+          "label": "MAP3K1 (phosphorylation) CHUK"
+        },
+        {
+          "source": 25,
+          "target": 55,
+          "label": "MAP3K1 (phosphorylation) IKBKB"
+        },
+        {
+          "source": 25,
+          "target": 63,
+          "label": "MAP3K1 (phosphorylation) MAP2K4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-65",
+      "label": "CCL22",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 26,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 26,
+          "label": "NFKB1 (transregulation) CCL22"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-64",
+      "label": "CHUK",
+      "showLabel": "CHUK",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 27,
+      "neighbors": [
+        {
+          "source": 25,
+          "target": 27,
+          "label": "MAP3K1 (phosphorylation) CHUK"
+        },
+        {
+          "source": 56,
+          "target": 27,
+          "label": "NR2C2 (binding) CHUK"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-63",
+      "label": "MAPK8IP3",
+      "showLabel": "MAPK8IP3",
+      "type": "cytoplasm",
+      "group": "Transport/cargo",
+      "color": "#DF812C",
+      "_id": 28,
+      "neighbors": [
+        {
+          "source": 25,
+          "target": 28,
+          "label": "MAP3K1 (binding) MAPK8IP3"
+        },
+        {
+          "source": 38,
+          "target": 28,
+          "label": "MAPK10 (binding) MAPK8IP3"
+        },
+        {
+          "source": 43,
+          "target": 28,
+          "label": "MAPK8 (binding) MAPK8IP3"
+        },
+        {
+          "source": 63,
+          "target": 28,
+          "label": "MAP2K4 (binding) MAPK8IP3"
+        },
+        {
+          "source": 70,
+          "target": 28,
+          "label": "MAPK9 (binding) MAPK8IP3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-62",
+      "label": "TLR4",
+      "showLabel": "TLR4",
+      "type": "plasma membrane",
+      "group": "Receptor",
+      "color": "white",
+      "_id": 29,
+      "neighbors": [
+        {
+          "source": 3,
+          "target": 29,
+          "label": "IRAK2 (binding) TLR4"
+        },
+        {
+          "source": 10,
+          "target": 29,
+          "label": "IRAK1 (binding) TLR4"
+        },
+        {
+          "source": 51,
+          "target": 29,
+          "label": "CD14 (binding) TLR4"
+        },
+        {
+          "source": 57,
+          "target": 29,
+          "label": "MYD88 (binding) TLR4"
+        },
+        {
+          "source": 58,
+          "target": 29,
+          "label": "TICAM2 (binding) TLR4"
+        },
+        {
+          "source": 71,
+          "target": 29,
+          "label": "LY96 (binding) TLR4"
+        },
+        {
+          "source": 74,
+          "target": 29,
+          "label": "BTK (binding) TLR4"
+        },
+        {
+          "source": 86,
+          "target": 29,
+          "label": "TIRAP (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-61",
+      "label": "IRAK4",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 30,
+      "neighbors": [
+        {
+          "source": 10,
+          "target": 30,
+          "label": "IRAK1 (binding) IRAK4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-60",
+      "label": "IFNB1",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#B8B2C6",
+      "_id": 31,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 31,
+          "label": "RELA (transregulation) IFNB1"
+        },
+        {
+          "source": 59,
+          "target": 31,
+          "label": "NFKB2 (transregulation) IFNB1"
+        },
+        {
+          "source": 77,
+          "target": 31,
+          "label": "REL (transregulation) IFNB1"
+        },
+        {
+          "source": 80,
+          "target": 31,
+          "label": "NFKB1 (transregulation) IFNB1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-59",
+      "label": "TNFAIP2",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Unknown",
+      "color": "white",
+      "_id": 32,
+      "neighbors": [
+        {
+          "source": 20,
+          "target": 32,
+          "label": "TNF (transregulation) TNFAIP2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-58",
+      "label": "MAP3K7IP2",
+      "showLabel": "MAP3K7IP2",
+      "type": "plasma membrane",
+      "group": "Adaptor",
+      "color": "#F9BE72",
+      "_id": 33,
+      "neighbors": [
+        {
+          "source": 17,
+          "target": 33,
+          "label": "TRAF6 (binding) MAP3K7IP2"
+        },
+        {
+          "source": 33,
+          "target": 56,
+          "label": "MAP3K7IP2 (binding) NR2C2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-57",
+      "label": "EIF2AK2",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 34,
+      "neighbors": [
+        {
+          "source": 61,
+          "target": 34,
+          "label": "PRKRA (binding) EIF2AK2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-56",
+      "label": "CCR7",
+      "showLabel": "CCR7",
+      "type": "downstream genes",
+      "group": "Receptor",
+      "color": "white",
+      "_id": 35,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 35,
+          "label": "NFKB1 (transregulation) CCR7"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-55",
+      "label": "TP53",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 36,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 36,
+          "label": "NFKB1 (transregulation) TP53"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-54",
+      "label": "IKBKE",
+      "showLabel": "IKBKE",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 37,
+      "neighbors": [
+        {
+          "source": 37,
+          "target": 16,
+          "label": "IKBKE (phosphorylation) IRF7"
+        },
+        {
+          "source": 37,
+          "target": 4,
+          "label": "IKBKE (phosphorylation) IRF3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-53",
+      "label": "MAPK10",
+      "showLabel": "MAPK10",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "#F9BE72",
+      "_id": 38,
+      "neighbors": [
+        {
+          "source": 38,
+          "target": 87,
+          "label": "MAPK10 (binding) ELK1"
+        },
+        {
+          "source": 38,
+          "target": 28,
+          "label": "MAPK10 (binding) MAPK8IP3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-52",
+      "label": "ACTC",
+      "showLabel": "ACTC",
+      "type": "downstream genes",
+      "group": "Cytoskeleton",
+      "color": "#F9BE72",
+      "_id": 39,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 39,
+          "label": "SRF (transregulation) ACTC"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-51",
+      "label": "TNFRSF6",
+      "showLabel": "TNFRSF6",
+      "type": "downstream genes",
+      "group": "Receptor",
+      "color": "#F9BE72",
+      "_id": 40,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 40,
+          "label": "NFKB1 (transregulation) TNFRSF6"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-50",
+      "label": "CCR5",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Receptor",
+      "color": "white",
+      "_id": 41,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 41,
+          "label": "RELA (transregulation) CCR5"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-49",
+      "label": "RELB",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "#F9BE72",
+      "_id": 42,
+      "neighbors": [
+        {
+          "source": 42,
+          "target": 59,
+          "label": "RELB (binding) NFKB2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-48",
+      "label": "MAPK8",
+      "showLabel": "MAPK8",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "#F9BE72",
+      "_id": 43,
+      "neighbors": [
+        {
+          "source": 63,
+          "target": 43,
+          "label": "MAP2K4 (phosphorylation) MAPK8"
+        },
+        {
+          "source": 43,
+          "target": 87,
+          "label": "MAPK8 (binding) ELK1"
+        },
+        {
+          "source": 43,
+          "target": 28,
+          "label": "MAPK8 (binding) MAPK8IP3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-47",
+      "label": "CREBBP",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "#F9BE72",
+      "_id": 44,
+      "neighbors": [
+        {
+          "source": 44,
+          "target": 4,
+          "label": "CREBBP (binding) IRF3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-46",
+      "label": "IL2",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "white",
+      "_id": 45,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 45,
+          "label": "NFKB1 (transregulation) IL2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-45",
+      "label": "CX3CL1",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "#DF812C",
+      "_id": 46,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 46,
+          "label": "NFKB1 (transregulation) CX3CL1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-44",
+      "label": "NFKBIA",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "NFKB repression",
+      "color": "white",
+      "_id": 47,
+      "neighbors": [
+        {
+          "source": 55,
+          "target": 47,
+          "label": "IKBKB (binding) NFKBIA"
+        },
+        {
+          "source": 47,
+          "target": 80,
+          "label": "NFKBIA (binding) NFKB1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-43",
+      "label": "IRF1",
+      "showLabel": "IRF1",
+      "type": "downstream genes",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 48,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 48,
+          "label": "NFKB1 (transregulation) IRF1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-42",
+      "label": "CXCL3",
+      "showLabel": "CXCL3",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "#DF812C",
+      "_id": 49,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 49,
+          "label": "NFKB1 (transregulation) CXCL3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-41",
+      "label": "IL1A",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "white",
+      "_id": 50,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 50,
+          "label": "NFKB1 (transregulation) IL1A"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-40",
+      "label": "CD14",
+      "showLabel": "",
+      "type": "plasma membrane",
+      "group": "Receptor",
+      "color": "white",
+      "_id": 51,
+      "neighbors": [
+        {
+          "source": 51,
+          "target": 29,
+          "label": "CD14 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-39",
+      "label": "TNFAIP6",
+      "showLabel": "TNFAIP6",
+      "type": "downstream genes",
+      "group": "Extracellular matrix",
+      "color": "white",
+      "_id": 52,
+      "neighbors": [
+        {
+          "source": 20,
+          "target": 52,
+          "label": "TNF (transregulation) TNFAIP6"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-38",
+      "label": "VCAM1",
+      "showLabel": "VCAM1",
+      "type": "downstream genes",
+      "group": "Adhesion",
+      "color": "white",
+      "_id": 53,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 53,
+          "label": "RELA (transregulation) VCAM1"
+        },
+        {
+          "source": 80,
+          "target": 53,
+          "label": "NFKB1 (transregulation) VCAM1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-37",
+      "label": "CXCL10",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 54,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 54,
+          "label": "RELA (transregulation) CXCL10"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-36",
+      "label": "IKBKB",
+      "showLabel": "IKBKB",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 55,
+      "neighbors": [
+        {
+          "source": 25,
+          "target": 55,
+          "label": "MAP3K1 (phosphorylation) IKBKB"
+        },
+        {
+          "source": 56,
+          "target": 55,
+          "label": "NR2C2 (binding) IKBKB"
+        },
+        {
+          "source": 55,
+          "target": 9,
+          "label": "IKBKB (binding) NFKBIB"
+        },
+        {
+          "source": 55,
+          "target": 47,
+          "label": "IKBKB (binding) NFKBIA"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-35",
+      "label": "NR2C2",
+      "showLabel": "NR2C2",
+      "type": "nucleus",
+      "group": "Nuclear receptor",
+      "color": "#F9BE72",
+      "_id": 56,
+      "neighbors": [
+        {
+          "source": 11,
+          "target": 56,
+          "label": "MAP3K7IP1 (binding) NR2C2"
+        },
+        {
+          "source": 17,
+          "target": 56,
+          "label": "TRAF6 (binding) NR2C2"
+        },
+        {
+          "source": 33,
+          "target": 56,
+          "label": "MAP3K7IP2 (binding) NR2C2"
+        },
+        {
+          "source": 56,
+          "target": 27,
+          "label": "NR2C2 (binding) CHUK"
+        },
+        {
+          "source": 56,
+          "target": 55,
+          "label": "NR2C2 (binding) IKBKB"
+        },
+        {
+          "source": 56,
+          "target": 5,
+          "label": "NR2C2 (phosphorylation) MAP2K6"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-34",
+      "label": "MYD88",
+      "showLabel": "MYD88",
+      "type": "cytoplasm",
+      "group": "Adaptor",
+      "color": "white",
+      "_id": 57,
+      "neighbors": [
+        {
+          "source": 10,
+          "target": 57,
+          "label": "IRAK1 (binding) MYD88"
+        },
+        {
+          "source": 74,
+          "target": 57,
+          "label": "BTK (binding) MYD88"
+        },
+        {
+          "source": 57,
+          "target": 29,
+          "label": "MYD88 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-33",
+      "label": "TICAM2",
+      "showLabel": "TICAM2",
+      "type": "plasma membrane",
+      "group": "Adaptor",
+      "color": "white",
+      "_id": 58,
+      "neighbors": [
+        {
+          "source": 72,
+          "target": 58,
+          "label": "TICAM1 (binding) TICAM2"
+        },
+        {
+          "source": 58,
+          "target": 29,
+          "label": "TICAM2 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-32",
+      "label": "NFKB2",
+      "showLabel": "NFKB2",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 59,
+      "neighbors": [
+        {
+          "source": 42,
+          "target": 59,
+          "label": "RELB (binding) NFKB2"
+        },
+        {
+          "source": 77,
+          "target": 59,
+          "label": "REL (binding) NFKB2"
+        },
+        {
+          "source": 80,
+          "target": 59,
+          "label": "NFKB1 (binding) NFKB2"
+        },
+        {
+          "source": 59,
+          "target": 31,
+          "label": "NFKB2 (transregulation) IFNB1"
+        },
+        {
+          "source": 59,
+          "target": 6,
+          "label": "NFKB2 (binding) RELA"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-31",
+      "label": "ECSIT",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Unknown",
+      "color": "white",
+      "_id": 60,
+      "neighbors": [
+        {
+          "source": 60,
+          "target": 17,
+          "label": "ECSIT (binding) TRAF6"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-30",
+      "label": "PRKRA",
+      "showLabel": "PRKRA",
+      "type": "unknown",
+      "group": "RNA binding",
+      "color": "white",
+      "_id": 61,
+      "neighbors": [
+        {
+          "source": 86,
+          "target": 61,
+          "label": "TIRAP (binding) PRKRA"
+        },
+        {
+          "source": 61,
+          "target": 34,
+          "label": "PRKRA (binding) EIF2AK2"
+        }
+      ]
+    },
+    {
+      "id": "-29",
+      "label": "CXCL1",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 62,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 62,
+          "label": "NFKB1 (transregulation) CXCL1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-28",
+      "label": "MAP2K4",
+      "showLabel": "MAP2K4",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 63,
+      "neighbors": [
+        {
+          "source": 25,
+          "target": 63,
+          "label": "MAP3K1 (phosphorylation) MAP2K4"
+        },
+        {
+          "source": 63,
+          "target": 28,
+          "label": "MAP2K4 (binding) MAPK8IP3"
+        },
+        {
+          "source": 63,
+          "target": 70,
+          "label": "MAP2K4 (phosphorylation) MAPK9"
+        },
+        {
+          "source": 63,
+          "target": 43,
+          "label": "MAP2K4 (phosphorylation) MAPK8"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-27",
+      "label": "TNFAIP1",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Unknown",
+      "color": "white",
+      "_id": 64,
+      "neighbors": [
+        {
+          "source": 20,
+          "target": 64,
+          "label": "TNF (transregulation) TNFAIP1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-26",
+      "label": "SRF",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 65,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 87,
+          "label": "SRF (binding) ELK1"
+        },
+        {
+          "source": 65,
+          "target": 66,
+          "label": "SRF (transregulation) MYL3"
+        },
+        {
+          "source": 65,
+          "target": 39,
+          "label": "SRF (transregulation) ACTC"
+        },
+        {
+          "source": 65,
+          "target": 88,
+          "label": "SRF (transregulation) EGR2"
+        },
+        {
+          "source": 65,
+          "target": 83,
+          "label": "SRF (transregulation) FOS"
+        },
+        {
+          "source": 65,
+          "target": 90,
+          "label": "SRF (transregulation) ACTB"
+        },
+        {
+          "source": 65,
+          "target": 2,
+          "label": "SRF (transregulation) APOE"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-25",
+      "label": "MYL3",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Structural",
+      "color": "white",
+      "_id": 66,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 66,
+          "label": "SRF (transregulation) MYL3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-24",
+      "label": "CCL4",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 67,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 67,
+          "label": "NFKB1 (transregulation) CCL4"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-23",
+      "label": "CXCL2",
+      "showLabel": "CXCL2",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 68,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 68,
+          "label": "NFKB1 (transregulation) CXCL2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-22",
+      "label": "COL1A2",
+      "showLabel": "COL1A2",
+      "type": "downstream genes",
+      "group": "Adhesion",
+      "color": "white",
+      "_id": 69,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 69,
+          "label": "RELA (transregulation) COL1A2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-21",
+      "label": "MAPK9",
+      "showLabel": "MAPK9",
+      "type": "nucleus",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 70,
+      "neighbors": [
+        {
+          "source": 63,
+          "target": 70,
+          "label": "MAP2K4 (phosphorylation) MAPK9"
+        },
+        {
+          "source": 70,
+          "target": 7,
+          "label": "MAPK9 (binding) ATF2"
+        },
+        {
+          "source": 70,
+          "target": 87,
+          "label": "MAPK9 (binding) ELK1"
+        },
+        {
+          "source": 70,
+          "target": 28,
+          "label": "MAPK9 (binding) MAPK8IP3"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-20",
+      "label": "LY96",
+      "showLabel": "LY96",
+      "type": "extracellular",
+      "group": "Ligand",
+      "color": "#B8B2C6",
+      "_id": 71,
+      "neighbors": [
+        {
+          "source": 71,
+          "target": 29,
+          "label": "LY96 (binding) TLR4"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-19",
+      "label": "TICAM1",
+      "showLabel": "TICAM1",
+      "type": "plasma membrane",
+      "group": "Adaptor",
+      "color": "white",
+      "_id": 72,
+      "neighbors": [
+        {
+          "source": 4,
+          "target": 72,
+          "label": "IRF3 (binding) TICAM1"
+        },
+        {
+          "source": 16,
+          "target": 72,
+          "label": "IRF7 (binding) TICAM1"
+        },
+        {
+          "source": 86,
+          "target": 72,
+          "label": "TIRAP (binding) TICAM1"
+        },
+        {
+          "source": 72,
+          "target": 58,
+          "label": "TICAM1 (binding) TICAM2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-18",
+      "label": "MEFV",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Transcription factor",
+      "color": "#F9BE72",
+      "_id": 73,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 73,
+          "label": "RELA (transregulation) MEFV"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-17",
+      "label": "BTK",
+      "showLabel": "BTK",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 74,
+      "neighbors": [
+        {
+          "source": 74,
+          "target": 29,
+          "label": "BTK (binding) TLR4"
+        },
+        {
+          "source": 74,
+          "target": 10,
+          "label": "BTK (binding) IRAK1"
+        },
+        {
+          "source": 74,
+          "target": 57,
+          "label": "BTK (binding) MYD88"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-16",
+      "label": "CCL5",
+      "showLabel": "CCL5",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 75,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 75,
+          "label": "RELA (transregulation) CCL5"
+        },
+        {
+          "source": 80,
+          "target": 75,
+          "label": "NFKB1 (transregulation) CCL5"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-15",
+      "label": "STAT1",
+      "showLabel": "",
+      "type": "cytoplasm",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 76,
+      "neighbors": [
+        {
+          "source": 8,
+          "target": 76,
+          "label": "MAPK11 (phosphorylation) STAT1"
+        },
+        {
+          "source": 82,
+          "target": 76,
+          "label": "MAPK1 (phosphorylation) STAT1"
+        },
+        {
+          "source": 76,
+          "target": 83,
+          "label": "STAT1 (transregulation) FOS"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-14",
+      "label": "REL",
+      "showLabel": "REL",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 77,
+      "neighbors": [
+        {
+          "source": 77,
+          "target": 31,
+          "label": "REL (transregulation) IFNB1"
+        },
+        {
+          "source": 77,
+          "target": 22,
+          "label": "REL (transregulation) IL12B"
+        },
+        {
+          "source": 77,
+          "target": 20,
+          "label": "REL (transregulation) TNF"
+        },
+        {
+          "source": 77,
+          "target": 18,
+          "label": "REL (transregulation) IL2RA"
+        },
+        {
+          "source": 77,
+          "target": 23,
+          "label": "REL (transregulation) BIRC3"
+        },
+        {
+          "source": 77,
+          "target": 59,
+          "label": "REL (binding) NFKB2"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-13",
+      "label": "TNFAIP3",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Transcription regulation",
+      "color": "white",
+      "_id": 78,
+      "neighbors": [
+        {
+          "source": 20,
+          "target": 78,
+          "label": "TNF (transregulation) TNFAIP3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-12",
+      "label": "ICAM1",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Adhesion",
+      "color": "white",
+      "_id": 79,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 79,
+          "label": "RELA (transregulation) ICAM1"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-11",
+      "label": "NFKB1",
+      "showLabel": "NFKB1",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 80,
+      "neighbors": [
+        {
+          "source": 47,
+          "target": 80,
+          "label": "NFKBIA (binding) NFKB1"
+        },
+        {
+          "source": 80,
+          "target": 20,
+          "label": "NFKB1 (transregulation) TNF"
+        },
+        {
+          "source": 80,
+          "target": 22,
+          "label": "NFKB1 (transregulation) IL12B"
+        },
+        {
+          "source": 80,
+          "target": 13,
+          "label": "NFKB1 (transregulation) CCL2"
+        },
+        {
+          "source": 80,
+          "target": 24,
+          "label": "NFKB1 (transregulation) IFNG"
+        },
+        {
+          "source": 80,
+          "target": 35,
+          "label": "NFKB1 (transregulation) CCR7"
+        },
+        {
+          "source": 80,
+          "target": 59,
+          "label": "NFKB1 (binding) NFKB2"
+        },
+        {
+          "source": 80,
+          "target": 53,
+          "label": "NFKB1 (transregulation) VCAM1"
+        },
+        {
+          "source": 80,
+          "target": 75,
+          "label": "NFKB1 (transregulation) CCL5"
+        },
+        {
+          "source": 80,
+          "target": 40,
+          "label": "NFKB1 (transregulation) TNFRSF6"
+        },
+        {
+          "source": 80,
+          "target": 48,
+          "label": "NFKB1 (transregulation) IRF1"
+        },
+        {
+          "source": 80,
+          "target": 18,
+          "label": "NFKB1 (transregulation) IL2RA"
+        },
+        {
+          "source": 80,
+          "target": 45,
+          "label": "NFKB1 (transregulation) IL2"
+        },
+        {
+          "source": 80,
+          "target": 31,
+          "label": "NFKB1 (transregulation) IFNB1"
+        },
+        {
+          "source": 80,
+          "target": 81,
+          "label": "NFKB1 (transregulation) CXCL9"
+        },
+        {
+          "source": 80,
+          "target": 84,
+          "label": "NFKB1 (transregulation) CCL20"
+        },
+        {
+          "source": 80,
+          "target": 46,
+          "label": "NFKB1 (transregulation) CX3CL1"
+        },
+        {
+          "source": 80,
+          "target": 1,
+          "label": "NFKB1 (transregulation) CCL11"
+        },
+        {
+          "source": 80,
+          "target": 89,
+          "label": "NFKB1 (transregulation) CCL3"
+        },
+        {
+          "source": 80,
+          "target": 49,
+          "label": "NFKB1 (transregulation) CXCL3"
+        },
+        {
+          "source": 80,
+          "target": 62,
+          "label": "NFKB1 (transregulation) CXCL1"
+        },
+        {
+          "source": 80,
+          "target": 68,
+          "label": "NFKB1 (transregulation) CXCL2"
+        },
+        {
+          "source": 80,
+          "target": 26,
+          "label": "NFKB1 (transregulation) CCL22"
+        },
+        {
+          "source": 80,
+          "target": 0,
+          "label": "NFKB1 (transregulation) IL13"
+        },
+        {
+          "source": 80,
+          "target": 14,
+          "label": "NFKB1 (transregulation) CXCL5"
+        },
+        {
+          "source": 80,
+          "target": 67,
+          "label": "NFKB1 (transregulation) CCL4"
+        },
+        {
+          "source": 80,
+          "target": 36,
+          "label": "NFKB1 (transregulation) TP53"
+        },
+        {
+          "source": 80,
+          "target": 50,
+          "label": "NFKB1 (transregulation) IL1A"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-10",
+      "label": "CXCL9",
+      "showLabel": "CXCL9",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "#F9BE72",
+      "_id": 81,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 81,
+          "label": "NFKB1 (transregulation) CXCL9"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-9",
+      "label": "MAPK1",
+      "showLabel": "MAPK1",
+      "type": "cytoplasm",
+      "group": "Kinase",
+      "color": "white",
+      "_id": 82,
+      "neighbors": [
+        {
+          "source": 5,
+          "target": 82,
+          "label": "MAP2K6 (phosphorylation) MAPK1"
+        },
+        {
+          "source": 82,
+          "target": 76,
+          "label": "MAPK1 (phosphorylation) STAT1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-8",
+      "label": "FOS",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Transcription factor",
+      "color": "#B8B2C6",
+      "_id": 83,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 83,
+          "label": "SRF (transregulation) FOS"
+        },
+        {
+          "source": 76,
+          "target": 83,
+          "label": "STAT1 (transregulation) FOS"
+        },
+        {
+          "source": 87,
+          "target": 83,
+          "label": "ELK1 (transregulation) FOS"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-7",
+      "label": "CCL20",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 84,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 84,
+          "label": "NFKB1 (transregulation) CCL20"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-6",
+      "label": "IL6",
+      "showLabel": "IL6",
+      "type": "downstream genes",
+      "group": "Cytokine",
+      "color": "#F9BE72",
+      "_id": 85,
+      "neighbors": [
+        {
+          "source": 6,
+          "target": 85,
+          "label": "RELA (transregulation) IL6"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-5",
+      "label": "TIRAP",
+      "showLabel": "TIRAP",
+      "type": "cytoplasm",
+      "group": "Adaptor",
+      "color": "#DF812C",
+      "_id": 86,
+      "neighbors": [
+        {
+          "source": 86,
+          "target": 61,
+          "label": "TIRAP (binding) PRKRA"
+        },
+        {
+          "source": 86,
+          "target": 29,
+          "label": "TIRAP (binding) TLR4"
+        },
+        {
+          "source": 86,
+          "target": 72,
+          "label": "TIRAP (binding) TICAM1"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-4",
+      "label": "ELK1",
+      "showLabel": "",
+      "type": "nucleus",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 87,
+      "neighbors": [
+        {
+          "source": 8,
+          "target": 87,
+          "label": "MAPK11 (phosphorylation) ELK1"
+        },
+        {
+          "source": 19,
+          "target": 87,
+          "label": "MAPK13 (phosphorylation) ELK1"
+        },
+        {
+          "source": 38,
+          "target": 87,
+          "label": "MAPK10 (binding) ELK1"
+        },
+        {
+          "source": 43,
+          "target": 87,
+          "label": "MAPK8 (binding) ELK1"
+        },
+        {
+          "source": 65,
+          "target": 87,
+          "label": "SRF (binding) ELK1"
+        },
+        {
+          "source": 70,
+          "target": 87,
+          "label": "MAPK9 (binding) ELK1"
+        },
+        {
+          "source": 87,
+          "target": 20,
+          "label": "ELK1 (transregulation) TNF"
+        },
+        {
+          "source": 87,
+          "target": 88,
+          "label": "ELK1 (transregulation) EGR2"
+        },
+        {
+          "source": 87,
+          "target": 83,
+          "label": "ELK1 (transregulation) FOS"
+        },
+        {
+          "source": 87,
+          "target": 90,
+          "label": "ELK1 (transregulation) ACTB"
+        }
+      ],
+      "pad": 18,
+      "spacing": true
+    },
+    {
+      "id": "-3",
+      "label": "EGR2",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Transcription factor",
+      "color": "white",
+      "_id": 88,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 88,
+          "label": "SRF (transregulation) EGR2"
+        },
+        {
+          "source": 87,
+          "target": 88,
+          "label": "ELK1 (transregulation) EGR2"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-2",
+      "label": "CCL3",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Chemokine",
+      "color": "white",
+      "_id": 89,
+      "neighbors": [
+        {
+          "source": 80,
+          "target": 89,
+          "label": "NFKB1 (transregulation) CCL3"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "id": "-1",
+      "label": "ACTB",
+      "showLabel": "",
+      "type": "downstream genes",
+      "group": "Cytoskeleton",
+      "color": "white",
+      "_id": 90,
+      "neighbors": [
+        {
+          "source": 65,
+          "target": 90,
+          "label": "SRF (transregulation) ACTB"
+        },
+        {
+          "source": 87,
+          "target": 90,
+          "label": "ELK1 (transregulation) ACTB"
+        }
+      ],
+      "pad": 5,
+      "spacing": true
+    },
+    {
+      "fixed": true,
+      "temp": true,
+      "guide": true,
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "boundary": "x",
+      "x": 250,
+      "y": 0,
+      "name": "left_guide",
+      "_id": 91
+    },
+    {
+      "fixed": true,
+      "temp": true,
+      "guide": true,
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "boundary": "x",
+      "x": 750,
+      "y": 10,
+      "name": "right_guide",
+      "_id": 92
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_0",
+      "boundary": "y",
+      "y": 0,
+      "x": 20,
+      "_id": 93
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_1",
+      "boundary": "y",
+      "y": 100,
+      "x": 30,
+      "_id": 94
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_2",
+      "boundary": "y",
+      "y": 200,
+      "x": 40,
+      "_id": 95
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_3",
+      "boundary": "y",
+      "y": 300,
+      "x": 50,
+      "_id": 96
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_4",
+      "boundary": "y",
+      "y": 400,
+      "x": 60,
+      "_id": 97
+    },
+    {
+      "temp": true,
+      "fixed": true,
+      "cid": "layer_order",
+      "width": 1,
+      "height": 1,
+      "padding": 0,
+      "name": "layer_order_boundary_5",
+      "boundary": "y",
+      "y": 500,
+      "x": 70,
+      "_id": 98
+    }
+  ],
+  "links":[
+    {"source":3,"target":29,"label":"IRAK2 (binding) TLR4"},
+    {"source":4,"target":72,"label":"IRF3 (binding) TICAM1"},
+    {"source":5,"target":82,"label":"MAP2K6 (phosphorylation) MAPK1"},
+    {"source":6,"target":41,"label":"RELA (transregulation) CCR5"},
+    {"source":6,"target":75,"label":"RELA (transregulation) CCL5"},
+    {"source":6,"target":73,"label":"RELA (transregulation) MEFV"},
+    {"source":6,"target":13,"label":"RELA (transregulation) CCL2"},
+    {"source":6,"target":22,"label":"RELA (transregulation) IL12B"},
+    {"source":6,"target":20,"label":"RELA (transregulation) TNF"},
+    {"source":6,"target":24,"label":"RELA (transregulation) IFNG"},
+    {"source":6,"target":79,"label":"RELA (transregulation) ICAM1"},
+    {"source":6,"target":18,"label":"RELA (transregulation) IL2RA"},
+    {"source":6,"target":31,"label":"RELA (transregulation) IFNB1"},
+    {"source":6,"target":54,"label":"RELA (transregulation) CXCL10"},
+    {"source":6,"target":69,"label":"RELA (transregulation) COL1A2"},
+    {"source":6,"target":53,"label":"RELA (transregulation) VCAM1"},
+    {"source":6,"target":85,"label":"RELA (transregulation) IL6"},
+    {"source":8,"target":76,"label":"MAPK11 (phosphorylation) STAT1"},
+    {"source":8,"target":12,"label":"MAPK11 (phosphorylation) MBP"},
+    {"source":8,"target":87,"label":"MAPK11 (phosphorylation) ELK1"},
+    {"source":8,"target":7,"label":"MAPK11 (phosphorylation) ATF2"},
+    {"source":10,"target":57,"label":"IRAK1 (binding) MYD88"},
+    {"source":10,"target":30,"label":"IRAK1 (binding) IRAK4"},
+    {"source":10,"target":29,"label":"IRAK1 (binding) TLR4"},
+    {"source":11,"target":56,"label":"MAP3K7IP1 (binding) NR2C2"},
+    {"source":15,"target":16,"label":"TBK1 (phosphorylation) IRF7"},
+    {"source":15,"target":4,"label":"TBK1 (phosphorylation) IRF3"},
+    {"source":16,"target":72,"label":"IRF7 (binding) TICAM1"},
+    {"source":17,"target":11,"label":"TRAF6 (binding) MAP3K7IP1"},
+    {"source":17,"target":56,"label":"TRAF6 (binding) NR2C2"},
+    {"source":17,"target":3,"label":"TRAF6 (binding) IRAK2"},
+    {"source":17,"target":33,"label":"TRAF6 (binding) MAP3K7IP2"},
+    {"source":19,"target":87,"label":"MAPK13 (phosphorylation) ELK1"},
+    {"source":20,"target":32,"label":"TNF (transregulation) TNFAIP2"},
+    {"source":20,"target":64,"label":"TNF (transregulation) TNFAIP1"},
+    {"source":20,"target":52,"label":"TNF (transregulation) TNFAIP6"},
+    {"source":20,"target":78,"label":"TNF (transregulation) TNFAIP3"},
+    {"source":21,"target":4,"label":"EP300 (binding) IRF3"},
+    {"source":25,"target":28,"label":"MAP3K1 (binding) MAPK8IP3"},
+    {"source":25,"target":27,"label":"MAP3K1 (phosphorylation) CHUK"},
+    {"source":25,"target":55,"label":"MAP3K1 (phosphorylation) IKBKB"},
+    {"source":25,"target":63,"label":"MAP3K1 (phosphorylation) MAP2K4"},
+    {"source":33,"target":56,"label":"MAP3K7IP2 (binding) NR2C2"},
+    {"source":37,"target":16,"label":"IKBKE (phosphorylation) IRF7"},
+    {"source":37,"target":4,"label":"IKBKE (phosphorylation) IRF3"},
+    {"source":38,"target":87,"label":"MAPK10 (binding) ELK1"},
+    {"source":38,"target":28,"label":"MAPK10 (binding) MAPK8IP3"},
+    {"source":42,"target":59,"label":"RELB (binding) NFKB2"},
+    {"source":43,"target":87,"label":"MAPK8 (binding) ELK1"},
+    {"source":43,"target":28,"label":"MAPK8 (binding) MAPK8IP3"},
+    {"source":44,"target":4,"label":"CREBBP (binding) IRF3"},
+    {"source":47,"target":80,"label":"NFKBIA (binding) NFKB1"},
+    {"source":51,"target":29,"label":"CD14 (binding) TLR4"},
+    {"source":55,"target":9,"label":"IKBKB (binding) NFKBIB"},
+    {"source":55,"target":47,"label":"IKBKB (binding) NFKBIA"},
+    {"source":56,"target":27,"label":"NR2C2 (binding) CHUK"},
+    {"source":56,"target":55,"label":"NR2C2 (binding) IKBKB"},
+    {"source":56,"target":5,"label":"NR2C2 (phosphorylation) MAP2K6"},
+    {"source":57,"target":29,"label":"MYD88 (binding) TLR4"},
+    {"source":58,"target":29,"label":"TICAM2 (binding) TLR4"},
+    {"source":59,"target":31,"label":"NFKB2 (transregulation) IFNB1"},
+    {"source":59,"target":6,"label":"NFKB2 (binding) RELA"},
+    {"source":60,"target":17,"label":"ECSIT (binding) TRAF6"},
+    {"source":61,"target":34,"label":"PRKRA (binding) EIF2AK2"},
+    {"source":63,"target":28,"label":"MAP2K4 (binding) MAPK8IP3"},
+    {"source":63,"target":70,"label":"MAP2K4 (phosphorylation) MAPK9"},
+    {"source":63,"target":43,"label":"MAP2K4 (phosphorylation) MAPK8"},
+    {"source":65,"target":87,"label":"SRF (binding) ELK1"},
+    {"source":65,"target":66,"label":"SRF (transregulation) MYL3"},
+    {"source":65,"target":39,"label":"SRF (transregulation) ACTC"},
+    {"source":65,"target":88,"label":"SRF (transregulation) EGR2"},
+    {"source":65,"target":83,"label":"SRF (transregulation) FOS"},
+    {"source":65,"target":90,"label":"SRF (transregulation) ACTB"},
+    {"source":65,"target":2,"label":"SRF (transregulation) APOE"},
+    {"source":70,"target":7,"label":"MAPK9 (binding) ATF2"},
+    {"source":70,"target":87,"label":"MAPK9 (binding) ELK1"},
+    {"source":70,"target":28,"label":"MAPK9 (binding) MAPK8IP3"},
+    {"source":71,"target":29,"label":"LY96 (binding) TLR4"},
+    {"source":72,"target":58,"label":"TICAM1 (binding) TICAM2"},
+    {"source":74,"target":29,"label":"BTK (binding) TLR4"},
+    {"source":74,"target":10,"label":"BTK (binding) IRAK1"},
+    {"source":74,"target":57,"label":"BTK (binding) MYD88"},
+    {"source":76,"target":83,"label":"STAT1 (transregulation) FOS"},
+    {"source":77,"target":31,"label":"REL (transregulation) IFNB1"},
+    {"source":77,"target":22,"label":"REL (transregulation) IL12B"},
+    {"source":77,"target":20,"label":"REL (transregulation) TNF"},
+    {"source":77,"target":18,"label":"REL (transregulation) IL2RA"},
+    {"source":77,"target":23,"label":"REL (transregulation) BIRC3"},
+    {"source":77,"target":59,"label":"REL (binding) NFKB2"},
+    {"source":80,"target":20,"label":"NFKB1 (transregulation) TNF"},
+    {"source":80,"target":22,"label":"NFKB1 (transregulation) IL12B"},
+    {"source":80,"target":13,"label":"NFKB1 (transregulation) CCL2"},
+    {"source":80,"target":24,"label":"NFKB1 (transregulation) IFNG"},
+    {"source":80,"target":35,"label":"NFKB1 (transregulation) CCR7"},
+    {"source":80,"target":59,"label":"NFKB1 (binding) NFKB2"},
+    {"source":80,"target":53,"label":"NFKB1 (transregulation) VCAM1"},
+    {"source":80,"target":75,"label":"NFKB1 (transregulation) CCL5"},
+    {"source":80,"target":40,"label":"NFKB1 (transregulation) TNFRSF6"},
+    {"source":80,"target":48,"label":"NFKB1 (transregulation) IRF1"},
+    {"source":80,"target":18,"label":"NFKB1 (transregulation) IL2RA"},
+    {"source":80,"target":45,"label":"NFKB1 (transregulation) IL2"},
+    {"source":80,"target":31,"label":"NFKB1 (transregulation) IFNB1"},
+    {"source":80,"target":81,"label":"NFKB1 (transregulation) CXCL9"},
+    {"source":80,"target":84,"label":"NFKB1 (transregulation) CCL20"},
+    {"source":80,"target":46,"label":"NFKB1 (transregulation) CX3CL1"},
+    {"source":80,"target":1,"label":"NFKB1 (transregulation) CCL11"},
+    {"source":80,"target":89,"label":"NFKB1 (transregulation) CCL3"},
+    {"source":80,"target":49,"label":"NFKB1 (transregulation) CXCL3"},
+    {"source":80,"target":62,"label":"NFKB1 (transregulation) CXCL1"},
+    {"source":80,"target":68,"label":"NFKB1 (transregulation) CXCL2"},
+    {"source":80,"target":26,"label":"NFKB1 (transregulation) CCL22"},
+    {"source":80,"target":0,"label":"NFKB1 (transregulation) IL13"},
+    {"source":80,"target":14,"label":"NFKB1 (transregulation) CXCL5"},
+    {"source":80,"target":67,"label":"NFKB1 (transregulation) CCL4"},
+    {"source":80,"target":36,"label":"NFKB1 (transregulation) TP53"},
+    {"source":80,"target":50,"label":"NFKB1 (transregulation) IL1A"},
+    {"source":82,"target":76,"label":"MAPK1 (phosphorylation) STAT1"},
+    {"source":86,"target":61,"label":"TIRAP (binding) PRKRA"},
+    {"source":86,"target":29,"label":"TIRAP (binding) TLR4"},
+    {"source":86,"target":72,"label":"TIRAP (binding) TICAM1"},
+    {"source":87,"target":20,"label":"ELK1 (transregulation) TNF"},
+    {"source":87,"target":88,"label":"ELK1 (transregulation) EGR2"},
+    {"source":87,"target":83,"label":"ELK1 (transregulation) FOS"},
+    {"source":87,"target":90,"label":"ELK1 (transregulation) ACTB"},
+    {"source":0,"target":18,"temp":true,"length":1},
+    {"source":0,"target":20,"temp":true,"length":1},
+    {"source":0,"target":22,"temp":true,"length":1},
+    {"source":0,"target":24,"temp":true,"length":1},
+    {"source":0,"target":31,"temp":true,"length":1},
+    {"source":0,"target":45,"temp":true,"length":1},
+    {"source":0,"target":50,"temp":true,"length":1},
+    {"source":0,"target":85,"temp":true,"length":1},
+    {"source":18,"target":20,"temp":true,"length":1},
+    {"source":18,"target":22,"temp":true,"length":1},
+    {"source":18,"target":24,"temp":true,"length":1},
+    {"source":18,"target":31,"temp":true,"length":1},
+    {"source":18,"target":45,"temp":true,"length":1},
+    {"source":18,"target":50,"temp":true,"length":1},
+    {"source":18,"target":85,"temp":true,"length":1},
+    {"source":20,"target":22,"temp":true,"length":1},
+    {"source":20,"target":24,"temp":true,"length":1},
+    {"source":20,"target":31,"temp":true,"length":1},
+    {"source":20,"target":45,"temp":true,"length":1},
+    {"source":20,"target":50,"temp":true,"length":1},
+    {"source":20,"target":85,"temp":true,"length":1},
+    {"source":22,"target":24,"temp":true,"length":1},
+    {"source":22,"target":31,"temp":true,"length":1},
+    {"source":22,"target":45,"temp":true,"length":1},
+    {"source":22,"target":50,"temp":true,"length":1},
+    {"source":22,"target":85,"temp":true,"length":1},
+    {"source":24,"target":31,"temp":true,"length":1},
+    {"source":24,"target":45,"temp":true,"length":1},
+    {"source":24,"target":50,"temp":true,"length":1},
+    {"source":24,"target":85,"temp":true,"length":1},
+    {"source":31,"target":45,"temp":true,"length":1},
+    {"source":31,"target":50,"temp":true,"length":1},
+    {"source":31,"target":85,"temp":true,"length":1},
+    {"source":45,"target":50,"temp":true,"length":1},
+    {"source":45,"target":85,"temp":true,"length":1},
+    {"source":50,"target":85,"temp":true,"length":1},
+    {"source":1,"target":13,"temp":true,"length":1},
+    {"source":1,"target":14,"temp":true,"length":1},
+    {"source":1,"target":26,"temp":true,"length":1},
+    {"source":1,"target":46,"temp":true,"length":1},
+    {"source":1,"target":49,"temp":true,"length":1},
+    {"source":1,"target":54,"temp":true,"length":1},
+    {"source":1,"target":62,"temp":true,"length":1},
+    {"source":1,"target":67,"temp":true,"length":1},
+    {"source":1,"target":68,"temp":true,"length":1},
+    {"source":1,"target":75,"temp":true,"length":1},
+    {"source":1,"target":81,"temp":true,"length":1},
+    {"source":1,"target":84,"temp":true,"length":1},
+    {"source":1,"target":89,"temp":true,"length":1},
+    {"source":13,"target":14,"temp":true,"length":1},
+    {"source":13,"target":26,"temp":true,"length":1},
+    {"source":13,"target":46,"temp":true,"length":1},
+    {"source":13,"target":49,"temp":true,"length":1},
+    {"source":13,"target":54,"temp":true,"length":1},
+    {"source":13,"target":62,"temp":true,"length":1},
+    {"source":13,"target":67,"temp":true,"length":1},
+    {"source":13,"target":68,"temp":true,"length":1},
+    {"source":13,"target":75,"temp":true,"length":1},
+    {"source":13,"target":81,"temp":true,"length":1},
+    {"source":13,"target":84,"temp":true,"length":1},
+    {"source":13,"target":89,"temp":true,"length":1},
+    {"source":14,"target":26,"temp":true,"length":1},
+    {"source":14,"target":46,"temp":true,"length":1},
+    {"source":14,"target":49,"temp":true,"length":1},
+    {"source":14,"target":54,"temp":true,"length":1},
+    {"source":14,"target":62,"temp":true,"length":1},
+    {"source":14,"target":67,"temp":true,"length":1},
+    {"source":14,"target":68,"temp":true,"length":1},
+    {"source":14,"target":75,"temp":true,"length":1},
+    {"source":14,"target":81,"temp":true,"length":1},
+    {"source":14,"target":84,"temp":true,"length":1},
+    {"source":14,"target":89,"temp":true,"length":1},
+    {"source":26,"target":46,"temp":true,"length":1},
+    {"source":26,"target":49,"temp":true,"length":1},
+    {"source":26,"target":54,"temp":true,"length":1},
+    {"source":26,"target":62,"temp":true,"length":1},
+    {"source":26,"target":67,"temp":true,"length":1},
+    {"source":26,"target":68,"temp":true,"length":1},
+    {"source":26,"target":75,"temp":true,"length":1},
+    {"source":26,"target":81,"temp":true,"length":1},
+    {"source":26,"target":84,"temp":true,"length":1},
+    {"source":26,"target":89,"temp":true,"length":1},
+    {"source":46,"target":49,"temp":true,"length":1},
+    {"source":46,"target":54,"temp":true,"length":1},
+    {"source":46,"target":62,"temp":true,"length":1},
+    {"source":46,"target":67,"temp":true,"length":1},
+    {"source":46,"target":68,"temp":true,"length":1},
+    {"source":46,"target":75,"temp":true,"length":1},
+    {"source":46,"target":81,"temp":true,"length":1},
+    {"source":46,"target":84,"temp":true,"length":1},
+    {"source":46,"target":89,"temp":true,"length":1},
+    {"source":49,"target":54,"temp":true,"length":1},
+    {"source":49,"target":62,"temp":true,"length":1},
+    {"source":49,"target":67,"temp":true,"length":1},
+    {"source":49,"target":68,"temp":true,"length":1},
+    {"source":49,"target":75,"temp":true,"length":1},
+    {"source":49,"target":81,"temp":true,"length":1},
+    {"source":49,"target":84,"temp":true,"length":1},
+    {"source":49,"target":89,"temp":true,"length":1},
+    {"source":54,"target":62,"temp":true,"length":1},
+    {"source":54,"target":67,"temp":true,"length":1},
+    {"source":54,"target":68,"temp":true,"length":1},
+    {"source":54,"target":75,"temp":true,"length":1},
+    {"source":54,"target":81,"temp":true,"length":1},
+    {"source":54,"target":84,"temp":true,"length":1},
+    {"source":54,"target":89,"temp":true,"length":1},
+    {"source":62,"target":67,"temp":true,"length":1},
+    {"source":62,"target":68,"temp":true,"length":1},
+    {"source":62,"target":75,"temp":true,"length":1},
+    {"source":62,"target":81,"temp":true,"length":1},
+    {"source":62,"target":84,"temp":true,"length":1},
+    {"source":62,"target":89,"temp":true,"length":1},
+    {"source":67,"target":68,"temp":true,"length":1},
+    {"source":67,"target":75,"temp":true,"length":1},
+    {"source":67,"target":81,"temp":true,"length":1},
+    {"source":67,"target":84,"temp":true,"length":1},
+    {"source":67,"target":89,"temp":true,"length":1},
+    {"source":68,"target":75,"temp":true,"length":1},
+    {"source":68,"target":81,"temp":true,"length":1},
+    {"source":68,"target":84,"temp":true,"length":1},
+    {"source":68,"target":89,"temp":true,"length":1},
+    {"source":75,"target":81,"temp":true,"length":1},
+    {"source":75,"target":84,"temp":true,"length":1},
+    {"source":75,"target":89,"temp":true,"length":1},
+    {"source":81,"target":84,"temp":true,"length":1},
+    {"source":81,"target":89,"temp":true,"length":1},
+    {"source":84,"target":89,"temp":true,"length":1},
+    {"source":32,"target":64,"temp":true,"length":1},
+    {"source":35,"target":40,"temp":true,"length":1},
+    {"source":35,"target":41,"temp":true,"length":1},
+    {"source":40,"target":41,"temp":true,"length":1},
+    {"source":36,"target":48,"temp":true,"length":1},
+    {"source":36,"target":73,"temp":true,"length":1},
+    {"source":36,"target":83,"temp":true,"length":1},
+    {"source":36,"target":88,"temp":true,"length":1},
+    {"source":48,"target":73,"temp":true,"length":1},
+    {"source":48,"target":83,"temp":true,"length":1},
+    {"source":48,"target":88,"temp":true,"length":1},
+    {"source":73,"target":83,"temp":true,"length":1},
+    {"source":73,"target":88,"temp":true,"length":1},
+    {"source":83,"target":88,"temp":true,"length":1},
+    {"source":39,"target":90,"temp":true,"length":1},
+    {"source":53,"target":69,"temp":true,"length":1},
+    {"source":53,"target":79,"temp":true,"length":1},
+    {"source":69,"target":79,"temp":true,"length":1}
+  ],
+  "constraints":[
+    {"axis":"x","left":91,"right":0,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":1,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":2,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":3,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":4,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":5,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":6,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":7,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":8,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":9,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":10,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":11,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":12,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":13,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":14,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":15,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":16,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":17,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":18,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":19,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":20,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":21,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":22,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":23,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":24,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":25,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":26,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":27,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":28,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":29,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":30,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":31,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":32,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":33,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":34,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":35,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":36,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":37,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":38,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":39,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":40,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":41,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":42,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":43,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":44,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":45,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":46,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":47,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":48,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":49,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":50,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":51,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":52,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":53,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":54,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":55,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":56,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":57,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":58,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":59,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":60,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":61,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":62,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":63,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":64,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":65,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":66,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":67,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":68,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":69,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":70,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":71,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":72,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":73,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":74,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":75,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":76,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":77,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":78,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":79,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":80,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":81,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":82,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":83,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":84,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":85,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":86,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":87,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":88,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":89,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":91,"right":90,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":0,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":1,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":2,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":3,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":4,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":5,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":6,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":7,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":8,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":9,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":10,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":11,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":12,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":13,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":14,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":15,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":16,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":17,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":18,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":19,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":20,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":21,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":22,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":23,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":24,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":25,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":26,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":27,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":28,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":29,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":30,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":31,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":32,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":33,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":34,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":35,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":36,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":37,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":38,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":39,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":40,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":41,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":42,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":43,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":44,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":45,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":46,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":47,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":48,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":49,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":50,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":51,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":52,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":53,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":54,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":55,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":56,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":57,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":58,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":59,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":60,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":61,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":62,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":63,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":64,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":65,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":66,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":67,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":68,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":69,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":70,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":71,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":72,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":73,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":74,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":75,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":76,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":77,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":78,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":79,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":80,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":81,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":82,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":83,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":84,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":85,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":86,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":87,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":88,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":89,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"x","left":90,"right":92,"gap":10,"_type":"boundary_position"},
+    {"axis":"y","left":93,"right":71,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":71,"right":94,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":12,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":12,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":29,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":29,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":33,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":33,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":51,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":51,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":58,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":58,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":94,"right":72,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":72,"right":95,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":3,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":3,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":9,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":9,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":10,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":10,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":11,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":11,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":15,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":15,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":16,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":16,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":17,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":17,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":19,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":19,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":25,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":25,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":27,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":27,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":28,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":28,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":30,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":30,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":34,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":34,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":37,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":37,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":38,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":38,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":43,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":43,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":47,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":47,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":55,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":55,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":57,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":57,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":60,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":60,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":63,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":63,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":74,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":74,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":76,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":76,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":82,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":82,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":95,"right":86,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":86,"right":96,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":4,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":4,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":5,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":5,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":6,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":6,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":7,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":7,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":8,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":8,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":21,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":21,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":42,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":42,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":44,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":44,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":56,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":56,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":59,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":59,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":65,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":65,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":70,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":70,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":77,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":77,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":80,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":80,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":96,"right":87,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":87,"right":97,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":0,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":0,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":1,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":1,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":2,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":2,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":13,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":13,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":14,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":14,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":18,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":18,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":20,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":20,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":22,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":22,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":23,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":23,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":24,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":24,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":26,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":26,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":31,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":31,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":32,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":32,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":35,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":35,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":36,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":36,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":39,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":39,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":40,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":40,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":41,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":41,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":45,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":45,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":46,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":46,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":48,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":48,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":49,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":49,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":50,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":50,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":52,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":52,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":53,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":53,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":54,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":54,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":62,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":62,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":64,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":64,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":66,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":66,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":67,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":67,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":68,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":68,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":69,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":69,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":73,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":73,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":75,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":75,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":78,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":78,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":79,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":79,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":81,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":81,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":83,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":83,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":84,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":84,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":85,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":85,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":88,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":88,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":89,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":89,"right":98,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":97,"right":90,"gap":30,"_type":"layer_order"},
+    {"axis":"y","left":90,"right":98,"gap":30,"_type":"layer_order"},
+    {
+      "type":"alignment","axis":"y",
+      "offsets":[
+        {"node":61,"offset":0},
+        {"node":86,"offset":0},
+        {"node":61,"offset":0}
+      ],
+      "_type":"align unknowns_align"
+    }
+  ],
+  "groups":[
+    {"leaves":[0,18,20,22,24,31,45,50,85],"style":"visible"},
+    {"leaves":[1,13,14,26,46,49,54,62,67,68,75,81,84,89],"style":"visible"},
+    {"leaves":[2],"style":"visible"},
+    {"leaves":[23],"style":"visible"},
+    {"leaves":[32,64],"style":"visible"},
+    {"leaves":[35,40,41],"style":"visible"},
+    {"leaves":[36,48,73,83,88],"style":"visible"},
+    {"leaves":[39,90],"style":"visible"},
+    {"leaves":[52],"style":"visible"},
+    {"leaves":[53,69,79],"style":"visible"},
+    {"leaves":[66],"style":"visible"},
+    {"leaves":[78],"style":"visible"}
+  ]
+}
