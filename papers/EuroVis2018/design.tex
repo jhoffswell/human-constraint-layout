@@ -44,10 +44,10 @@ and how such constraints are applied over node sets.
 We provide several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
 into disjoint sets, (2) specifying (potentially overlapping) sets via
-\emph{predicates}, (3) generating sets based on \emph{key} expressions,
+\emph{predicates}, (3) \emph{collecting} nodes into sets based on key expressions,
 and (4) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
-partitions, key expressions, or predicates, the constraint definition may also 
+partitions, collections, or predicates, the constraint definition may also 
 designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes. For each subsection, we show a sample
 \projectname constraint in the header.
@@ -90,8 +90,8 @@ to create node sets that are not disjoint, and may thus lead to
 unsatisfiable constraints.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Creating Sets Using Keys}
-\constraint{Ex: \texttt{keys} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
+\subsubsection{Collecting Nodes Using Keys}
+\constraint{Ex: \texttt{collect} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
 To combine the flexibility of \emph{predicates} with the automation of 
 \emph{partition}, users may specify sets as a union based on key expressions.
 For each key expression in the set definition, nodes are evaluated to extract one 
