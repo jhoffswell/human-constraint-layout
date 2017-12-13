@@ -6,34 +6,39 @@ We discuss general layout techniques and constraint approaches
 that motivate this work, then expand upon domain-specific layouts.
 
 \subsection{General Graph Layout}
-Many graph layout approaches leverage the graph structure to produce the 
+Graph layout approaches often leverage the graph structure to produce the 
 layout \cite{herman2000graph,eades2010graph,gibson2013survey}.
 For node-link diagrams of hierarchical data, Reingold \& Tilford's ``tidy'' 
-layout~\cite{reingold1981tidier} iteratively arranges graph nodes to
+layout~\cite{reingold1981tidier} arranges graph nodes to
 produce compact, symmetrical tree layouts.
-Radial layouts \cite{battista1998graph,herman2000graph} follow similar procedures but use polar 
+Radial layouts \cite{battista1998graph,herman2000graph} follow similar procedures using polar 
 coordinates, with a root node placed at the origin.
 Sugiyama-style layouts~\cite{sugiyama1981methods} visualize directed graphs by first assigning nodes to hierarchical layers and then iteratively adjusting node placement to minimize edge crossings.
 Force-directed techniques~\cite{tutte1963draw,kobourov2012spring,quinn1979forced,fruchterman1991graph} 
-use physical simulation and/or optimization methods that model repulsive forces between nodes and spring-like forces on edges, and then attempt to minimize the overall energy. 
-A number of popular tools support graph drawing with various layout 
-techniques, including D3.js~\cite{bostock:d3}, Gephi~\cite{bastian2009gephi},
+use physical simulation and/or optimization methods that model repulsive forces between nodes and spring-like forces on edges, and attempt to minimize the overall energy. 
+A number of popular tools support graph drawing, including D3.js~\cite{bostock:d3}, Gephi~\cite{bastian2009gephi},
 Graphviz~\cite{ellson2001graphviz}, and Cytoscape~\cite{shannon2003cytoscape}.
 
 \subsection{Constraint-Based Layout Techniques}
 Extending an existing layout method to support constraints enables
 customized layouts that may emphasize important
-structural or aesthetic properties of the graph. IPSep-CoLa~\cite{dwyer2006ipsep} extends
-force-directed layout to apply separation constraints on pairs of nodes.
-This strategy allows the user to introduce constraints to enforce properties 
-such as downward pointing edges or ordering based on node properties.
+structural or aesthetic properties of the graph. 
 Dig-CoLa~\cite{dwyer2005dig} encodes the hierarchy of nodes as constraints
 and attempts to minimize the stress on the overall graph layout; this strategy
 combines automatic hierarchical layout with undirected layouts for a hybrid
 visualization strategy that can ensure downward pointing edges to more
-effectively represent the graph hierarchy. 
-WebCoLa~\cite{WebCoLa} is a JavaScript library for constraint-based layout 
-that can be used alongside D3~\cite{bostock:d3} or Cytoscape~\cite{shannon2003cytoscape}.
+effectively represent the graph hierarchy. \mbox{IPSep-CoLa~\cite{dwyer2006ipsep}} extends
+force-directed layout to apply a more general class of separation constraints 
+on pairs of nodes. This strategy allows the user to introduce constraints to enforce properties 
+such as downward pointing edges or ordering based on node properties.
+Dwyer and Robertson~\cite{dwyer2009layout} present a strategy for supporting 
+non-linear constraints (such circle constraints) that does not constrain node
+positions along a single, but can incorporate these techniques within
+alternative layout strategies.
+
+For use in a web-programming context, WebCoLa~\cite{WebCoLa} is a 
+JavaScript library for constraint-based layout that can be used alongside
+D3~\cite{bostock:d3} or Cytoscape~\cite{shannon2003cytoscape}.
 WebCoLa supports the specification of constraints on the alignment and relative
 position of nodes as well as high-level properties such as flow (to ensure
 edges point in the same direction) and non-overlapping constraints.
@@ -54,11 +59,16 @@ within graph layouts. However, these techniques
 tend to be highly-specialized, and so may not apply to other possible
 domains of interest. For example, ecological networks are a common visualization
 to include in publications to show the relationships amongst organisms in
-an ecosystem. Baskerville et al.\ produced a customized visualization of 
-the Serengeti food web~\cite{baskerville2011spatial};  in addition to the 
-static visualization presented in their paper, Baskerville et al.\ 
-published an interactive version online~\cite{baskerville2011interactive}. 
-Despite frequently publishing food web visualizations \cite{kearney2012coupling,kearney2013amplification},
+an ecosystem. Baskerville~et~al.\ produced a customized visualization of 
+the Serengeti food web~\cite{baskerville2011spatial} in which the nodes
+are positioned based on their trophic level (e.g., the role of the
+organism within the larger food chain) and further grouped based on a
+Bayesian classification of the elements;  in addition to the 
+static visualization, Baskerville~et~al.\ 
+published an interactive version of the graph online~\cite{baskerville2011interactive}. 
+
+Despite frequently publishing visualizations showing ocean food 
+webs~\cite{kearney2012coupling,kearney2013amplification},
 Kearney describes several challenges around the design of such visualizations
 in a blog post~\cite{kearney2016blog}; Kearney notes that the node
 placement algorithm should \emph{``allow constraining y-position to match
@@ -66,35 +76,33 @@ placement algorithm should \emph{``allow constraining y-position to match
   such algorithm seemingly readily available, I decided to create my
   own.''} Kearney developed plugins for D3~\cite{kearney2017d3} and
 Ecopath~\cite{kearney2017ecopath} to produce food webs visualizations. 
-Motivated by this related work and the
-challenges described by Kearney, our constraint language aims to provide users
-with a lightweight means for authoring domain-specific constraints.
+Motivated by the challenges described by Kearney, \projectname aims to provide users
+with a lightweight means for authoring domain-specific constraints for customized layouts.
 
-Biological systems are a common domain requiring customized visualizations.
+Biological systems is another domain requiring customized visualizations.
 Cerebral~\cite{barsky2008cerebral} is a tool designed to visualize
-biological systems and support interactive exploration of different
-experimental conditions. Kieffer et al.'s work on incremental grid layouts 
-was motivated by related work  for grid layouts of biological 
+biological systems and supports interactive exploration of different
+experimental conditions. Genc and Dogrusoz~\cite{genc2003constrained}
+describe a constrained force-directed layout technique for visualizing 
+biological pathways. Cytoscape~\cite{shannon2003cytoscape} is a
+visualization system designed to explore biomolecular interaction networks
+and provides a framework for accepting customized plugins, including 
+a WebCoLa~\cite{WebCoLa} plugin for constraint-based layouts. 
+
+Kieffer et al.'s work on incremental grid layouts~\cite{kieffer2013incremental}
+was motivated by related work for grid layouts of biological 
 networks~\cite{barsky2008cerebral,kojima2007efficient,li2005grid}, 
 but aims to provide a more flexible mechanism for creating the constraints 
 by supporting SBGN (Systems Biology Graphical Notation). In later
 work, Kieffer et al.~\cite{kieffer2016hola} improve upon grid layout techniques
 by first identifying the aesthetic criteria humans use for manual graph layout,
-then producing a new algorithm that employs these techniques for improved layouts.
-Genc and Dogrusoz~\cite{genc2003constrained}
-describe a constrained force-directed layout technique for visualizing 
-biological pathways. Cytoscape~\cite{shannon2003cytoscape} is a
-visualization system designed to explore biomolecular interaction networks
-and provides a framework for accepting customized plugins to extend the
-system. Each of these strategies was designed to
-address the needs of domain experts who did not find necessary
-support within existing tools.
+then producing a new algorithm that employs these techniques for improved,
+human-like layouts.
 
-For social networks, many visualizations leverage force-directed layouts
+Social networks often leverage force-directed layout techniques
 to demonstrate the connectedness or clustering of the nodes. However, some
 layouts may introduce additional separation or clustering
-to highlight properties such as ethnographically-identified
-groups~\cite{rothenberg1998using},
+to highlight properties such as ethnographically-identified groups~\cite{rothenberg1998using},
 the timeline of disease
 exposure~\cite{fitzpatrick2001preventable,mcelroy2003network},
 or differences in reported relationship types~\cite{fu2011hiv}.

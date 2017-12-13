@@ -11,7 +11,7 @@ supports hierarchical composition, with nested sets as elements.
 A \projectname specification consists of one or more \textbf{constraint definitions},
 along with an optional set of guides (reference elements that serve as 
 positional anchors). An example \projectname specification for a small tree 
-layout is shown in Figure~\ref{fig:small-tree-example}. Each constraint 
+layout is shown in Figure~\ref{fig:small-tree-example}a. Each constraint 
 definition includes a set definition and constraint application.
 \projectname provides several operators for defining
 sets based on node attributes and structural relations in the graph.
@@ -26,8 +26,11 @@ the sets in the constraint definition.
 The \projectname compiler takes an input graph 
 and specification, and produces a set of instance-level constraints for 
 an existing constrained graph layout solver. In this work, we target 
-Dwyer et al.'s WebCoLa library \cite{WebCoLa} in order to support
-interactive, web-based layouts. In the following sections, 
+Dwyer~et~al.'s WebCoLa library \cite{WebCoLa} in order to support
+interactive, web-based layouts. The \projectname compiler generates one
+or more WebCoLa constraints for each \projectname constraint and produces a
+specification for WebCoLa (Figure~\ref{fig:small-tree-example}c).
+ In the following sections, 
 we discuss the design of \projectname including the process for 
 specifying sets, the types of constraints currently supported in \projectname, 
 and how such constraints are applied over node sets.
@@ -38,35 +41,34 @@ and how such constraints are applied over node sets.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Specifying Sets in \projectname}
-We define several operators for defining sets based on node attributes 
+We provide several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
 into disjoint sets, (2) specifying (potentially overlapping) sets via
-\emph{predicates}, (3) \emph{joining} sets based on key expressions,
+\emph{predicates}, (3) generating sets based on \emph{key} expressions,
 and (4) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
-partitions or predicates, the constraint definition may also 
+partitions, key expressions, or predicates, the constraint definition may also 
 designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes. For each subsection, we show a sample
-\projectname constraint in the section header.
+\projectname constraint in the header.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Partitioning Nodes into Sets}
 \constraint{Ex: \texttt{partition} by \texttt{depth}}
 The partition operator creates a collection of disjoint sets based on
 properties of the node
-(e.g., Figure~\ref{fig:small-tree-example}, Line~\texttt{17}).
+(e.g., Figure~\ref{fig:small-tree-example}a, Line~\texttt{17}).
 Given $n$ nodes to partition, this operator can produce at most $O(n)$ 
 sets. The user may further limit 
 the number of sets included by providing specific property values to 
 \emph{include} or \emph{exclude} when producing the sets.
-
 For each node, we identify a key based on the node values for the partition
 properties and create sets based on the key. The \emph{include} parameter allows
 the user to identify particular node values to look for when partitioning
 and includes only those values; the exclude property does the opposite. 
 For example in Figure~\ref{fig:syphilis-spec}, Line~\texttt{5}, the user
 partitions the nodes by the \texttt{group} property and ignores the nodes
-for which the value of \texttt{group} is \emph{``other''}.
+for which the value of \texttt{group} is \emph{``other.''}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Specifying Sets with Predicates}
@@ -88,11 +90,11 @@ to create node sets that are not disjoint, and may thus lead to
 unsatisfiable constraints.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsubsection{Joining Sets on Key Expressions}
-\constraint{Ex: \texttt{join} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
+\subsubsection{Creating Sets Using Keys}
+\constraint{Ex: \texttt{keys} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
 To combine the flexibility of \emph{predicates} with the automation of 
-\emph{partition}, users may specify sets as a join based on key expressions.
-For each key expression in the join, nodes are evaluated to extract one 
+\emph{partition}, users may specify sets as a union based on key expressions.
+For each key expression in the set definition, nodes are evaluated to extract one 
 or more keys, which are used to split nodes into (potentially overlapping) 
 sets. For example, in Figure~\ref{fig:syphilis-spec},~Line~\texttt{35}, the 
 user creates a new set that includes two key expressions: one identifies
@@ -107,7 +109,7 @@ graph, which are described in Section~\ref{sec:built-in-properties}.
 \constraint{Ex: \texttt{[} \emph{``set1''}, \emph{``set2''} \texttt{]}}
 Sets may also be defined as hierarchical
 compositions of previously defined sets. For example, in
-Figure~\ref{fig:small-tree-example} the first constraint definition
+Figure~\ref{fig:small-tree-example}a the first constraint definition
 (named ``layer'') produces three sets via
 partition~(Line~\texttt{17}). The next constraint definition performs 
 composition, referencing only the ``layer'' set~(Line~\texttt{22}): the result
@@ -121,11 +123,11 @@ that other composition strategies could enable.
 
 When a named set is defined, the set element promotes the properties that
 are equivalent for all elements in the set to a property of the set
-element. For example, in Figure \ref{fig:small-tree-example}, when the user
+element. For example, in Figure \ref{fig:small-tree-example}a, when the user
 defines a partition on the nodes based on the \texttt{depth} (Line
 \texttt{17}), each set is given a corresponding \texttt{depth} property with
 the shared value for that set. This property can be referenced in other 
-parts of the \projectname specification (Line~\texttt{23}).
+parts of the \projectname specification (e.g., in the order constraint, Line~\texttt{23}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Built-In Properties of the Graph Structure}
@@ -159,7 +161,7 @@ the expectations for use.
 \item[\texttt{targets}] The list of nodes that have edges for which the
 	current node is the source (e.g., all child nodes).
 \item[\texttt{neighbors}] The list of nodes that have edges connected to
-  the current node. This property is the join of the \texttt{sources} and
+  the current node. This property is the union of the \texttt{sources} and
   \texttt{targets} properties. Neighbors may also take an optional value
   as input, which returns all nodes with a graph distance less than or
   equal to the specified value.
@@ -168,43 +170,23 @@ the expectations for use.
 	% enable \texttt{lastchild}, which returns the largest value for the defined 
 	% \texttt{property}.
 \item[\texttt{incoming}] The list of edges in which the current node is the
-	target (e.g., the edges connecting the current node to all parent nodes).
+	target~(e.g., the edges connecting the current node to all sources).
 \item[\texttt{outgoing}] The list of edges in which the current node is the
-	source (e.g., the edges connecting the current node to all child nodes).
+	source~(e.g., the edges connecting the current node to all targets).
 \item[\texttt{edges}] The list of edges that contain the current node. This
-	property is the join of the \texttt{incoming} and \texttt{outgoing} properties.
+	property is the union of the \texttt{incoming} and \texttt{outgoing} edges.
 \item[\texttt{degree}] The number of \texttt{neighbors}.
 \end{description}
 \constraintsFigure
 
 % \jheer{Is \texttt{\_id} required? That might confuse readers after we make claims about \projectname's reusability.}
 
-In the original graph specification, the user specifies the links as directed
-edges with a defined source and target node. Whether or not these links are
+In the original graph specification, the links are defined by a source
+and target node. However, whether or not these links are
 directed or undirected is up to the discretion of the user in how the links
 are treated in the graph layout. For example, properties such as
-\texttt{neighbors} and \texttt{edges} are more appropriate than \texttt{parents}
-for undirected graphs.
-
-In addition to the built-in properties, we include several operators for 
-manipulating the resulting lists of elements. Values can also be extracted from
-nodes or edges using the dot syntax at any point. The user may use standard
-array access to extract elements from the list (e.g., the first element of
-the list is \texttt{list[0]}).
-
-\begin{description}
-\item[\texttt{length()}] The length of the list.
-\item[\texttt{reverse()}] Reverse the order of the list.
-\item[\texttt{contains(value)}] Whether the list contains the value.
-\item[\texttt{sort(property)}] Sort the list by the specified property.
-\item[\texttt{extract(property)}] Extract the specified property from each element in the list.
-\end{description}
-
-%\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes?}
-
-% \jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
-
-We selected these properties as common structural elements
+\texttt{neighbors} and \texttt{edges} are more appropriate than \texttt{sources}
+for undirected graphs. We selected this list of properties as common structural elements
 applicable to a variety of layout specifications. For example, the \texttt{depth}
 property is useful for producing hierarchical tree layouts and the 
 \texttt{sources}, \texttt{targets}, and \texttt{neighbors} properties
@@ -213,6 +195,22 @@ properties that could be useful for graph layouts that are not included
 here and this list could easily be extended in the future to include other
 common properties. Furthermore, additional properties can always be
 computed by the user and added to the graph data prior to using \projectname.
+
+In addition to the built-in properties, we include several operators for 
+manipulating the resulting lists of elements: \texttt{length}, \texttt{reverse},
+\texttt{contains}, \texttt{sort}, and \texttt{extract}. The function 
+\texttt{length()} returns the length of the list; \texttt{reverse()} 
+reverses the order of the list, and \texttt{contains(value)} determines if
+the list contains the identified value. The user may also choose to \texttt{sort} 
+the list based on a property of the elements or \texttt{extract} the value of each
+element for a particular property. Values can also be extracted from
+nodes or edges individually using the dot syntax at any point. The user may use standard
+array access to extract elements from the list (e.g., the first element of
+the list is \texttt{list[0]}).
+
+%\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes?}
+
+% \jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%

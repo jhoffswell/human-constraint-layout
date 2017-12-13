@@ -32,7 +32,7 @@ domain, such as known data hierarchies including cellular
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
 (Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
-which they were designed, and there are numerous
+which they were designed, and there are many
 other domains for which customized layouts would be useful
 but for which tools that provide them are unavailable.
 Thus, when a layout technique does not exist for the
@@ -42,13 +42,11 @@ Creating a customized layout algorithm requires both
 domain and programming expertise, and so introduces a gap between 
 analysis needs and the techniques available to handle those needs.
 
-\todo{AB: claimed ``numerous'' other domains.  OK, or overclaiming?}
-
-Constraints can be used to specify desired properties for a layout by
+Constraints can be used to specify desired layout properties by
 allowing the designer to control the positions of nodes using
 domain-specific information.  However, many existing techniques
 for constraint layout require the user to define constraints
-on individual nodes or node pairs in the graph. This process can be labor
+on individual nodes or node pairs. This process can be labor
 intensive, requiring thousands of similar constraints and careful reasoning
 about which nodes should be constrained. Moreover, instance-level constraints 
 (e.g., defined \emph{extensionally} via node indices) prevent
@@ -62,7 +60,7 @@ to these sets. This approach allows users to specify layout
 requirements at a high level, deferring the generation of
 instance-level constraints to the underlying runtime system. These constraint
 definitions reduce specification effort while enabling highly
-customized and reusbale graph layouts.
+customized and reusable graph layouts.
 
 Our implementation of \projectname generates instance-level constraints for
 WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint-based graph
