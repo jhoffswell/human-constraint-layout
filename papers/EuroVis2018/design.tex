@@ -193,8 +193,7 @@ property is useful for producing hierarchical tree layouts and the
 reflect structure produced by the graph edges. There are many other
 properties that could be useful for graph layouts that are not included 
 here and this list could easily be extended in the future to include other
-common properties. Furthermore, additional properties can always be
-computed by the user and added to the graph data prior to using \projectname.
+common properties.
 
 In addition to the built-in properties, we include several operators for 
 manipulating the resulting lists of elements: \texttt{length}, \texttt{reverse},
@@ -211,14 +210,3 @@ the list is \texttt{list[0]}).
 %\jheer{How are sets/arrays be treated within predicates? For example, predicate functions such as \texttt{isNeighbor} or \texttt{isSource} might be more convenient or appropriate than working with lists of nodes?}
 
 % \jheer{What if edges have weights or attributes? Can those be queried? Finally, might other higher-order operators be useful? For example, identifying a shortest path and aligning elements along that path? (Actually, that sounds like it might be pretty useful in some situations!) Probably all beyond the scope of this paper, but still fun to think about...}
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\subsection{Applying Constraints in \projectname}
-
-For each constraint definition, the user may define multiple constraints
-that are applied to the nodes \emph{within} each individual set. 
-By utilizing set composition, the user can build up a hierarchical 
-definition of sets and thereby specify constraints \emph{between} 
-previously defined sets. We discuss the various constraints currently 
-supported in \projectname in Section \ref{sec:constraints}.

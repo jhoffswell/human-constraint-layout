@@ -62,13 +62,12 @@ instance-level constraints to the underlying runtime system. These constraint
 definitions reduce specification effort while enabling highly
 customized and reusable graph layouts.
 
-Our implementation of \projectname generates instance-level constraints for
-WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint-based graph
-layout. To demonstrate the expressiveness of our language, we
+We implemented a \projectname compiler, which generates instance-level 
+constraints for WebCoLa~\cite{WebCoLa}, a JavaScript library for constraint-based
+graph layout. To demonstrate the expressiveness of \projectname, we
 recreate several customized layouts found in the scientific research 
-literature. We
-show that users can compactly specify complex graph layouts that resemble
-those produced by customized layout engines, and can reapply these
+literature. We show that users can compactly specify complex layouts that resemble
+those produced by custom layout engines, and can reapply these
 specifications across different graphs. Our \projectname specifications
-can reduce the number of constraints written by the user by up to a 
-factor of 90.
+can reduce the number of constraints written by the user by one to two 
+orders of magnitude.

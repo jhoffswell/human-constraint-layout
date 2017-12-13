@@ -13,7 +13,7 @@ entirely in \projectname. However, we manually added labels to the final
 figures to better match the originals.
 
 We include the specification for each of our three major examples 
-(Figure~\ref{fig:syphilis-spec}, \ref{fig:tlr4-spec}, \ref{fig:serengeti-spec}),
+(Figure~\ref{fig:syphilis-spec}, \ref{fig:tlr4-spec}, \ref{fig:serengeti-spec}c),
 and annotate the specification with the number of sets produced for each 
 constraint definition (green), the number of WebCoLa constraints generated
 for each SetCoLa constraint (blue), and the behavior of SetCoLa constraints
@@ -24,8 +24,6 @@ that are not directly translated to WebCoLa constraints (purple).
 % our demo uses domain props whereas low-level constraints in _id (separate from original intent)
 
 \subsection{Syphilis Social Network}
-\tlrfourSpec
-
 Social networks can be a powerful way to understand inter-personal
 relationships and are useful for tracking the spread of diseases that
 result from personal contact \cite{rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv}.
@@ -75,6 +73,7 @@ the relatively larger number of interactions between the two groups,
 as described in the original paper.
 
 \subsection{TLR4 Network}
+\tlrfourSpec
 Biological networks are a common domain requiring customized visualizations
 to capture the cellular structure of the nodes in addition to the links
 contained in the network. Cerebral \cite{barsky2008cerebral} is a visualization
@@ -96,9 +95,7 @@ by the layout.
 
 \subsection{Serengeti Food Web}
 \krugerLayout
-% \serengetiLayout
-\serengetiLayoutColumn
-\serengetiSpec
+\serengetiHybrid
 
 Food webs visualize complex producer-consumer relationships in ecological
 systems. Despite the challenges in creating an informative
