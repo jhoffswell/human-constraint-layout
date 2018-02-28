@@ -1,5 +1,7 @@
 var renderer = {};
 var style = styling;
+var showLabels = false;
+var showLabelsOnTop = false;
 
 /***************************************************************/
 /************************ GRAPH DRAWING ************************/
@@ -13,26 +15,37 @@ renderer.init = function() {
   document.getElementById("range-linkdist").value = 50;
   document.getElementById("range-jaccard").value = 0;
   document.getElementById("range-symmetric").value = 0;
-  document.getElementById("range-constgap").value = 0;
-  document.getElementById("range-nodesize").value = 20;
+  document.getElementById("range-constgap").value = 40;
+  document.getElementById("range-nodesize").value = 18;
   document.getElementById("range-nodepad").value = 0;
 
-  document.getElementById("check-debugprint").checked = true;
+  document.getElementById("check-debugprint").checked = false;
   document.getElementById("check-layoutnode").checked = false;
   document.getElementById("check-layoutboundary").checked = false;
   document.getElementById("check-setnode").checked = false;
   document.getElementById("check-overlaps").checked = true;
-  document.getElementById("check-arrows").checked = false;
-  document.getElementById("check-curved").checked = true;
+  document.getElementById("check-arrows").checked = true;
+  document.getElementById("check-curved").checked = false;
+  document.getElementById("check-multiple").checked = true;
+  document.getElementById("check-edgelabels").checked = true;
 
-  document.getElementById("text-fillprop").value = "_id";
+  document.getElementById("text-fillprop").value = "color";
 
   ["noconst", "userconst", "layoutconst", "linkdist", "jaccard", "symmetric", "constgap", "nodesize", "nodepad"].map(updateRange);
-  ["debugprint", "layoutnode", "layoutboundary", "setnode", "overlaps", "arrows", "curved"].map(updateCheck);
+  ["debugprint", "layoutnode", "layoutboundary", "setnode", "overlaps", "arrows", "curved", "multiple", "edgelabels"].map(updateCheck);
   ["fillprop"].map(updateText);
 };
 
 renderer.setStyle = function(name) {
+
+  // Styling for Leilani's graphs
+  if(name.indexOf('user') !== -1) {
+
+
+    return;
+  };
+
+  // Normal styling behavior
   switch(name) {
     case 'small-foodWeb':
       style = kruger;
@@ -42,7 +55,15 @@ renderer.setStyle = function(name) {
       break;
     case 'syphilis':
       style = syphilis;
-      break; 
+      break;
+    case 'tlr4':
+      style = tlr4;
+      style.groupFill = function(d) { return '#D6F6CC'; };
+      break;
+    case 'tlr4-paper':
+      style = tlr4;
+      style.groupFill = function(d) { return '#D6E5D3'; };
+      break;
     default:
       style = styling;
   };
@@ -59,8 +80,13 @@ renderer.draw = function() {
   if(renderer.options["debugprint"]) console.log("  Drawing the graph...");
   graph.spec.nodes.forEach(graph.setColor);
 
+  // Reset the links!
+  if(graph.originalLinks) {
+    graph.spec.links = graph.originalLinks;
+  }
+
   // Clear the old graph
-  d3.select(".graph").selectAll("*").remove();
+  d3.select(".graph").selectAll("g").remove();
 
   // Setup Cola
   var width = d3.select("svg").style("width").replace("px", ""),
@@ -134,7 +160,7 @@ renderer.draw = function() {
 
   // Draw the graph
   renderer.svg = svg.append("g");
-  renderer.options["curved"] ? renderer.drawCurvedLinks() : renderer.drawLinks();
+  renderer.options["curved"] ? renderer.drawCurvedLinks() : renderer.options["multiple"] ? renderer.drawMultipleLinks() : renderer.drawLinks();
   if(graph.spec.groups) renderer.drawGroups();
   renderer.drawNodes();
 
@@ -167,9 +193,8 @@ renderer.drawLinks = function() {
       });
 
   if(renderer.options["arrows"]) {
-    
     renderer.svg.append("defs").selectAll("marker")
-        .data(["suit", "licensing", "resolved"])
+        .data(['arrowhead'])
       .enter().append("marker")
         .attr("id", function(d) { return d; })
         .attr("viewBox", "0 -5 10 10")
@@ -179,15 +204,19 @@ renderer.drawLinks = function() {
         .attr("markerHeight", 6)
         .attr("orient", "auto")
       .append("path")
-        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5");
+        .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+        .style('fill', function(d) { return '#aaa'; })
+        .style('stroke', function(d) { return '#aaa'; });
     
     renderer.links
         .style("marker-end", function(d) {
           if(d.temp) return "none";
-          return "url(#suit)";
+          return 'url(#' + d.interaction + ')';
         })
-        .style("stroke", function(d) { return d.color; });
-  }    
+        .style("stroke", function(d) { return '#aaa'; });
+  }
+
+  if(renderer.options['edgelabels']) renderer.drawLinkLabels();  
 };
 
 renderer.drawCurvedLinks = function() {
@@ -229,7 +258,153 @@ renderer.drawCurvedLinks = function() {
       return "url(#suit)";
     });
   }
+};
+
+var countSiblingLinks = function(source, target) {
+  var count = 0;
+  for(var i = 0; i < graph.spec.links.length; ++i) {
+    if((graph.spec.links[i].source._id == source._id && graph.spec.links[i].target._id == target._id)
+    || (graph.spec.links[i].source._id == target._id && graph.spec.links[i].target._id == source._id)) {
+      count++;
+    }
+  };
+  return count;
+};
+
+var getSiblingLinks = function(source, target) {
+  var siblings = [];
+  for(var i = 0; i < graph.spec.links.length; ++i) {
+    var found = false;
+    if(graph.spec.links[i].source._id == source._id && graph.spec.links[i].target._id == target._id) found = true;
+    else if(graph.spec.links[i].source._id == target._id && graph.spec.links[i].target._id == source._id) found = true;
+    if(found) siblings.push(graph.spec.links[i]._id);
+  }
+  return siblings;
+};
+
+function arcPath(leftHand, d) {
+  var x1 = leftHand ? d.source.x : d.target.x,
+      y1 = leftHand ? d.source.y : d.target.y,
+      x2 = leftHand ? d.target.x : d.source.x,
+      y2 = leftHand ? d.target.y : d.source.y,
+      dx = x2 - x1,
+      dy = y2 - y1,
+      dr = Math.sqrt(dx * dx + dy * dy),
+      drx = dr,
+      dry = dr,
+      sweep = leftHand ? 0 : 1;
+      siblingCount = countSiblingLinks(d.source, d.target),
+      forwardLink = d.source.ts < d.target.ts,
+      xRotation = 0,
+      largeArc = 0;
+
+  // Check for self links
+  if(dr === 0) {
+    sweep = 0;
+    xRotation = -90;
+    largeArc = 1;
+    drx = 30;
+    dry = 30;
+    x2 = x2 + 1;
+    y2 = y2 + 1;
+  }
+
+  if(siblingCount === 1 && dr !== 0 && forwardLink || forwardLink) {
+    drx = 0;
+    dry = 0;
+  } else if(siblingCount > 1) {
+    var siblings = getSiblingLinks(d.source, d.target);
+    var arcScale = d3.scalePoint().domain(siblings).range([1, siblingCount]);
+    drx = drx/(1 + (1/siblingCount) * (arcScale(d._id) - 1));
+    dry = dry/(1 + (1/siblingCount) * (arcScale(d._id) - 1));
+  }
+
+  return "M" + x1 + "," + y1 + "A" + drx + ", " + dry + " " + xRotation + ", " + largeArc + ", " + sweep + " " + x2 + "," + y2;
 }
+
+renderer.drawMultipleLinks = function() {
+
+  renderer.links = renderer.svg.selectAll(".link")
+      .data(graph.spec.links)
+    .enter().append("path")
+      .attr("class", function(d) {
+        var className = "link";
+        if(d.temp) {
+          if(renderer.options["layoutnode"]) className += " visible";
+          if(!renderer.options["layoutnode"]) className += " hidden";
+        }
+        return className;
+      })
+      .attr("d", function(d) { return arcPath(true, d); })
+      .style("stroke", function(d) { return '#aaa'; })
+      .style("fill", "transparent");
+
+  if(renderer.options["arrows"]) renderer.drawArrowheads();
+  if(renderer.options['edgelabels']) renderer.drawLinkLabels();  
+};
+
+renderer.drawLinkLabels = function() {
+  renderer.edgepaths = renderer.svg.selectAll('.edgepath')
+      .data(graph.spec.links)
+    .enter().append('path')
+      .attr('d', function(d) { return arcPath(true, d); })
+      .attr('class', 'edgepath')
+      .attr('id', function(d,i) { return 'edgepath'+i; })
+      .style('fill-opacity', 0)
+      .style('stroke-opacity', 0)
+      .style('fill', 'blue')
+      .style('stroke', 'red')
+      .style('pointer-events', 'none');
+
+  renderer.edgelabels = renderer.svg.selectAll('.edgelabel')
+      .data(graph.spec.links)
+    .enter().append('text')
+      .style('pointer-events', 'none')
+      .attr('class', 'edgelabel')
+      .attr('id', function(d,i){ return 'edgelabel'+i; })
+      .attr('dy', -1)
+      .style('font-size', 8)
+      .style('fill', '#aaa');
+
+  renderer.edgelabels.append('textPath')
+      .attr('xlink:href', function(d,i) { return '#edgepath'+i; })
+      .attr('startOffset', '50%')
+      .attr('text-anchor', 'middle')
+      .style('pointer-events', 'none')
+      .text(function(d) {
+        var result = 'test';
+        if(d.interaction) {
+          var label = d.interaction.split(':');
+          result = label[1];
+        }
+        return result; 
+      });
+};
+
+renderer.drawArrowheads = function() {
+  renderer.svg.append("defs").selectAll("marker")
+      .data(['arrowhead'])
+    .enter().append("marker")
+      .attr("id", function(d) { return d; })
+      .attr("viewBox", "0 -5 10 10")
+      .attr("refX", 25) // TODO: originally 25
+      .attr("refY", 0)
+      .attr("markerWidth", 6)
+      .attr("markerHeight", 6)
+      .attr("orient", "auto")
+    .append("path")
+      .attr("d", "M0,-5L10,0L0,5 L10,0 L0, -5")
+      .style('fill', function(d) { return '#aaa'; })
+      .style('stroke', function(d) { return '#aaa'; });
+  
+  renderer.links
+      .style("marker-end", function(d) {
+        if(d.temp) return "none";
+        if(d.source._id === d.target._id) return "none";
+        return 'url(#' + 'arrowhead' + ')';
+      })
+      .style("stroke", function(d) { return '#aaa'; });
+};
 
 renderer.drawCircleNodes = function() {
   renderer.nodes = renderer.svg.selectAll(".node")
@@ -260,12 +435,12 @@ renderer.drawUnlabeledNodes = function() {
       .attr("width", function(d) { return d.width - 2 * d.padding; })
       .attr("height", function(d) { return d.height - 2 * d.padding; })
       .attr("rx", function(d) {
-        return 0;
-        // return d.size ? d.size : renderer.options["nodesize"];
+        // return 0;
+        return d.size ? d.size : renderer.options["nodesize"];
       })
       .attr("ry", function(d) {
-        return 0;
-        // return d.size ? d.size : renderer.options["nodesize"];
+        // return 0;
+        return d.size ? d.size : renderer.options["nodesize"];
       })
       .style("fill", graph.getColor)
       .style("stroke", graph.getStroke)
@@ -303,14 +478,15 @@ renderer.drawNodes = function() {
       .attr("width", function(d) { return d.width - 2 * d.padding; })
       .attr("height", function(d) { return d.height - 2 * d.padding; })
       .attr("rx", function(d) {
-        return 0;
-        // return d.size ? d.size : renderer.options["nodesize"];
+        // return 0;
+        return d.size ? d.size : renderer.options["nodesize"];
       })
       .attr("ry", function(d) {
-        return 0;
-        // return d.size ? d.size : renderer.options["nodesize"];
+        // return 0;
+        return d.size ? d.size : renderer.options["nodesize"];
       })
       .style("fill", graph.getColor)
+      //.style("stroke-width", 0)
       .style("stroke", graph.getStroke);
 
   // Prevent interaction with nodes from causing pan on background
@@ -321,7 +497,6 @@ renderer.drawNodes = function() {
 
   renderer.nodes.append("title").text(graph.getLabel);
 
-  var showLabels = true;
   if(showLabels) {
     var nodes = renderer.nodes;
     if(!renderer.options["layoutnode"]) {
@@ -331,7 +506,27 @@ renderer.drawNodes = function() {
     text.attr("class", "text-label")
         .attr("dx", style.dx)
         .attr("dy", style.dy)
+        .attr("filter", "url(#solid)")
         .style("fill", style.color)
+        .style("opacity", 0.7)
+        .style("font-size", style.size)
+        .style("font-style", style.style);
+  } else if(showLabelsOnTop) {
+    renderer.textG = renderer.svg.selectAll(".text-label")
+      .data(graph.spec.nodes)
+    .enter().append("g")
+      .attr("class", function(d) {
+        var className = "textNode";
+        if(!d.temp) className += " basic";
+        return className;
+      });
+    var text = renderer.textG.append("text").text(style.label);
+    text.attr("class", "text-label")
+        .attr("dx", style.dx)
+        .attr("dy", style.dy)
+        .attr("filter", "url(#solid)")
+        .style("fill", style.color)
+        .style("opacity", 0.7)
         .style("font-size", style.size)
         .style("font-style", style.style);
   }
@@ -345,7 +540,7 @@ renderer.drawGroups = function() {
         .attr("rx", 8)
         .attr("ry", 8)
         .attr("class", "group")
-        .style("fill", "#D6F6CC")
+        .style("fill", style.groupFill)
         .style("opacity", function(d) {
           if(d.style === 'visible') return 0.85;
           return 0;
@@ -383,7 +578,35 @@ renderer.tick = function() {
       var y = d.y - d.height / 2 + d.padding;
       return "translate(" + x + "," + y + ")"; 
     }
-  })
+  });
+
+  if(showLabelsOnTop) {
+    // TODO: temporary on top text
+    renderer.textG.attr("transform", function(d) { 
+      if(d.fixed) {
+        return "translate(" + d.x + "," + d.y + ")";
+      } else {
+        var x = d.x - d.width / 2 + d.padding;
+        var y = d.y - d.height / 2 + d.padding;
+        return "translate(" + x + "," + y + ")"; 
+      }
+    });
+  }
+
+  if(renderer.options['edgelabels']) {
+
+    renderer.edgepaths.attr('d', function(d) { return arcPath(true,d); });
+    renderer.edgelabels.attr('transform', function(d,i){
+      if(d.target.x < d.source.x){
+        bbox = this.getBBox();
+        rx = bbox.x+bbox.width/2;
+        ry = bbox.y+bbox.height/2;
+        return 'rotate(180 '+rx+' '+ry+')';
+      } else {
+        return 'rotate(0)';
+      }
+    });
+  }
 
   if(renderer.options["layoutboundary"]) renderer.showLayoutBoundaries();
 
@@ -401,7 +624,9 @@ function lock() {
     node.fixed = true;
     return node;
   });
+  d3.select('.fa-lock').style('color', 'firebrick')
   renderer.colajs.nodes(nodes);
+  renderer.colajs.constraints([]).start(0,0,0);
 };
 
 function zoomed() {
@@ -448,6 +673,7 @@ renderer.opacity = function(node) {
   d3.event.stopPropagation();
   if(node && node.temp) return;
   var neighbors = [];
+
   d3.selectAll(".link")
       .style("opacity", function(d) {
         if(node && ((node._id != d.source._id && node._id != d.target._id) || d._temp)) {
@@ -461,6 +687,19 @@ renderer.opacity = function(node) {
         }
       });
 
+  d3.selectAll('.edgelabel')
+      .style("opacity", function(d) {
+        if(node && ((node._id != d.source._id && node._id != d.target._id) || d._temp)) {
+          return 0.15;
+        } else if(d3.select(this).attr("class").indexOf("hidden") != -1) {
+          return 0;
+        } else {
+          if(neighbors.indexOf(d.source._id) == -1) neighbors.push(d.source._id);
+          if(neighbors.indexOf(d.target._id) == -1) neighbors.push(d.target._id);
+          return 1;
+        }
+      })
+
   d3.selectAll(".node")
       .style("opacity", function(d) {
         if(node && neighbors.indexOf(d._id) == -1) {
@@ -471,6 +710,17 @@ renderer.opacity = function(node) {
           return 1;
         }
       });
+
+  if(!node) return;
+
+  var relatedConstraints = graph.spec.constraints.filter(function(constraint) {
+    var isRelated = false;
+    if(constraint.right == node._id) isRelated = true;
+    if(constraint.left == node._id) isRelated = true; 
+    if(constraint.offsets && constraint.offsets.map(function(n) { return n.node; }).indexOf(node._id) !== -1) isRelated = true;
+    return isRelated;
+  });
+  console.log('Node: ' + node._id, node, relatedConstraints);
 };
 
 renderer.highlight = function(nodes) {

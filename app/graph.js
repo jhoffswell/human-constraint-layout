@@ -16,6 +16,17 @@ graph.init = function(spec) {
 graph.computeBuiltInProperties = function(constraint) {
   if(renderer.options["debugprint"]) console.log("      Computing built in properties.");
   graph.spec.nodes.forEach(graph.setID);
+  graph.spec.links.forEach(graph.setLinkID);
+  if(typeof graph.spec.links[0].source !== "number") {
+    graph.modifyLinks();
+  }
+
+  if(hvz.tableauInteraction) {
+    // Behavior added to get Leilani's tableau interaction graphs working.
+    graph.promoteProperty('ts', graph.getIncoming);
+    graph.breakBackLinks();
+  }
+
   if(JSON.stringify(constraint).indexOf("depth") != -1) calculateDepths();
   if(JSON.stringify(constraint).indexOf("parents") != -1) calculateIncoming();
   if(JSON.stringify(constraint).indexOf("parent") != -1) calculateParents();
@@ -31,6 +42,14 @@ graph.removeTempNodes = function() {
   });
 };
 
+graph.modifyLinks = function() {
+  // TODO: need to somehow autodetect what the ID is using
+  graph.spec.links.forEach(function(link) {
+    link.source = graph.spec.nodes.filter(function(node) { return node.id == link.source; })[0]._id;
+    link.target = graph.spec.nodes.filter(function(node) { return node.id == link.target; })[0]._id;
+  })
+}
+
 // TODO: this won't work with cycles
 function calculateDepths() {
   if(renderer.options["debugprint"]) console.log("        Computing depths.");
@@ -39,10 +58,11 @@ function calculateDepths() {
   var depth = 0;
   while(roots.length > 0) {
     var nextLevel = [];
-    roots.forEach(function(root) { 
-      root.depth = depth;
-      var links = graph.getOutgoing(root);
+    roots.forEach(function(rootNode) { 
+      rootNode.depth = depth;
+      var links = graph.getOutgoing(rootNode);
       var children = links.map(function(link) { return graph.spec.nodes[link.target]; });
+      children = children.filter(function(node) { return !node.depth; });
       nextLevel = nextLevel.concat(children);
     });
     depth += 1;
@@ -139,7 +159,10 @@ function calculateFirstChild() {
 
 graph.sources = function() {
   return graph.spec.nodes.filter(function(node) {
-    return graph.getIncoming(node).length === 0;
+    if(node.hasOwnProperty('_isSource')) return node._isSource;
+    var incoming = graph.getIncoming(node);
+    incoming = incoming.filter(function(n) { return n.source !== n.target; });
+    return incoming.length === 0;
   });
 };
 
@@ -148,6 +171,19 @@ graph.sinks = function() {
     return graph.getOutgoing(node).length === 0;
   });
 };
+
+graph.breakBackLinks = function() {
+  graph.originalLinks = JSON.parse(JSON.stringify(graph.spec.links));
+  graph.spec.links = graph.spec.links.filter(function(link) {
+    var source = graph.spec.nodes[link.source];
+    var target = graph.spec.nodes[link.target];
+    if(source.ts === Infinity) {
+      source.ts = -1;
+      return true; // TODO: why?
+    }
+    return source.ts <= target.ts;
+  });
+}
 
 /********************* Set Node Properties *********************/
 
@@ -163,15 +199,40 @@ graph.setID = function(node) {
   node._id = node._id || graph.spec.nodes.indexOf(node);
 };
 
+graph.setLinkID = function(link) {
+  link._id = link._id || graph.spec.links.indexOf(link);
+};
+
 graph.setColor = function(node) {
   var value = node[renderer.options["fillprop"]] || 0.5;
-  if(typeof value == "number") {
+  if(renderer.options["fillprop"] === 'color') {
+    node.color = node.color; // Don't change the color
+  } else if(typeof value == "number") {
     var max = Math.max(...graph.spec.nodes.map(function(n) { return n[renderer.options["fillprop"]] || 0.5; }));
-    node.color = node.color || graph.color(value / max);
+    node.color = graph.color(value / max);
   } else {
-    node.color = node.color || graph.color(value);
+    node.color = graph.color(value);
   }
 };
+
+graph.promoteProperty = function(property, from) {
+
+  // TODO: very temporary!!
+  graph.spec.nodes.forEach(function(node) {
+    var properties = from(node).map(function(link) { return Date.parse(link[property]); });
+    node[property] = node[property] || Math.min.apply(null, properties);
+  });
+
+  var minimum = Math.min.apply(null, graph.spec.nodes.map(function(n) { return n.ts; }));
+  graph.spec.nodes.forEach(function(n) { 
+    if(n._isSource) {
+      n.ts = -1;
+    } else if(n.ts) {
+      n.ts = n.ts - minimum; 
+    }
+  });
+
+}
 
 /********************* Get Node Properties *********************/
 
@@ -202,7 +263,7 @@ graph.getDepth = function(node) {
 
   // Calculate the depth
   var index = node._id;
-  var incoming = graph.spec.links.filter(function(link) { return link.target == index; });
+  var incoming = graph.getIncoming(node);
   var depth = 0;
   if(incoming.length > 0) {
     var parentDepths = incoming.map(function(link) { 
@@ -219,7 +280,7 @@ graph.getDepth = function(node) {
 graph.getParent = function(node) {
   var parent = null;
   var index = node._id;
-  var incoming = graph.spec.links.filter(function(link) { return link.target == index; });
+  var incoming = graph.getIncoming(node);
   if(incoming.length == 1) {
     parent = graph.spec.nodes[incoming[0].source];
   } else if(incoming.length > 1) {
@@ -232,8 +293,9 @@ graph.getParent = function(node) {
 graph.getIncoming = function(node) {
   var index = node._id;
   var incoming = graph.spec.links.filter(function(link) { 
+    var source = (typeof link.source === 'object') ? link.source._id : link.source;
     var target = (typeof link.target === 'object') ? link.target._id : link.target;
-    return target == index; 
+    return target == index && source !== index;
   });
   return incoming;
 };
@@ -242,7 +304,8 @@ graph.getOutgoing = function(node) {
   var index = node._id;
   var outgoing = graph.spec.links.filter(function(link) { 
     var source = (typeof link.source === 'object') ? link.source._id : link.source;
-    return source == index; 
+    var target = (typeof link.target === 'object') ? link.target._id : link.target;
+    return source == index && target !== index; 
   });
   return outgoing;
 };
@@ -262,6 +325,7 @@ graph.getDegree = function(node) {
 graph.getFirstChild = function(node) {
   var outgoing = node.outgoing || graph.getOutgoing(node);
   outgoing = outgoing.sort(function(a,b) { return a._id - b._id; });
+  outgoing = outgoing.filter(function(n) { return n.target !== n.source; }); // TODO: hackey (don't want self nodes)
   if(outgoing.length == 0) return null;
   return graph.spec.nodes[outgoing[0].target];
 };

@@ -27,6 +27,10 @@ var styling = {};
     return 'white';
   };
 
+  styling.nodeStroke = function(d) {
+    return 'white';
+  };
+
 /*****************************************************/
 /****************** Small Food Web *******************/
 /*****************************************************/
@@ -46,7 +50,7 @@ var kruger = {};
   };
 
   kruger.label = function(d) {
-    return '';
+    // return '';
     return d.name;
   };
 
@@ -60,6 +64,10 @@ var kruger = {};
 
   kruger.color = function(d) {
     return 'black';
+  };
+
+  kruger.nodeStroke = function(d) {
+    return 'white';
   };
 
 /*****************************************************/
@@ -105,6 +113,10 @@ var serengeti = {};
     return 'black';
   };
 
+  serengeti.nodeStroke = function(d) {
+    return 'white';
+  };
+
 /*****************************************************/
 /********************* Syphilis **********************/
 /*****************************************************/
@@ -113,7 +125,6 @@ var syphilis = {};
   syphilis.dx = function(d) { 
     var offset = 11;
     var pad = d.pad || renderer.options["nodepad"];
-    console.log(d.name, d.width)
     if((d.width-2*pad) === 24) offset = 7;
     return (d.width - 2*pad)/2 - offset;
   };
@@ -137,4 +148,43 @@ var syphilis = {};
 
   syphilis.color = function(d) {
     return 'black';
+  };
+
+  syphilis.nodeStroke = function(d) {
+    return 'white';
+  };
+
+/*****************************************************/
+/*********************** TLR4 ************************/
+/*****************************************************/
+var tlr4 = {};
+
+  tlr4.dx = function(d) { 
+    var offset = this.getBBox().width/2 -4;
+    var pad = d.pad || renderer.options["nodepad"];
+    return (d.width - 2*pad)/2 - offset;
+  };
+
+  tlr4.dy = function(d) { 
+    return 35;
+  };
+
+  tlr4.label = function(d) {
+    return d.showLabel;
+  };
+
+  tlr4.size = function(d) {
+    return '9pt';
+  };
+
+  tlr4.style = function(d) {
+    return 'regular';
+  };
+
+  tlr4.color = function(d) {
+    return 'black';
+  };
+
+  tlr4.nodeStroke = function(d) {
+    return '#bbb';
   };

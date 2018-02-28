@@ -34,7 +34,6 @@ function partitionSet(elements, definition) {
       partitionValue = partitionValue._id; 
       console.warn('Just testing this now.')
     }
-    console.log('***partition', element, definition.partition, partitionValue)
 		if(definition.ignore && contains(definition.ignore, partitionValue)) return;
 		if(definition.include && !contains(definition.include, partitionValue)) return;
 		if(!partitionSets[partitionValue]) partitionSets[partitionValue] = [];
@@ -59,7 +58,6 @@ function collectSet(elements, definition) {
           set.push(element);
           break;
         case 'node.firstchild':
-          console.log('kids', element.firstchild)
           if(element.firstchild) set = set.concat(element.firstchild);
           break;
         case 'node.children':
@@ -81,7 +79,8 @@ function collectSet(elements, definition) {
           break;
         default:
           if(expr.indexOf('sort') !== -1) {
-            console.warn('Just testing this now.');
+           
+            console.warn('testing sort collect expr');
             var children = element.outgoing.map(function(link) {
               return graph.spec.nodes[link.target];
             });
@@ -92,6 +91,42 @@ function collectSet(elements, definition) {
             });
             console.log('for', element.name, sorted)
             if(first[0]) set = set.concat(first[0]);
+          
+          } else if(expr.indexOf('min') !== -1) {
+          
+            console.warn('testing min collect expr')
+            var source = expr.split(/\(|,|\)/g)[2];
+            var property = expr.split(/\(|,|\)/g)[1].replace(/'/g, '');
+
+            var node;
+            switch(source) {
+              case 'node.children':
+                var children = element.outgoing.filter(function(link) { 
+                  return link.source !== link.target; 
+                }).map(function(link) {
+                  return graph.spec.nodes[link.target];
+                });
+                var minimum = Math.min.apply(null, children.map(function(n) { return n[property]; }));
+                node = children.filter(function(n) { return n[property] === minimum; })[0];
+                if(!element[property]) {
+                  // DO nothing....
+                } else if(node && node[property] < element[property]) {
+                  node = null; // TODO: THIS IS A HACK
+                }
+                break;
+              case 'node.neighbors':
+                break;
+              case 'node.parents':
+                break;
+              default:
+                //TODO: do nothing
+            }
+            if(node) {
+              set = set.concat(node);
+            } else {
+              // TODO?
+            }
+
           } else {
             console.error('Unknown collection parameter \'' + expr + '\'');
           }

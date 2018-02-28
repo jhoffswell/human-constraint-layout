@@ -81,7 +81,7 @@ function generateOrderFunc(def) {
     order = function(n1,n2) {
       return def.order.indexOf(n1[def.by]) - def.order.indexOf(n2[def.by]);
     };
-  } else if(def.hasOwnProperty('reverse')) {
+  } else if(def.hasOwnProperty('reverse') && def.reverse) {
     order = function(n1,n2) {
       return n1[def.by] - n2[def.by];
     };
@@ -129,26 +129,29 @@ constraintDef.orderSets = function(elements, definition, cid) {
   elements = elements.sort(order);
 
   // Compute the band for the nodes
-  var upperbound, offset, leftOffset, rightOffset;
+  var upperbound, offset, leftOffset, rightOffset, fixed;
   if(definition.band) {
     upperbound = elements.length;
     offset = definition.band;
     leftOffset = 0;
     rightOffset = 1;
+    fixed = true;
   } else {
     upperbound = elements.length-2;
-    offset = renderer.options['constgap'];
+    offset = 30; //renderer.options['constgap'];
     leftOffset = -1;
     rightOffset = 0;
+    fixed = true;
   }
 
   // Create a new node at the barrier of each band
   var barriers = [];
   var nodeSize = 1;
+  var prev = 0;
   for(var i = 0; i <= upperbound; i++) {
     var node = {
       'temp': true, 
-      'fixed': true, 
+      'fixed': fixed, 
       'cid': cid,
       'width': nodeSize,
       'height': nodeSize,
@@ -162,7 +165,12 @@ constraintDef.orderSets = function(elements, definition, cid) {
 
     var other = definition.axis == 'x' ? 'y' : 'x';
     node.boundary = definition.axis;
-    node[definition.axis] = i*offset;
+    if(definition.band) {
+      node[definition.axis] = i*offset;
+    } else {
+      var offsetTest = (Math.sqrt(elements[i+1].length) + 2) * elements[i+1][0].size + prev;
+      node[definition.axis] = i*offset;
+    }
     node[other] = tempOffset*nodeSize*10;
     
     barriers.push(node);
@@ -172,6 +180,7 @@ constraintDef.orderSets = function(elements, definition, cid) {
 
   // Compute the constraints to order the nodes
   var results = [];
+  // results = results.concat(boundaryConstraints(barriers, definition, cid));
   elements.forEach(function(set, index) {
     var left = barriers[index+leftOffset];
     var right = barriers[index+rightOffset];
@@ -190,6 +199,29 @@ constraintDef.orderSets = function(elements, definition, cid) {
   });
 
   return results;
+};
+
+boundaryConstraints = function(boundaries, definition, cid) {
+  var id = cid + '_boundaryDistance';
+  var c = [];
+  boundaries.forEach(function(boundary,index) {
+
+    for (var i = index+1; i < boundaries.length; i++) {
+      var left = boundaries[index];
+      var right = boundaries[i];
+      var axis = definition.axis;
+      var gap = definition.gap * (i - index);
+      var newConstraint = constraintDef.CoLaPosition(left, right, axis, id, gap);
+      newConstraint.equality = true;
+      if(definition.band) {
+        newConstraint.gap = definition.band
+      }
+      c.push(newConstraint);
+    }
+
+  });
+
+  return c;
 };
 
 /********************* Position Constraints ********************/
@@ -306,6 +338,8 @@ constraintDef.cluster = function(elements, definition, cid) {
   var nodes = elements;
 
   nodes.forEach(function(node, index) {
+    // for (var i = 0; i < nodes.length; i++) {
+      // if(i === index) return;
     for (var i = index+1; i < nodes.length; i++) {
       graph.spec.links.push({
         'source': node._id, 

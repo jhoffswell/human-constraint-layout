@@ -12,7 +12,7 @@ layout.getConstraints = function() {
   layout.sets = {};
   layout.groups = [];
   INDEX = 0;
-  
+
   // Add an _id to the nodes
   layout.index = -1;
   graph.spec.nodes.map(graph.setID);
@@ -41,7 +41,6 @@ function processConstraint(definition) {
   } else {
     source = graph.spec.nodes;
   }
-  console.log('PROCESSING: ', definition.name, source, definition.elements)
 
   // Create the sets
   var name = definition.name;
@@ -53,8 +52,8 @@ function processConstraint(definition) {
 
   // Create the constraints
   var results = [];
-  definition.constraints.forEach(function(constraint) {
-    layout.sets[name].forEach(function(elements) {
+  (definition.constraints || []).forEach(function(constraint) {
+    (layout.sets[name] || []).forEach(function(elements) {
       results = results.concat(constraintDef.generateConstraints(elements, constraint, name));
     });    
   });

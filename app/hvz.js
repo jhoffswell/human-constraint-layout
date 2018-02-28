@@ -1,5 +1,6 @@
 var hvz = {};
 var timing = {};
+var tableauInteractionGraph;
 
 /***************************************************************/
 /*********************** HVZ ENVIRONMENT ***********************/
@@ -51,6 +52,11 @@ hvz.init = function() {
     hvz.load();
 
   });
+
+  d3.json('app/specs/tableau-interaction-graph.json', function(spec) { 
+    tableauInteractionGraph = spec; 
+  });
+
 };
 
 hvz.start = function() {
@@ -63,6 +69,12 @@ hvz.start = function() {
     hvz.error = null;
     if(inspector.errorVisible) inspector.showError();
     var spec = JSON.parse(hvz.editor.getValue());
+
+    // Support for Leilani's tableau interaction graphs
+    if(spec.sets === "tableau-interaction-graph") {
+      spec.sets = tableauInteractionGraph;
+    }
+
     var t0 = performance.now();
     graph.init(spec);
     var t1 = performance.now();
@@ -76,12 +88,13 @@ hvz.start = function() {
 
   // Figure out the constraints for the graph layout.
   if(hvz.isUserConstraintGraph()) {
+    if(graph.spec.nodes[0].sheet) hvz.tableauInteraction = true;
     try {
       graph.user_constraints = graph.spec.sets;
       var t0 = performance.now();
       var result = layout.getConstraints();
       var t1 = performance.now();
-      timing.hvz = (t1 - t0) + " milliseconds.";
+      timing.setcola = (t1 - t0) + " milliseconds.";
       graph.spec.constraints = result.constraints;
       graph.spec.groups = (graph.spec.groups || []).concat(result.groups);
     } catch(error) {
@@ -89,6 +102,7 @@ hvz.start = function() {
       console.error(error);
     }
   }
+
   hvz.colaEditor.setValue(prettyJSON());
   hvz.colaEditor.session.selection.clearSelection();
 
@@ -96,6 +110,7 @@ hvz.start = function() {
   var t0 = performance.now();
   renderer.draw();
   var t1 = performance.now();
+  timing.webcola = t1 - t0 + " milliseconds.";
   console.log("Rendering took " + (t1 - t0) + " milliseconds.");
 
   if(inspector.debugVisible) {

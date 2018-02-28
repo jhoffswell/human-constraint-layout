@@ -20,6 +20,7 @@
   <div class="header noselect">
     <h1>Visualization</h1>
     <span class="fa fa-play" title="Restart"></span>
+    <span class="fa fa-lock" title="Fix Graph" onclick="lock()"></span>
     <div class="controls">
       <span class="fa fa-exclamation-circle" title="Error Pane"></span>
       <span class="fa fa-gear" title="Config Pane"></span>
@@ -28,7 +29,14 @@
       <span class="fa fa-question-circle" title="Information Pane"></span>
     </div>
   </div>
-  <svg class="graph"></svg>
+  <svg class="graph">
+    <defs>
+      <filter x="0" y="0" width="1" height="1" id="solid">
+        <feFlood flood-color="white"/>
+        <feComposite in="SourceGraphic"/>
+      </filter>
+    </defs>
+  </svg>
   <div class="temp-region">
     <div class="error">
       <span class="fa fa-exclamation-circle"></span>
@@ -82,6 +90,10 @@
           <input type="checkbox" id="check-arrows" onchange="updateCheck('arrows')"><br>
         <div class="label"><span>Curved Links:</span></div>
           <input type="checkbox" id="check-curved" onchange="updateCheck('curved')"><br>
+        <div class="label"><span>Multiple Links:</span></div>
+          <input type="checkbox" id="check-multiple" onchange="updateCheck('multiple')"><br>
+        <div class="label"><span>Show Edge Labels:</span></div>
+          <input type="checkbox" id="check-edgelabels" onchange="updateCheck('edgelabels')"><br>
         <div class="label"><span>Node Size:</span></div>
           <input type="range" id="range-nodesize" min="5" max="50" onchange="updateRange('nodesize')">
           <span class="value" id="value-nodesize"></span><br>
