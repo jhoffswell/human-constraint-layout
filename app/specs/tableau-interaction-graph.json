@@ -1,0 +1,23 @@
+[
+  {
+    "elements": [{"partition": "depth"}],
+    "constraints": [
+      {"constraint": "order", "axis": "x", "by": "depth", "reverse": true, "band": 50}
+    ]
+  },
+  {
+    "name": "order",
+    "elements": {"partition": "parent"},
+    "constraints": [
+      {"constraint": "align", "axis": "y"},
+      {"constraint": "order", "axis": "y", "by": "ts"}
+    ]
+  },
+  {
+    "name": "alignFirst",
+    "elements": {"collect": ["node", "min('ts',node.children)"]},
+    "constraints": [
+      { "constraint": "align", "axis": "x" }
+    ]
+  }
+]
