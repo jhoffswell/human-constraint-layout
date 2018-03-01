@@ -303,10 +303,9 @@ function arcPath(leftHand, d) {
     sweep = 0;
     xRotation = -90;
     largeArc = 1;
-    drx = 30;
-    dry = 30;
+    drx = 20;
+    dry = 20;
     x2 = x2 + 1;
-    y2 = y2 + 1;
   }
 
   if(siblingCount === 1 && dr !== 0 && forwardLink || forwardLink) {
@@ -556,6 +555,8 @@ renderer.tick = function() {
   // Update the links
   if(renderer.options["curved"]) {
     renderer.links.attr("d", renderer.diagonal);
+  } else if(renderer.options["multiple"]) {
+    renderer.links.attr("d", function(d) { return arcPath(true, d); });
   } else {
     renderer.links
         .attr("x1", function (d) { return d.source.x; })
