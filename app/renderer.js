@@ -283,6 +283,13 @@ var getSiblingLinks = function(source, target) {
 };
 
 function arcPath(leftHand, d) {
+
+  // TODO: Figuring out when we want the links curved versus not is a bit 
+  // hard because there are particular rules we want to apply to avoid link 
+  // overlap. Essentially, we want it straight if it is the shortest path 
+  // between two nodes in the line (and prefer forward moving)
+
+  var padding = d.pad || 0;
   var x1 = leftHand ? d.source.x : d.target.x,
       y1 = leftHand ? d.source.y : d.target.y,
       x2 = leftHand ? d.target.x : d.source.x,
@@ -294,7 +301,8 @@ function arcPath(leftHand, d) {
       dry = dr,
       sweep = leftHand ? 0 : 1;
       siblingCount = countSiblingLinks(d.source, d.target),
-      forwardLink = d.source.ts < d.target.ts,
+      adjacentST = Math.abs(d.target.x - d.source.x + renderer.options["constgap"] + padding*2) <= renderer.options["constgap"] + padding*2,
+      adjacentTS = Math.abs(d.source.x - d.target.x + renderer.options["constgap"] + padding*2) <= renderer.options["constgap"] + padding*2,
       xRotation = 0,
       largeArc = 0;
 
@@ -308,11 +316,14 @@ function arcPath(leftHand, d) {
     x2 = x2 + 1;
   }
 
-  if(siblingCount === 1 && dr !== 0 && forwardLink || forwardLink) {
+  if(siblingCount === 1 && dr !== 0 && (adjacentTS || adjacentST)) {
     drx = 0;
     dry = 0;
   } else if(siblingCount > 1) {
     var siblings = getSiblingLinks(d.source, d.target);
+
+    if(siblings.indexOf(d._id) === 0 && siblingCount < 4) drx = dry = 0;
+
     var arcScale = d3.scalePoint().domain(siblings).range([1, siblingCount]);
     drx = drx/(1 + (1/siblingCount) * (arcScale(d._id) - 1));
     dry = dry/(1 + (1/siblingCount) * (arcScale(d._id) - 1));
