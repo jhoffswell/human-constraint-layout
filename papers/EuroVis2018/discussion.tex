@@ -8,43 +8,57 @@ and the evolution of constraint solvers more closely integrated with \projectnam
 % wrangler/polestar/lyra strategies for specifying constraints
 % dsl leveraged as useful interface for processing logic
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Prototyping and Constraint Generation}
-\projectname allows users to easily produce layout constraints that apply
-to groups of nodes in a graph rather than applying constraints to individual
-nodes one at a time. By deferring this complexity to the underlying constraint
+\projectname allows users to define constraints that apply
+to groups of nodes rather than applying constraints to individual
+nodes one at a time. By deferring this specification complexity to the underlying constraint
 solver, the user can more easily prototype the layout and make changes that
-have a large overall impact with a small number of constraints.
-As shown in Figure~\ref{fig:constraints},
-the number of \projectname constraints is a small fraction of the WebCoLa constraints.
-
-The current WebCoLa implementation is not completely optimized to reduce the
-number of constraints. In particular, the procedure for generating
-order constraints adds a number of potentially superfluous inter-node 
-constraints. For the small tree example, the current \projectname implementation 
-produces 11 WebCoLa constraints (Figure \ref{fig:small-tree-example}c). For example,
-the \projectname compiler creates two constraints: $b.y < boundary1.y$ (Line~\texttt{44}) 
-and $c.y < boundary1.y$ (Line~\texttt{46}), even though we also specify
-a constraint that says $b.y == c.y$ (Line~\texttt{32}-\texttt{36}). 
-Future work could explore whether these redundant constraints have a 
-significant performance impact, and if they do, investigate additional 
+have a large overall impact with a small number of written constraints. However, 
+the current \projectname compiler is not optimized to reduce the
+number of constraints produced. In particular, the procedure for generating
+order constraints adds potentially superfluous inter-node 
+constraints. For the small tree example (Figure \ref{fig:small-tree-example}c), 
+the \projectname compiler produces 11 WebCoLa constraints.
+In this example, the \projectname compiler creates two constraints: $b.y < boundary1.y$ (Line~\texttt{44}) 
+and $c.y < boundary1.y$ (Line~\texttt{46}), in addition to a
+constraint that $b.y == c.y$ (Line~\texttt{32}-\texttt{36}), thus 
+making one of the first two constraints superfluous. 
+Future work should explore whether these redundant constraints have a 
+significant performance impact, and if they do, investigate 
 optimizations to reduce the generation of unnecessary constraints.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Debugging and Unsatisfiable Constraints in \projectname}
-For a \projectname specification, it is possible to create node sets that
-are \emph{not} disjoint and may thus produce unsatisfiable constraints. Furthermore, 
-the user may specify unsatisfiable constraints indirectly through
-combinations of set definitions and constraint applications. These concerns
-are not exclusive to \projectname, as they can also arise
-in WebCoLa and other constraint-based layout tools.
-
+In a \projectname specification, it is possible to create sets that 
+are \emph{not} disjoint and may thus produce unsatisfiable constraints. 
+The user may also specify unsatisfiable constraints indirectly through
+combinations of set definitions and constraint applications. Concerns surrounding
+unsatisfiable constraints are not exclusive to \projectname, as they can also arise
+in WebCoLa and other constraint-based systems. 
 For the constraints described in this paper, it is possible to determine if
 conflicts arise at program runtime and show such conflicts to the user. One
 advantage of the SetCoLa abstraction is that the original user constraints
 are defined on the high-level properties of the nodes and therefore it may
-be easier to understand why the conflicts are occurring. For example, we may
-note that some nodes occur in multiple sets with conflicting constraints
+be easier to understand why conflicts occur. For example, we can see 
+that some nodes occur in multiple sets with conflicting constraints
 or that multiple constraints on a particular set are generally in conflict.
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
+\subsection{Limitations to the Expressiveness}
+The current \projectname implementation requires the graph to be fully formed
+at input, including all properties (beyond the ones computed in Section 
+\ref{sec:built-in-properties}). All the edges and nodes in this graph are
+treated with equal weight in terms of the constraints, thus limiting the user's
+ability to introduce preferences regarding the importance of the nodes or links. 
+Furthermore, there are cases in which the user may want to break links, duplicate parts of 
+the graph, or otherwise modify the underlying structure based on properties of interest.
+The current \projectname implementation does not support operations to modify the
+importance or structure of the input graph, though this would be an interesting
+area for future work.  
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Limitations Arising from the Constraint Solver}
 
 % remember to be generous with WebCoLa when discussing limitations; using a
@@ -58,16 +72,15 @@ or that multiple constraints on a particular set are generally in conflict.
 
 Our implementation with WebCoLa allows us to demonstrate the utility of
 \projectname for creating customized domain-specific layouts that can be
-reapplied to multiple graphs in the same domain. However, our current
+reapplied across graphs in the same domain. However, our current
 implementation was limited in part by what WebCoLa currently supports. For
-example, we were unable to directly express \projectname's circle constraints in
+example, we were unable to directly express \projectname's circle constraint in
 WebCoLa.  However, circle constraints have been identified in the WebCoLa
 wiki as an area of future work, and once they are supported in the
-underlying constraint solver, it should be straightforward to make use of
-this improved support in \projectname.
-Our work contributes new strategies for the
+underlying constraint solver, it should be straightforward to use
+this improved support. Our work contributes new strategies for the
 specification of graph layout constraints, but does not aim to create a
-highly optimized constraint solver for the language. WebCoLa is a useful
+highly optimized constraint solver. WebCoLa is a useful
 library on which to build and demonstrate our approach, but 
 future work might explore how new or existing constraint solvers might
 co-evolve alongside this high-level language for constraint specification.
@@ -79,24 +92,23 @@ node positions to produce links as close to the desired link length as
 possible. While this technique can be useful for highlighting the underlying 
 structure of the graph, it has a significant effect on the layout that is
 produced by WebCoLa that may vary from what is specified in \projectname.
-This behavior can be beneficial for some layouts, such as the syphilis social network.
+This behavior can be beneficial for some layouts.
 As noted in Section \ref{sec:syphilis-example}, in the syphilis social network
 (Figure~\ref{fig:syphilis-layout}b), the circle is drawn slightly off
 center between the groups since more links exist between the
 women and the African-American men than between the women and
-the white men, which emphasizes the strength of these
-connections.
-
-Revisting the syphilis social network
-(Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
-are drawn to the lower position allowed by the boundary guide in an attempt
-to shorten the link length, thus producing an alignment that satisfies the
-\projectname constraints but not all of whose properties are explicitly
-specified in the layout. The underlying constraint solver can thus
-significantly impact the resulting layout, since it may implicitly encode
-additional preferences.  In future work, it may be useful to support
+the white men, which emphasizes the strength of these connections.
+% Revisting the syphilis social network
+% (Figure~\ref{fig:syphilis-layout}b), many of the nodes in the upper group
+% are drawn to the lower position allowed by the boundary guide in an attempt
+% to shorten the link length, thus producing an alignment that satisfies the
+% \projectname constraints but not all of whose properties are explicitly
+% specified in the layout. 
+The underlying constraint solver can thus
+significantly impact the resulting layout by implicitly encoding
+additional preferences. In future work, it may be useful to support
 additional parameters expressing global preferences for the graph layout,
-which would then be passed on to the underlying solver.  Another direction
+which would then be passed on to the underlying solver. Another direction
 would be to accommodate multiple solvers, which might encode different
 preferences of these kinds, and to select among them, either automatically
 or as specified by the user.

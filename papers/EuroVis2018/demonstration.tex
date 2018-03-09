@@ -8,9 +8,11 @@ and ecological networks~\cite{kruger2017,baskerville2011spatial}.
 We compare our recreated visualizations to the original layouts and 
 discuss the benefits of our technique for creating highly customized graph layouts.
 For each recreated example, the layout of the nodes is produced
-entirely in \projectname. However, we manually added labels to the final 
-figures to better match the originals.
-
+entirely in \projectname (e.g., no manual tweaking of the node positions).
+The nodes in each graph are not given intial starting positions; instead we 
+use WebCoLa to first apply a force-directed layout with no constraints 
+before computing the final layout based on the constraints produced by the \projectname compiler.
+We manually added labels to the final figures to better match the originals.
 We include the specification for each of our three major examples 
 (Figure~\ref{fig:syphilis-spec}, \ref{fig:tlr4-spec}, \ref{fig:serengeti-spec}c),
 and annotate the specification with the number of sets produced for each 
@@ -33,16 +35,16 @@ addition to the links between individuals, structuring the layout by
 properties such as social or ethnographically-identified group may reveal 
 additional details about how the disease is spread.
 
-Rothenberg et al.\ discuss an ethnographic approach for identifying the
+Rothenberg et al.\ discuss an ethnographic approach to identify the
 ``core'' groups in a social network to better understand the transmission
 of syphilis amongst sexual partners~\cite{rothenberg1998using}. They found
 that there were three primary groups involved in the sexual network under study:
 young affluent white men, younger white women, and young African-American men,
 which are visualized from left to right in Figure~\ref{fig:syphilis-layout}a. 
-The authors note that a number of outsiders to these ``core'' groups
+The authors note that several outsiders to these ``core'' groups
 (visualized as the top cluster of Figure~\ref{fig:syphilis-layout}a) 
-also played a significant role in the network. In
-particular, \emph{``Visualization of these groups and all their sex
+played a significant role in the network:
+\emph{``Visualization of these groups and all their sex
   partners uncovered the importance of several people not specifically
   identified with these groups.''}
 
@@ -91,7 +93,8 @@ constraints, which generates $363$ constraints in WebCoLa (Figure~\ref{fig:const
 Similar to Cerebral, this \projectname specification could easily be reused 
 across different graphs in the domain since the specification itself does
 not refer to the individual nodes but to the high-level properties desired
-by the layout.
+by the layout. \orange{We demonstrate such reapplication across several 
+biological networks from InnateDB \cite{breuer2012innatedb} in the supplemental material.}
 
 \subsection{Serengeti Food Web}
 \krugerLayout
@@ -144,7 +147,7 @@ introduce alignments on the nodes, and manage the order with which they
 are displayed. For the plant sets, we apply cluster constraints
 to enforce a tighter grouping of the nodes. For this specification,
 we define a total of $18$ \projectname constraints, which generate $939$
-WebCoLa constraints~(Figure~\ref{fig:constraints}). One noticeable different
+WebCoLa constraints~(Figure~\ref{fig:constraints}). One noticeable difference
 in the \projectname layout is that the nodes for groups \texttt{7} through
 \texttt{14} form grid-like rather than ``organic'' clusters. This behavior
 seems to result from the current implementation of the cluster constraint
@@ -164,7 +167,7 @@ published figure.
 
 Baskerville et al.\ note that \emph{``We have not included invertebrates
   (insects and parasitic helminths) or birds''} in their published food
-web, though \emph{``hypothesize that the general conclusions will be
+web, though they \emph{``hypothesize that the general conclusions will be
   largely robust to the addition of more species.''} One advantage of
 \projectname~is that the layout is independent of the individual nodes, so
 the authors could reuse the layout specification to visualize future iterations

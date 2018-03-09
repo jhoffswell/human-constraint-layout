@@ -1,27 +1,17 @@
 %!TEX root = constraint-layout.tex
 \section{Introduction}
-With an appropriate graph layout, node-link diagrams can
-effectively convey properties of an underlying
-network structure, such as hierarchy or connectedness. Such visualizations
-are common across a variety of domains, including ecological networks
-\cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher,kruger2017},
-biological systems
-\cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph,kojima2007efficient,li2005grid},
-and social networks
-\cite{scott1988social,rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv}, 
-among many others. A graph layout may utilize
-domain-specific properties in order to emphasize relevant patterns in the
-data. 
-%In an ecological network for example, nodes could be split by trophic
-%level (e.g., its positition in the food chain) to highlight the hierarchy
-%of producer/consumer relationships
-%(Figure~\ref{fig:kruger-layout}). This visualization shows a customized
-%layout: a unique layout that leverages knowledge of the data domain for
-%node placement and understanding of the graph structure.
+By using an appropriate graph layout, node-link diagrams can effectively 
+convey properties of the network structure, such as the hierarchy or network connectedness. 
+Such visualizations are common across numerous domains, including 
+social networks \cite{scott1988social,rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv},
+biological systems \cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph,kojima2007efficient,li2005grid},
+and ecological networks \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher,kruger2017}. 
+Graph layouts may utilize domain-specific properties 
+to emphasize relevant patterns in the data.
 In a biological pathway, nodes can be layered by their
-subcellular location to provide an overview of the cellular structure
-(Figure~\ref{fig:tlr4-layout}). The additional ``downstream genes'' layer
-can further show the outcomes of this network, clustered by molecular function.
+subcellular location to visualize the cellular structure
+(Figure~\ref{fig:tlr4-layout}). The additional ``transcriptionally regulated genes'' layer
+can further show the outcomes of this network, grouped by molecular function.
 
 \tlrfourLayout
 
@@ -32,10 +22,9 @@ domain, such as known data hierarchies including cellular
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
 (Figure~\ref{fig:kruger-layout},~\ref{fig:serengeti-layout}), as a guiding property of the
 layout. However, these techniques rarely generalize beyond the domain for
-which they were designed, and there are many
-other domains for which customized layouts would be useful
-but for which tools that provide them are unavailable.
-Thus, when a layout technique does not exist for the
+which they were designed. Furthermore, many
+other domains lack customized layout tools despite their potential utility.
+When a layout technique does not exist for the
 domain of interest, users must either fit their data
 to available techniques or design and implement a new algorithm.
 Creating a customized layout algorithm requires both
@@ -50,7 +39,7 @@ on individual nodes or node pairs. This process can be labor
 intensive, requiring thousands of similar constraints and careful reasoning
 about which nodes should be constrained. Moreover, instance-level constraints 
 (e.g., defined \emph{extensionally} via node indices) prevent
-reuse of a layout for various graphs from the same domain.
+reuse of a layout across various graphs from the same domain.
 
 To enable customized domain-specific layouts with reduced
 programming effort, we contribute \projectname: a domain-specific language for

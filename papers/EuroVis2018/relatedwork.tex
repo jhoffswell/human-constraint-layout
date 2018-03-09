@@ -1,16 +1,17 @@
 %!TEX root = constraint-layout.tex
+\vspace{-5px}
 \section{Related Work}
-
 A great deal of prior work has contributed to graph visualization.
 We discuss general layout techniques and constraint approaches
 that motivate this work, then expand upon domain-specific layouts.
 
+\vspace{-5px}
 \subsection{General Graph Layout}
-Graph layout approaches often leverage the graph structure to produce the 
+Graph layout approaches often leverage the underlying structure to produce the 
 layout \cite{herman2000graph,eades2010graph,gibson2013survey}.
 For node-link diagrams of hierarchical data, Reingold \& Tilford's ``tidy'' 
-layout~\cite{reingold1981tidier} arranges graph nodes to
-produce compact, symmetrical tree layouts.
+layout~\cite{reingold1981tidier} arranges graph nodes into compact, 
+symmetrical tree layouts based on aesthetic properties.
 Radial layouts \cite{battista1998graph,herman2000graph} follow similar procedures using polar 
 coordinates, with a root node placed at the origin.
 Sugiyama-style layouts~\cite{sugiyama1981methods} visualize directed graphs by first assigning nodes to hierarchical layers and then iteratively adjusting node placement to minimize edge crossings.
@@ -20,39 +21,48 @@ A number of popular tools support graph drawing, including D3.js~\cite{bostock:d
 Graphviz~\cite{ellson2001graphviz}, and Cytoscape~\cite{shannon2003cytoscape}.
 
 \subsection{Constraint-Based Layout Techniques}
-Extending an existing layout method to support constraints enables
-customized layouts that may emphasize important
-structural or aesthetic properties of the graph. 
+Extending an existing layout method to support constraints enables customized 
+layouts that emphasize important structural or aesthetic properties of the graph. 
 Dig-CoLa~\cite{dwyer2005dig} encodes the hierarchy of nodes as constraints
-and attempts to minimize the stress on the overall graph layout; this strategy
-combines automatic hierarchical layout with undirected layouts for a hybrid
-visualization strategy that can ensure downward pointing edges to more
-effectively represent the graph hierarchy. \mbox{IPSep-CoLa~\cite{dwyer2006ipsep}} extends
-force-directed layout to apply a more general class of separation constraints 
-on pairs of nodes. This strategy allows the user to introduce constraints to enforce properties 
-such as downward pointing edges or ordering based on node properties.
+and attempts to minimize the overall stress; this technique
+is a hybrid strategy that combines automatic hierarchical 
+layout with undirected layouts to ensure downward pointing edges. 
+\mbox{IPSep-CoLa~\cite{dwyer2006ipsep}} extends
+force-directed layouts to apply separation constraints 
+on pairs of nodes to support properties such as customized node ordering or
+downward pointing edges.
 Dwyer and Robertson~\cite{dwyer2009layout} present a strategy for supporting 
-non-linear constraints (such circle constraints) that does not constrain node
-positions along a single, but can incorporate these techniques within
-alternative layout strategies.
+non-linear constraints (such as circle constraints) that does not constrain node
+positions along a single axis, but can incorporate these techniques within
+alternative layout strategies. 
 
-For use in a web-programming context, WebCoLa~\cite{WebCoLa} is a 
-JavaScript library for constraint-based layout that can be used alongside
+Kieffer et al.~\cite{kieffer2013incremental} present a force-directed,
+constraint-based layout for creating graphs with node and edge alignment, 
+and demonstrate its effectiveness for interactive refinement within
+the interactive graph layout system Dunnart~\cite{dwyer2008dunnart}.
+Dwyer and Wybrow developed libcola \cite{libcola}, which utilizes constraints within a
+force-directed graph layout \cite{dwyer2008topology} using 
+stress majorization. Stress majorization~\cite{gansner2004graph} 
+is a technique used for graph layout that has been extended for efficient 
+application on constrained layouts \cite{dwyer2007constrained,wang2018revisiting}.
+Compound constraints in libcola allow the application of constraints to a list
+of nodes in the graph and may further introduce dummy nodes for the layout.
+SetCoLa similarly supports this behavior with constraints defined over sets
+of graph nodes and further enables hierarhical composition of sets to support
+expressive, nested layouts.
+
+WebCoLa~\cite{WebCoLa} is a JavaScript library based on libcola 
+for constraint-based layout in a web-programming context that can be used alongside
 D3~\cite{bostock:d3} or Cytoscape~\cite{shannon2003cytoscape}.
-WebCoLa supports the specification of constraints on the alignment and relative
+WebCoLa enables constraints on the alignment and
 position of nodes as well as high-level properties such as flow (to ensure
 edges point in the same direction) and non-overlapping constraints.
-Kieffer et al.~\cite{kieffer2013incremental} present a force-directed,
-constraint-based layout for creating graphs with node and edge alignment.
-Kieffer et al. show that this strategy is effective even for interactive refinement 
-by incorporating it into the interactive graph layout system Dunnart~\cite{dwyer2008dunnart}. 
-These constraint-based layout techniques are often used to emphasize structural properties of
-the graph such as hierarchy or containment. While WebCoLa can support 
-customized constraints in addition to more general structural constraints,
+While WebCoLa can support customized constraints,
 the specification of individual inter-node constraints can be labor intensive.
 \projectname aims to reduce the burden of specifying customized constraints
 to enable the design of domain-specific and generalizable layouts.
 
+\vspace{-5px}
 \subsection{Domain-Specific Graph Visualization}
 Several techniques have been developed to reflect domain-specific concerns
 within graph layouts. However, these techniques
@@ -67,7 +77,7 @@ Bayesian classification of the elements;  in addition to the
 static visualization, Baskerville~et~al.\ 
 published an interactive version of the graph online~\cite{baskerville2011interactive}. 
 
-Despite frequently publishing visualizations showing ocean food 
+Despite frequently publishing visualizations of oceanic food 
 webs~\cite{kearney2012coupling,kearney2013amplification},
 Kearney describes several challenges around the design of such visualizations
 in a blog post~\cite{kearney2016blog}; Kearney notes that the node
@@ -75,7 +85,7 @@ placement algorithm should \emph{``allow constraining y-position to match
   trophic level while allowing free movement in the x-direction. With no
   such algorithm seemingly readily available, I decided to create my
   own.''} Kearney developed plugins for D3~\cite{kearney2017d3} and
-Ecopath~\cite{kearney2017ecopath} to produce food webs visualizations. 
+Ecopath~\cite{kearney2017ecopath} to produce food web visualizations. 
 Motivated by the challenges described by Kearney, \projectname aims to provide users
 with a lightweight means for authoring domain-specific constraints for customized layouts.
 
@@ -87,7 +97,10 @@ describe a constrained force-directed layout technique for visualizing
 biological pathways. Cytoscape~\cite{shannon2003cytoscape} is a
 visualization system designed to explore biomolecular interaction networks
 and provides a framework for accepting customized plugins, including 
-a WebCoLa~\cite{WebCoLa} plugin for constraint-based layouts. 
+a WebCoLa~\cite{WebCoLa} plugin for constraint-based layouts.
+CrowdLayout~\cite{singh2018crowdlayout} introduces a strategy for crowdsourcing 
+biological network layouts from novices that produces more high-quality
+layouts than Cerebral~\cite{barsky2008cerebral} or Graphviz~\cite{ellson2001graphviz}.
 
 Kieffer et al.'s work on incremental grid layouts~\cite{kieffer2013incremental}
 was motivated by related work for grid layouts of biological 
@@ -96,7 +109,7 @@ but aims to provide a more flexible mechanism for creating the constraints
 by supporting SBGN (Systems Biology Graphical Notation). In later
 work, Kieffer et al.~\cite{kieffer2016hola} improve upon grid layout techniques
 by first identifying the aesthetic criteria humans use for manual graph layout,
-then producing a new algorithm that employs these techniques for improved,
+then producing a new algorithm named HOLA, which employs these techniques for improved,
 human-like layouts.
 
 Social networks often leverage force-directed layout techniques

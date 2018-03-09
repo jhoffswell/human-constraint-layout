@@ -12,7 +12,7 @@ A \projectname specification consists of one or more \textbf{constraint definiti
 along with an optional set of guides (reference elements that serve as 
 positional anchors). An example \projectname specification for a small tree 
 layout is shown in Figure~\ref{fig:small-tree-example}a. Each constraint 
-definition includes a set definition and constraint application.
+definition includes a \textbf{set definition} and \textbf{constraint application}.
 \projectname provides several operators for defining
 sets based on node attributes and structural relations in the graph.
 The result of a set definition produces one or more sets, which 
@@ -33,13 +33,15 @@ specification for WebCoLa (Figure~\ref{fig:small-tree-example}c).
  In the following sections, 
 we discuss the design of \projectname including the process for 
 specifying sets, the types of constraints currently supported in \projectname, 
-and how such constraints are applied over node sets.
+and how such constraints are applied over node sets. 
+Our implementation of \projectname is available at \url{anonymized-url}.
 
 % \smallTreeExample
 \smallTreeExampleWebCoLa
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-10px}
 \subsection{Specifying Sets in \projectname}
 We provide several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
@@ -51,6 +53,13 @@ partitions, collections, or predicates, the constraint definition may also
 designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes. For each subsection, we show a sample
 \projectname constraint in the header.
+
+When new sets are defined, each set absorbs the consistent properties of 
+its elements as its own. For example, in Figure \ref{fig:small-tree-example}a, when the user
+partitions the nodes based on their \texttt{depth} (Line
+\texttt{17}), each new set is given a \texttt{depth} property the value of which 
+matches all the internal elements. This property can later be referenced 
+in the \projectname specification (e.g., in the order constraint, Line~\texttt{23}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Partitioning Nodes into Sets}
@@ -78,30 +87,31 @@ can specify a concrete list of sets, each defined by an arbitrary boolean
 expression. For each expression, nodes are evaluated by the expression
 to determine if it should be included in the set. The user may
 refer to properties of the node using dot syntax; for example,
-\texttt{node.depth} refers to the depth property. For example, in 
+\texttt{node.depth} refers to the depth property. In 
 Figure~\ref{fig:syphilis-spec},~Lines~\texttt{13},~\texttt{14},~and~\texttt{15},
-we produce three sets based on the \texttt{group} property of the nodes.
+we define three sets based on the \texttt{group} property of the nodes.
 The set on Line \texttt{14} includes nodes that are in the group 
-\emph{``young white women''} and nodes in the group \emph{``other.''}
-Users may optionally 
-specify a \texttt{name} for the set, which may be referred to in subsequent
-composite set definitions. With this specification strategy, it is possible
-to create node sets that are not disjoint, and may thus lead to
-unsatisfiable constraints.
+\emph{``younger white women''} and nodes in the group \emph{``other.''}
+Users may optionally specify a \texttt{name} for the set, which may be 
+referred to in subsequent composite set definitions. With this specification 
+strategy, it is possible to create node sets that are not disjoint, 
+and may thus lead to unsatisfiable constraints.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Collecting Nodes Using Keys}
 \constraint{Ex: \texttt{collect} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
 To combine the flexibility of \emph{predicates} with the automation of 
 \emph{partition}, users may specify sets as a union based on key expressions.
-For each key expression in the set definition, nodes are evaluated to extract one 
-or more keys, which are used to split nodes into (potentially overlapping) 
-sets. For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{35}, the 
-user creates a new set that includes two key expressions: one identifies
+For each element on which the constraint definition is applied, each key expression is
+evaluated to identify the nodes in that set.
+For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{34}, the 
+user creates a constraint definition that applies to all nodes with type
+``unknown'' (in this case, only one node). On Line~\texttt{35}, the user 
+creates a set definition with two key expressions: one identifies
 the \texttt{\_id} of the node, the other identifies the \texttt{\_id}s of
-the neighboring nodes. Each node is placed in the sets corresponding to
-all keys identified by the key expression. We also include a number of 
-built-in properties for identifying the structural relationships of the 
+the neighboring nodes. The one set produced contains the element 
+itself and all its neighbors. We also include several 
+built-in properties for identifying structural relationships in the 
 graph, which are described in Section~\ref{sec:built-in-properties}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -120,14 +130,6 @@ previous set definitions or named sets produced from \emph{predicates}).
 In the current version of \projectname, we only support composition via
 set union, though future work should explore the types of set definitions
 that other composition strategies could enable.
-
-When a named set is defined, the set element promotes the properties that
-are equivalent for all elements in the set to a property of the set
-element. For example, in Figure \ref{fig:small-tree-example}a, when the user
-defines a partition on the nodes based on the \texttt{depth} (Line
-\texttt{17}), each set is given a corresponding \texttt{depth} property with
-the shared value for that set. This property can be referenced in other 
-parts of the \projectname specification (e.g., in the order constraint, Line~\texttt{23}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsection{Built-In Properties of the Graph Structure}
@@ -149,8 +151,8 @@ the expectations for use.
 
 \begin{description}
 \item[\texttt{\_id}] The node index in the graph specification. This
-  property is always computed regardless of whether or not it is used. The
-  \texttt{\_id} acts as a unique identifier of the node and is used to 
+  property is always computed regardless of whether or not it is referenced by the user. The
+  \texttt{\_id} is a unique identifier and is used to 
   convert the \projectname constraints to low-level WebCoLa constraints.
 \item[\texttt{depth}] One more than the max depth of the node's parents. 
 	Root nodes (any nodes with no edges for which the node is the target)
@@ -190,7 +192,7 @@ for undirected graphs. We selected this list of properties as common structural 
 applicable to a variety of layout specifications. For example, the \texttt{depth}
 property is useful for producing hierarchical tree layouts and the 
 \texttt{sources}, \texttt{targets}, and \texttt{neighbors} properties
-reflect structure produced by the graph edges. There are many other
+reflect the structure produced by the graph edges. There are many other
 properties that could be useful for graph layouts that are not included 
 here and this list could easily be extended in the future to include other
 common properties.
