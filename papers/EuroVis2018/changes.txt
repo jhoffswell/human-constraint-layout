@@ -1,0 +1,16 @@
+We thank the reviewers for their feedback and critique of this work. We made several improvements to the paper, described below.
+
+** General Improvements **
+We extended the prior work section to include several of the references suggested by R1 and R4, and additional recent work that is relevant to this paper. R4 noted that it would be useful if this code was made available, so we have added a placeholder for such a link to the code in the paper.
+
+** Implementation Clarifications **
+R4 aptly noted that Figure 5 incorrectly stated that 56 new edges were added to the graph to approximate the circle constraint, whereas the correct number is 32, which has now been resolved. R4 wondered whether the layouts were computed from starting positions or a random layout; We have clarified this point in the demonstration section to note that all graph layouts were produced with no starting positions. Instead, we used WebCoLa to first run a force-directed layout with no constraints prior to applying the constraints produced by the SetCoLa compiler. We have further made general changes throughout the paper to introduce additional clarifications in parts of the paper that were confusing. We would also like to address AC1's point about SetCoLa as a domain-specific language; we believe that SetCoLa is a domain-specific language for the domain of graph layout, and that the language itself may apply to different application domains for the types of graph data that may be used.
+
+** Transferability **
+R1 expressed concerns about the claim regarding transferability of the specifications. We have included a new piece of supplemental material which the reapplication of a single specification across multiple graphs within the same domain. We found several graphs from InnateDB [BFL*12] that visualize biological systems similar to the one shown in Figure 1. From InnateDB, we downloaded the graph data and visualization for Cerebral to compare with the visualizations produce by SetCoLa. The supplemental material shows both the Cerebral and SetCoLa visualization, the SetCoLa specification used to produce all the layouts, and all the graph data. We have also introduced a sentence in the paper to point readers to this supplemental material.
+
+** Limitations **
+R2 and R3 expressed concerns about problems understanding or debugging the final graph layout. We have extend our discussion of this topic in the limitations section and hope to further explore strategies for debugging constraints in future work. We have also extended the limitations section to discuss some limitations to the expressiveness (R3) and to clarify the occurrence of superfluous constraints.
+
+** Demonstration **
+AC1, R1, and R3 each expressed interest in the usability of SetCoLa by real world users. While we a agree that this is an important point, we hope that our demonstration of the reduction in the number of constraints that the user must write (Figure 3) and the future availability of the code (R4) is a good first step towards understanding the usability. We note that such a study alongside improved debugging techniques would be a great next step for this work.
