@@ -1,31 +1,45 @@
 % ---------------------------------------------------------------------------
 % Author guideline and sample document for EG publication using LaTeX2e input
-% D.Fellner, v1.13, Jul 31, 2008
+% D.Fellner, v1.14, Nov. 29, 2017
 
 \documentclass{egpubl}
 \usepackage{eurovis2018}
-\Full_EuroVis
+
 % --- for  Annual CONFERENCE
 % \ConferenceSubmission   % uncomment for Conference submission
-%\ConferencePaper        % uncomment for (final) Conference Paper
+% \ConferencePaper        % uncomment for (final) Conference Paper
 % \STAR                   % uncomment for STAR contribution
 % \Tutorial               % uncomment for Tutorial contribution
 % \ShortPresentation      % uncomment for (final) Short Conference Presentation
 % \Areas                  % uncomment for Areas contribution
 % \MedicalPrize           % uncomment for Medical Prize contribution
 % \Education              % uncomment for Education contribution
+% \Poster                 % uncomment for Poster contribution
+% \DC                     % uncomment for Doctoral Consortium
 %
 % --- for  CGF Journal
 % \JournalSubmission    % uncomment for submission to Computer Graphics Forum
 % \JournalPaper         % uncomment for final version of Journal Paper
 %
 % --- for  CGF Journal: special issue
-\SpecialIssueSubmission    % uncomment for submission to Computer Graphics Forum, special issue
-% \SpecialIssuePaper         % uncomment for final version of Journal Paper, special issue
-%
+% \SpecialIssueSubmission    % uncomment for submission to , special issue
+\SpecialIssuePaper         % uncomment for final version of Computer Graphics Forum, special issue
+%                          % EuroVis, SGP, Rendering, PG
 % --- for  EG Workshop Proceedings
-% \WsSubmission    % uncomment for submission to EG Workshop
-% \WsPaper         % uncomment for final version of EG Workshop contribution
+% \WsSubmission      % uncomment for submission to EG Workshop
+% \WsPaper           % uncomment for final version of EG Workshop contribution
+% \WsSubmissionJoint % for joint events, for example ICAT-EGVE
+% \WsPaperJoint      % for joint events, for example ICAT-EGVE
+% \Expressive        % for SBIM, CAe, NPAR
+% \DigitalHeritagePaper
+% \PaperL2P          % for events EG only asks for License to Publish
+
+% --- for EuroVis 
+% for full papers use \SpecialIssuePaper
+% \STAREurovis   % for EuroVis additional material 
+% \EuroVisPoster % for EuroVis additional material 
+% \EuroVisShort  % for EuroVis additional material
+
 %
  \electronicVersion % can be used both for the printed and electronic version
 
@@ -55,9 +69,29 @@
 
 % end of prologue
 
+%-------------------------------------------------------------------------
+\input{note-commands.tex}
+
+\newcommand{\projectname}{SetCoLa\xspace}
+\newcommand{\constraint}[1]{
+  \vspace{-13px}
+  \begin{flushright}
+  \scriptsize
+  #1
+  \end{flushright}
+}
+\newtheorem{definition}{Definition}
+
+\newcommand{\jheer}[1]{\textbf{JH: #1}}
+
+\newcommand{\feedback}[2]{\purple{\textbf{#1:} #2}}
+
+\input{figures.tex}
+\hyphenpenalty=100000
+
 % ---------------------------------------------------------------------
 % EG author guidelines plus sample file for EG publication using LaTeX2e input
-% D.Fellner, v1.17, Sep 23, 2010
+% D.Fellner, v2.02, Jan 25, 2017
 
 
 \title[\projectname: High-Level Constraints for Graph Layout]%
@@ -74,39 +108,16 @@
   Alan Borning,
   and Jeffrey Heer
   \\\vspace{-10pt}
-  % For Computer Graphics Forum: Please use the abbreviation of your first name.
   Paul G. Allen School of Computer Science \& Engineering, University of Washington
 }
-
 % ------------------------------------------------------------------------
 
 % if the Editors-in-Chief have given you the data, you may uncomment
 % the following five lines and insert it here
 %
-% \volume{27}   % the volume in which the issue will be published;
+% \volume{36}   % the volume in which the issue will be published;
 % \issue{1}     % the issue number of the publication
 % \pStartPage{1}      % set starting page
-
-
-%-------------------------------------------------------------------------
-\input{note-commands.tex}
-
-\newcommand{\projectname}{SetCoLa\xspace}
-\newcommand{\constraint}[1]{
-	\vspace{-13px}
-	\begin{flushright}
-	\scriptsize
-	#1
-	\end{flushright}
-}
-\newtheorem{definition}{Definition}
-
-\newcommand{\jheer}[1]{\textbf{JH: #1}}
-
-\newcommand{\feedback}[2]{\purple{\textbf{#1:} #2}}
-
-\input{figures.tex}
-\hyphenpenalty=100000
 
 %-------------------------------------------------------------------------
 \begin{document}
@@ -116,27 +127,26 @@
 %  \centering
 %   \caption{New EG Logo}
 % \label{fig:teaser}
-% }
 
-%\teaserFigure
 \maketitle
-
+%-------------------------------------------------------------------------
 \input{abstract.tex}
 \begin{abstract}
-  \paperabstract
+\paperabstract
 
-  \begin{CCSXML}
-	<ccs2012>
-	<concept>
-	<concept_id>10003120.10003145.10003146.10010892</concept_id>
-	<concept_desc>Human-centered computing~Graph drawings</concept_desc>
-	<concept_significance>500</concept_significance>
-	</concept>
-	</ccs2012>
-	\end{CCSXML}
-	\ccsdesc[300]{Human-centered computing~Graph drawings}
-	\printccsdesc
-\end{abstract}
+\begin{CCSXML}
+  <ccs2012>
+  <concept>
+  <concept_id>10003120.10003145.10003146.10010892</concept_id>
+  <concept_desc>Human-centered computing~Graph drawings</concept_desc>
+  <concept_significance>500</concept_significance>
+  </concept>
+  </ccs2012>
+\end{CCSXML}
+
+\ccsdesc[300]{Human-centered computing~Graph drawings}
+\printccsdesc   
+\end{abstract}  
 
 %-------------------------------------------------------------------------
 \input{introduction.tex}
