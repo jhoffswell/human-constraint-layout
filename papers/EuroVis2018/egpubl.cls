@@ -1055,6 +1055,30 @@ submitted to \textit{#1}%
  \let\subsectionmark=\EmptySubsectionmark
 }}
 
+\def\SupplementalMaterial{%
+\noEGpagenumber%
+%\copyrightTextRunPag{\parbox[t]{18pc}{\sloppy
+%  \p@copyrightTextShort{\number\year}}}
+\copyrightTextTitPag{}
+\def\@oddfoot{}
+\def\@evenfoot{}
+\def\ps@titlepage{\let\@mkboth\@gobbletwo
+ \def\@oddhead{\raisebox{\z@}[8pt][1pt]{\parbox{\textwidth}{\small
+   \parbox[t]{.7\textwidth}{\sloppy\raggedright}% (Guest Editors)}
+   \hfill
+%   \textit{Volume \j@volume} (\textit{\p@ConfYear\/}),
+   \textit{}
+   \textit{}}%
+ }%
+}
+ \def\@oddfoot{{\tiny\raisebox{\z@}[8pt][1pt]{\parbox[t]{20pc}{\sloppy
+  \p@copyrightTextTitPag}}}\hfill}
+ \let\@evenhead=\@oddhead
+ \let\@evenfoot=\@oddfoot
+ \let\sectionmark=\EmptySectionmark
+ \let\subsectionmark=\EmptySubsectionmark
+}}
+
 % -------
 \def\SpecialIssueSubmission{%
 \EGpagenumber%
