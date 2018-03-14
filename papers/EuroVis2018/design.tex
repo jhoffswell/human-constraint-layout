@@ -54,8 +54,9 @@ designate a set from which the elements should be drawn; by default, the
 elements are simply graph nodes. For each subsection, we show a sample
 \projectname constraint in the header.
 
-When new sets are defined, each set absorbs the consistent properties of 
-its elements as its own. For example, in Figure \ref{fig:small-tree-example}a, when the user
+When new sets are defined, each set propagates the consistent properties
+of its elements as a single property of its own. For example, in
+Figure \ref{fig:small-tree-example}a, when the user
 partitions the nodes based on their \texttt{depth} (Line
 \texttt{17}), each new set is given a \texttt{depth} property the value of which 
 matches all the internal elements. This property can later be referenced 
@@ -137,7 +138,7 @@ that other composition strategies could enable.
 
 In addition to defining constraints relative to node properties, it may
 also be important to define constraints on properties
-of the graph structure, which we support with a number of built-in accessors.
+of the graph structure.  We support this with a number of built-in accessors.
 These properties are automatically computed and added to the graph 
 specification only when they are used in one of the \projectname constraints. 
 These properties are only computed if such a property does not
@@ -185,7 +186,7 @@ the expectations for use.
 
 In the original graph specification, the links are defined by a source
 and target node. However, whether or not these links are
-directed or undirected is up to the discretion of the user in how the links
+directed or undirected is up to the user in how they
 are treated in the graph layout. For example, properties such as
 \texttt{neighbors} and \texttt{edges} are more appropriate than \texttt{sources}
 for undirected graphs. We selected this list of properties as common structural elements
