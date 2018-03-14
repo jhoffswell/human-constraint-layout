@@ -127,8 +127,8 @@ hvz.load = function() {
   var exampleSel = document.getElementsByClassName("sel_examples")[0];
   var example = exampleSel.options[exampleSel.selectedIndex].value;
   var type = exampleSel.options[exampleSel.selectedIndex].parentNode.label;
-  var PATH = "app/specs/" + (type ?  type + "-examples/" : "") + example + ".json";
-  PATH = PATH.toLowerCase();
+  var typeStr =  (type + "").toLowerCase()
+  var PATH = "app/specs/" + (type ?  typeStr + "-examples/" : "") + example + ".json";
 
   renderer.setStyle(example);
 
