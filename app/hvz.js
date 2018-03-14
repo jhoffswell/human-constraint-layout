@@ -30,7 +30,7 @@ hvz.init = function() {
 
     var exampleSel = d3.select('.sel_examples');
     exampleSel.on("change", hvz.load);
-    exampleSel.append("option").text("Custom");
+    exampleSel.append("option").text("custom");
     exampleSel.selectAll("optgroup")
         .data(Object.keys(EXAMPLES))
       .enter().append("optgroup")
