@@ -158,7 +158,7 @@ hvz.visibility = function() {
 };
 
 hvz.isUserConstraintGraph = function() {
-  return graph.spec.sets;
+  return graph.spec.constraintDefinitions;
 };
 
 hvz.ace = function() {

@@ -492,29 +492,29 @@
 		{"name": "boundary", "y": 100},
 		{"name": "bottom", "y": 400}
 	],
-	"sets": [
+	"constraintDefinitions": [
     {
     	"name": "ethnographic groups",
-      "elements": {"partition": "group", "ignore": [""]},
-      "constraints": [
+      "sets": {"partition": "group", "ignore": [""]},
+      "forEach": [
         { "constraint": "position", "position": "below", "of": "boundary", "gap": 75 },
         { "constraint": "position", "position": "above", "of": "bottom", "gap": 30 }
       ]
     },
     {
-    	"elements": [[
+    	"sets": [[
         {"expr": "node.group === 'old white men'"},
         {"expr": "node.group === 'young white women' || node.group === ''"},
         {"expr": "node.group === 'old african american men'"}
       ]],
-      "constraints": [
+      "forEach": [
         {"constraint": "order", "axis": "x", "by": "_exprIndex", "band": 300, "gap": 30}
       ]
     },
     {
     	"name": "other individuals",
-      "elements": {"partition": "group", "include": [""]},
-      "constraints": [
+      "sets": {"partition": "group", "include": [""]},
+      "forEach": [
         {"constraint": "position", "position": "below", "of": "top", "gap": 5},
         {"constraint": "position", "position": "above", "of": "boundary", "gap": 5},
       	{"constraint": "spacing", "pad": 8}
@@ -522,15 +522,15 @@
     },
     {
     	"name": "women",
-      "elements": {"partition": "group", "include": ["young white women"]},
-      "constraints": [
+      "sets": {"partition": "group", "include": ["young white women"]},
+      "forEach": [
         {"constraint": "circle", "around": "center", "gap": 75}
       ]
     },
     {
     	"name": "men",
-      "elements": {"partition": "group", "ignore": ["young white women", ""]},
-      "constraints": [
+      "sets": {"partition": "group", "ignore": ["young white women", ""]},
+      "forEach": [
       	{"constraint": "align", "axis": "y"},
       	{"constraint": "spacing", "pad": 10}
       ]

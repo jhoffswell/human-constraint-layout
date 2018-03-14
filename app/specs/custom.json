@@ -6,10 +6,10 @@
   "links": [
     {"source": 0, "target": 1}
   ],
-  "sets": [
+  "constraintDefinitions": [
     {
       "name": "sample",
-      "constraints": [{"constraint": "align", "axis": "x"}]
+      "forEach": [{"constraint": "align", "axis": "x"}]
     }
   ]
 }

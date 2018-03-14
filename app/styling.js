@@ -188,3 +188,39 @@ var tlr4 = {};
   tlr4.nodeStroke = function(d) {
     return '#bbb';
   };
+
+/*****************************************************/
+/******************** INNATE DB **********************/
+/*****************************************************/
+var innatedb = {};
+
+  innatedb.dx = function(d) { 
+    var offset = this.getBBox().width/2 -4;
+    var pad = d.pad || renderer.options["nodepad"];
+    return (d.width - 2*pad)/2 - offset;
+  };
+
+  innatedb.dy = function(d) { 
+    return 35;
+  };
+
+  innatedb.label = function(d) {
+    if(d.showLabel) return d["-label"];
+    return "";
+  };
+
+  innatedb.size = function(d) {
+    return '11pt';
+  };
+
+  innatedb.style = function(d) {
+    return 'regular';
+  };
+
+  innatedb.color = function(d) {
+    return 'black';
+  };
+
+  innatedb.nodeStroke = function(d) {
+    return '#bbb';
+  };

@@ -18,19 +18,19 @@
     {"source": 0, "target": 6},
     {"source": 0, "target": 7}
   ],
-  "sets": [
+  "constraintDefinitions": [
     {
       "name": "rank_set",
-      "elements": {"partition": "rank"},
-      "constraints": [{"constraint": "align", "axis": "x"}]
+      "sets": {"partition": "rank"},
+      "forEach": [{"constraint": "align", "axis": "x"}]
     },
     {
-      "elements": ["rank_set"],
-      "constraints": [{"constraint": "order", "axis": "y", "by": "rank", "reverse": true}]
+      "sets": ["rank_set"],
+      "forEach": [{"constraint": "order", "axis": "y", "by": "rank", "reverse": true}]
     },
     {
-      "elements": [{"partition": "level"}],
-      "constraints": [{"constraint": "order", "axis": "y", "by": "level"}]
+      "sets": [{"partition": "level"}],
+      "forEach": [{"constraint": "order", "axis": "y", "by": "level"}]
     }
   ]
 }

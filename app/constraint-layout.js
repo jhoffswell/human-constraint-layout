@@ -16,7 +16,7 @@ layout.getConstraints = function() {
   // Add an _id to the nodes
   layout.index = -1;
   graph.spec.nodes.map(graph.setID);
-  graph.computeBuiltInProperties(graph.spec.sets);
+  graph.computeBuiltInProperties(graph.spec.constraintDefinitions);
   graph.removeTempNodes();
 
   // Create the guides
@@ -24,13 +24,13 @@ layout.getConstraints = function() {
   layout.guides = [].concat.apply([], graph.spec.guides.map(newGuide));
 
   // Process the constraints
-  var constraints = [].concat.apply([], graph.spec.sets.map(processConstraint));
+  var constraints = [].concat.apply([], graph.spec.constraintDefinitions.map(processConstraint));
   return {"constraints": constraints, "groups": layout.groups};
 };
 
 // Process each user defined constraint.
 function processConstraint(definition) {
-  if(renderer.options["debugprint"]) console.log("    Processing constraint '" + definition.name + "'...");
+  if(renderer.options["debugprint"]) console.log("    Processing constraint '" + definition.name + "'...", definition);
 
   // Get the source.
   var source;
@@ -48,11 +48,11 @@ function processConstraint(definition) {
     name = 'set' + INDEX;
     INDEX += 1;
   }
-  layout.sets[name] = createSet(source, definition.elements);
+  layout.sets[name] = createSet(source, definition.sets);
 
   // Create the constraints
   var results = [];
-  (definition.constraints || []).forEach(function(constraint) {
+  (definition.forEach || []).forEach(function(constraint) {
     (layout.sets[name] || []).forEach(function(elements) {
       results = results.concat(constraintDef.generateConstraints(elements, constraint, name));
     });    
@@ -64,9 +64,9 @@ function processConstraint(definition) {
 //* OLD STUFF *
 //*************
 
-  if(constraint.name && constraint.set) {
-    var inSet = generateInSetFunc(constraint.set);
-    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.set);
+  if(constraint.name && constraint.sets) {
+    var inSet = generateInSetFunc(constraint.sets);
+    layout.sets[constraint.name] = generateSets(graph.spec.nodes, inSet, constraint.sets);
   } else if(constraint.name) {
     layout.sets[constraint.name] = generateSets(graph.spec.nodes, generateInSetFunc(null));
   } else {

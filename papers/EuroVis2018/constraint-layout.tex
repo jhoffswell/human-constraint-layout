@@ -60,6 +60,13 @@
 \usepackage{egweblnk}
 \usepackage{cite}
 \usepackage{xspace}
+\usepackage{balance}
+% \usepackage[babel=true]{microtype}
+% \usepackage{needspace}
+% \usepackage[defaultlines=3,all]{nowidow}
+% \setnoclub[2]
+\newcommand{\squeeze}[1]{\textls[-10]{#1}}
+\newcommand{\squeezemore}[1]{\textls[-20]{#1}}
 
 % For backwards compatibility to old LaTeX type font selection.
 % Uncomment if your document adheres to LaTeX2e recommendations.
@@ -158,6 +165,7 @@
 \input{conclusion.tex}
 
 %\bibliographystyle{eg-alpha}
+\balance
 \bibliographystyle{eg-alpha-doi}
 \bibliography{references}
 

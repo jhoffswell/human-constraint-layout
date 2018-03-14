@@ -258,23 +258,23 @@
     {"name":"left_guide","x":250},
     {"name":"right_guide","x":475}
   ],
-  "sets":[
+  "constraintDefinitions":[
     {
       "name":"boundary",
-      "constraints":[
+      "forEach":[
         {"constraint":"position","position":"right","of":"left_guide","gap":10},
         {"constraint":"position","position":"left","of":"right_guide","gap":10}
       ]
     },
     {
       "name":"localization",
-      "elements":{"partition":"Localization"},
-      "constraints":[{"constraint":"spacing","pad":16}]
+      "sets":{"partition":"Localization"},
+      "forEach":[{"constraint":"spacing","pad":16}]
     },
     {
       "name":"layer",
-      "elements":["localization"],
-      "constraints":[
+      "sets":["localization"],
+      "forEach":[
         {
           "constraint":"order",
           "axis":"y",
