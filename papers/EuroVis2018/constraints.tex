@@ -37,14 +37,14 @@ a sample \projectname constraint in each section header.
 \subsection{Alignment Constraints}
 \constraint{Ex: \constraintname{align} \setcolavalue{x} \setcolaproperty{axis}}
 Alignment constraints ensure that all nodes in the set share one of their
-coordinates. For this implementation, the constraint must specify the \setcolaproperty{axis}
-as either \setcolavalue{x} or \setcolavalue{y} (\figureline{fig:small-tree-example}{a}{18}).
-The user may also optionally identify an \setcolaproperty{orientation} for the alignment.
-The orientation is useful for producing alignments when the size of the
-elements do not match. By default, the orientation is defined as \setcolavalue{center}
+coordinates. The user must specify the \setcolaproperty{axis}
+as either \setcolavalue{x} or \setcolavalue{y} (\figureline{fig:small-tree-example}{a}{18}) 
+and may also optionally identify an alignment \setcolaproperty{orientation}.
+The orientation enables different alignments for elements of varying size. 
+By default, the orientation is defined as \setcolavalue{center}
 and aligns the center point of each element. When the alignment axis is defined as \setcolavalue{x},
 the user may specify the orientation as either \setcolavalue{top} or \setcolavalue{bottom}, which introduces
-an offset to align the top or bottom of the nodes. When the alignment axis is 
+an offset to align the top or bottom of the elements. When the alignment axis is 
 defined as \setcolavalue{y}, the user may specify the orientation as either 
 \setcolavalue{right} or \setcolavalue{left}.
 
@@ -58,6 +58,7 @@ WebCoLa. The WebCoLa alignment constraint takes the \nodeproperty{\_id} of all n
 that should be aligned and offsets for each node, which can be used to change the orientation.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
 \subsection{Position Constraints}
 \constraint{Ex: \constraintname{position} \setcolavalue{right} \setcolaproperty{of} \setcolareference{top\_guide}}
 Position constraints ensure that all nodes in the set are positioned relative to
@@ -79,6 +80,7 @@ When the position constraint is defined relative to a named set $S_2$,
 we produce one position constraint for each pair of nodes $(u, v)$ where $u \in S_1$ and $v \in S_2$.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
 \subsection{Order Constraints}
 \constraint{Ex: \constraintname{order} \setcolavalue{y} \setcolaproperty{axis} \setcolaproperty{by} \nodeproperty{depth}}
 Order constraints enforce a sort order on the set elements. The user must 
@@ -114,6 +116,7 @@ In this case, we create s + 1 boundary guides and generate additional
 constraints at the start and end of the ordering.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
 \subsection{Circle Constraints}
 \constraint{Ex: \constraintname{circle} \setcolaproperty{around} \setcolavalue{center}}
 Circle constraints allow the user to specify a ring layout for a set of
@@ -135,6 +138,7 @@ layout (Figure~\ref{fig:syphilis-layout}b), though future work should
 explore the incorporation of alternative strategies for circle layouts~\cite{dwyer2009layout}.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
 \subsection{Cluster Constraints}
 \constraint{Ex: \constraintname{cluster}}
 Cluster constraints encourage a tight clustering of the nodes into a dense group by
@@ -148,6 +152,7 @@ than the size of the nodes, which pulls the nodes together. These temporary edge
 remain a part of the layout but are hidden from the user.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\vspace{-5px}
 \subsection{Hull Constraints}
 \constraint{Ex: \constraintname{hull}}
 Hull constraints create an enclosing boundary (hull) around the set elements and 
@@ -166,7 +171,6 @@ the nodes defined by their \nodeproperty{\_id}.
 % the \mbox above is to force a line break to avoid splitting the equation
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-10px}
 \subsection{Padding Constraints}
 \constraint{Ex: \constraintname{padding} with \setcolaproperty{amount} \setcolavalue{5}}
 Padding constraints enforce a minimum spacing around an element, without 
@@ -182,7 +186,6 @@ Additional work is required to develop constraints that
 respect the padding only relative to certain set elements.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-10px}
 \subsection{Application of Multiple Constraints}
 \syphilisLayout
 \syphilisSpec
