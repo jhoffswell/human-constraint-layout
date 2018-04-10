@@ -59,64 +59,64 @@ elements are simply all graph nodes. For each subsection, we show a sample
 When new sets are defined, each set propagates the consistent properties
 of its elements as a single property of its own. For example, in
 Figure \ref{fig:small-tree-example}a, when the user
-partitions the nodes based on their \texttt{depth} (Line
-\texttt{17}), each new set is given a \texttt{depth} property the value of which 
+partitions the nodes based on their \nodeproperty{depth} (\linenumber{17}), 
+each new set is given a \nodeproperty{depth} property the value of which 
 matches all the internal elements. This property can later be referenced 
 in the \projectname specification when the sets are treated as elements 
-(e.g., in the order constraint, Line~\texttt{23}).
+(e.g., in the order constraint, \linenumber{23}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Partitioning Nodes into Sets}
-\constraint{Ex: \texttt{partition} by \texttt{depth}}
+\constraint{Ex: \setcolaproperty{partition} by \nodeproperty{depth}}
 The partition operator creates a collection of disjoint sets based on
 properties of the node
-(e.g., Figure~\ref{fig:small-tree-example}a, Line~\texttt{17}).
+(e.g., \figureline{fig:small-tree-example}{a}{17}).
 Given $n$ nodes to partition, this operator can produce at most $O(n)$ 
 sets. The user may further limit 
 the number of sets included by providing specific property values to 
-\emph{include} or \emph{exclude} when producing the sets.
+\setcolaproperty{include} or \setcolaproperty{exclude} when producing the sets.
 For each node, we identify a key based on the node values for the partition
-properties and create sets based on the key. The \emph{include} parameter allows
+properties and create sets based on the key. The include parameter allows
 the user to identify particular node values to look for when partitioning
 and includes only those values; the exclude property does the opposite. 
-For example in Figure~\ref{fig:syphilis-spec}, Line~\texttt{5}, the user
-partitions the nodes by the \texttt{group} property and ignores the nodes
-for which the value of \texttt{group} is \emph{``other.''} This parition 
-will produce three sets with the nodes separated by \texttt{group}, and the 
-13 nodes with group \emph{``other''} will not appear in any of these sets.
+For example in \figureline{fig:syphilis-spec}{}{5}, the user
+partitions the nodes by the \nodeproperty{group} property and ignores the nodes
+for which the value of \nodeproperty{group} is \nodevalue{``other.''} This parition 
+will produce three sets with the nodes separated by \nodeproperty{group}, and the 
+13 nodes with group \nodevalue{``other''} will not appear in any of these sets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Specifying Sets with Predicates}
-\constraint{Ex: \texttt{node.depth == 2}}
+\constraint{Ex: \nodeproperty{node.depth} == \nodevalue{2}}
 For more flexibility in the definition of sets, users
 can specify a concrete list of sets, each defined by an arbitrary boolean
 expression. For each expression, each node is evaluated by the expression
 to determine if it should be included in the set. The user may
 refer to properties of the node using dot syntax; for example,
-\texttt{node.depth} refers to the depth property. In 
+\nodeproperty{node.depth} refers to the depth property. In 
 Figure~\ref{fig:syphilis-spec},~Lines~\texttt{13},~\texttt{14},~and~\texttt{15},
-we define three sets based on the \texttt{group} property of the nodes.
-The set on Line \texttt{14} includes nodes that are in the group 
-\emph{``younger white women''} and nodes in the group \emph{``other.''}
-Users may optionally specify a \texttt{name} for the set, which may be 
+we define three sets based on the \nodeproperty{group} property of the nodes.
+The set on \linenumber{14} includes nodes that are in the group 
+\nodevalue{``younger white women''} and nodes in the group \nodevalue{``other.''}
+Users may optionally specify a \setcolaproperty{name} for the set, which may be 
 referred to in subsequent composite set definitions. With this specification 
 strategy, it is possible to create node sets that are not disjoint, 
 and may thus lead to unsatisfiable constraints.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Collecting Nodes Using Keys}
-\constraint{Ex: \texttt{collect} \texttt{[}\emph{``id(),'' ``id(neighbors)''}\texttt{]}}
+\constraint{Ex: \setcolaproperty{collect} \texttt{[}id(), id(\nodeproperty{neighbors})\texttt{]}}
 To combine the flexibility of \emph{predicates} with the automation of 
 \emph{partition}, users may specify sets as a union based on key expressions.
 For each element on which the constraint definition is applied, each key expression is
 evaluated to identify the nodes in that set.
-For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{34}, the 
+For example, in \figureline{fig:tlr4-spec}{}{34}, the 
 user creates a constraint definition that applies only to nodes with type
-\emph{``unknown''} (in this case, only one node). On Line~\texttt{35}, the user 
+\nodevalue{``unknown''} (in this case, only one node). On \linenumber{35}, the user 
 creates a set definition with two key expressions: one key expression identifies
-the \texttt{\_id} of the node (e.g., \texttt{node.\_id}), and the other 
-key expression identifies the \texttt{\_id}s of the neighboring nodes 
-(e.g., \texttt{node.neighbors.extract("\_id")}). The one set produced
+the \nodeproperty{\_id} of the node (e.g., \nodeproperty{node.\_id}), and the other 
+key expression identifies the \nodeproperty{\_id}s of the neighboring nodes 
+(e.g., \nodeproperty{node.neighbors.extract("\_id")}). The one set produced
 contains the element itself and all its neighbors. We also include several 
 built-in properties for identifying structural relationships in the 
 graph, which are described in Section~\ref{sec:built-in-properties}.
@@ -124,13 +124,13 @@ graph, which are described in Section~\ref{sec:built-in-properties}.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{10px}
 \subsubsection{Composing Previously Defined Sets}
-\constraint{Ex: \texttt{[} \emph{``set1''}, \emph{``set2''} \texttt{]}}
+\constraint{Ex: \texttt{[} \setname{set1}, \setname{set2} \texttt{]}}
 Sets may also be defined as hierarchical
 compositions of previously defined sets. For example, in
 Figure~\ref{fig:small-tree-example}a the first constraint definition
-(named ``layer'') produces three sets via
-partition~(Line~\texttt{17}). The next constraint definition performs 
-composition, referencing only the ``layer'' set~(Line~\texttt{22}): the result
+(named \setname{layer}) produces three sets via
+partition~(\linenumber{17}). The next constraint definition performs 
+composition, referencing only the \setname{layer} set~(\linenumber{22}): the result
 is a single set that contains the three layer sets as elements.
 For composition, users may
 refer to any named entities previously defined in the specification (e.g.,
@@ -158,34 +158,34 @@ the expectations for use.
 % \jheer{Not clear under what these expectations are and under what circumstances a graph does not meet them.}
 
 \begin{description}
-\item[\texttt{\_id}] The node index in the graph specification. This
+\item[\nodeproperty{\_id}] The node index in the graph specification. This
   property is always computed regardless of whether or not it is referenced by the user. The
-  \texttt{\_id} is a unique identifier and is used to 
+  \nodeproperty{\_id} is a unique identifier and is used to 
   convert the \projectname constraints to low-level WebCoLa constraints.
-\item[\texttt{depth}] One more than the max depth of the node's parents. 
+\item[\nodeproperty{depth}] One more than the max depth of the node's parents. 
 	Root nodes (any nodes with no edges for which the node is the target)
-	have a depth of zero. The \texttt{depth} property is only computed for
+	have a depth of zero. The \nodeproperty{depth} property is only computed for
 	graphs that do not contain cycles.
-\item[\texttt{sources}] The list of nodes that have edges for which the
+\item[\nodeproperty{sources}] The list of nodes that have edges for which the
 	current node is the target (e.g., all parent nodes).
-\item[\texttt{targets}] The list of nodes that have edges for which the
+\item[\nodeproperty{targets}] The list of nodes that have edges for which the
 	current node is the source (e.g., all child nodes).
-\item[\texttt{neighbors}] The list of nodes that have edges connected to
-  the current node. This property is the union of the \texttt{sources} and
-  \texttt{targets} properties. Neighbors may also take an optional value
+\item[\nodeproperty{neighbors}] The list of nodes that have edges connected to
+  the current node. This property is the union of the \nodeproperty{sources} and
+  \nodeproperty{targets} properties. Neighbors may also take an optional value
   as input, which returns all nodes with a graph distance less than or
   equal to the specified value.
 % \item[\texttt{firstchild(<property>)}] The child node of the current node 
 	% with the smallest value for the defined \texttt{property}. We can similarly
 	% enable \texttt{lastchild}, which returns the largest value for the defined 
 	% \texttt{property}.
-\item[\texttt{incoming}] The list of edges in which the current node is the
+\item[\nodeproperty{incoming}] The list of edges in which the current node is the
 	target~(e.g., the edges connecting the current node to all sources).
-\item[\texttt{outgoing}] The list of edges in which the current node is the
+\item[\nodeproperty{outgoing}] The list of edges in which the current node is the
 	source~(e.g., the edges connecting the current node to all targets).
-\item[\texttt{edges}] The list of edges that contain the current node. This
-	property is the union of the \texttt{incoming} and \texttt{outgoing} edges.
-\item[\texttt{degree}] The number of \texttt{neighbors}.
+\item[\nodeproperty{edges}] The list of edges that contain the current node. This
+	property is the union of the \nodeproperty{incoming} and \nodeproperty{outgoing} edges.
+\item[\nodeproperty{degree}] The number of \nodeproperty{neighbors}.
 \end{description}
 \constraintsFigure
 
@@ -195,23 +195,23 @@ In the original graph specification, the links are defined by a source
 and target node. However, whether or not these links are
 directed or undirected is up to the user in how they
 are treated in the graph layout. For example, properties such as
-\texttt{neighbors} and \texttt{edges} are more appropriate than \texttt{sources}
+\nodeproperty{neighbors} and \nodeproperty{edges} are more appropriate than \nodeproperty{sources}
 for undirected graphs. We selected this list of properties as common structural elements
-applicable to a variety of layout specifications. For example, the \texttt{depth}
+applicable to a variety of layout specifications. For example, the \nodeproperty{depth}
 property is useful for producing hierarchical tree layouts and the 
-\texttt{sources}, \texttt{targets}, and \texttt{neighbors} properties
+\nodeproperty{sources}, \nodeproperty{targets}, and \nodeproperty{neighbors} properties
 depict the relationship between nodes as dictated by the graph edges. 
 There are many other properties that could be useful for graph layouts that are not included 
 here and this list could easily be extended in the future to include other
 common properties.
 
 In addition to the built-in properties, we include several operators for 
-manipulating the resulting lists of elements: \texttt{length}, \texttt{reverse},
-\texttt{contains}, \texttt{sort}, and \texttt{extract}. The function 
-\texttt{length()} returns the length of the list, \texttt{reverse()} 
-reverses the order of the list, and \texttt{contains(value)} determines if
-the list contains the identified value. The user may also choose to \texttt{sort} 
-the list based on a property of the elements or \texttt{extract} the value of each
+manipulating the resulting lists of elements: \nodeproperty{length}, \nodeproperty{reverse},
+\nodeproperty{contains}, \nodeproperty{sort}, and \nodeproperty{extract}. The function 
+\nodeproperty{length()} returns the length of the list, \nodeproperty{reverse()} 
+reverses the order of the list, and \nodeproperty{contains(value)} determines if
+the list contains the identified value. The user may also choose to \nodeproperty{sort} 
+the list based on a property of the elements or \nodeproperty{extract} the value of each
 element for a particular property. Values can also be extracted from
 nodes or edges individually using the dot syntax at any point. The user may use standard
 array access to extract elements from the list (e.g., the first element of
