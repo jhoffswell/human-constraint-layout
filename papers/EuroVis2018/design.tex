@@ -1,4 +1,5 @@
 %!TEX root = constraint-layout.tex
+\vspace{-1px}
 \section{Design of \projectname}
 \projectname is a domain-specific language for concise specification of 
 constrained graph layouts. To provide a reusable specification 
@@ -18,7 +19,7 @@ sets based on node attributes and structural relations in the graph.
 The result of a set definition produces one or more sets, which 
 can have either distinct or overlapping elements. Each constraint definition can 
 define one or more constraints (e.g., for position, ordering, 
-or alignment), which are applied to the nodes within each separate set. 
+or alignment), which are applied to the nodes within each separate set created by the set definition. 
 In other words, constraints created for a constraint definition with multiple sets are 
 applied to nodes \emph{within} each individual set, not \emph{between} 
 the sets in the constraint definition.
@@ -34,15 +35,15 @@ specification for WebCoLa (Figure~\ref{fig:small-tree-example}c).
 we discuss the design of \projectname including the process for 
 specifying sets, the types of constraints currently supported in \projectname, 
 and how such constraints are applied over node sets. 
-Our implementation of \projectname is available at 
-\url{https://github.com/jhoffswell/human-constraint-layout}.
+Our implementation of \projectname is available at the link
+{\small\url{https://github.com/jhoffswell/human-constraint-layout}}.
 
 % \smallTreeExample
 \smallTreeExampleWebCoLa
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\vspace{-10px}
+\vspace{-5px}
 \subsection{Specifying Sets in \projectname}
 We provide several operators for defining sets based on node attributes 
 or structural properties, which include (1) \emph{partitioning} nodes 
@@ -50,9 +51,9 @@ into disjoint sets, (2) specifying (potentially overlapping) sets via
 \emph{predicates}, (3) \emph{collecting} nodes into sets based on key expressions,
 and (4) \emph{composing} previously defined sets. Each of these set
 definitions produces one or more sets for the constraint definition. For
-partitions, collections, or predicates, the constraint definition may also 
+partitions, predicates, or collections, the constraint definition may 
 designate a set from which the elements should be drawn; by default, the
-elements are simply graph nodes. For each subsection, we show a sample
+elements are simply all graph nodes. For each subsection, we show a sample
 \projectname constraint in the header.
 
 When new sets are defined, each set propagates the consistent properties
@@ -61,7 +62,8 @@ Figure \ref{fig:small-tree-example}a, when the user
 partitions the nodes based on their \texttt{depth} (Line
 \texttt{17}), each new set is given a \texttt{depth} property the value of which 
 matches all the internal elements. This property can later be referenced 
-in the \projectname specification (e.g., in the order constraint, Line~\texttt{23}).
+in the \projectname specification when the sets are treated as elements 
+(e.g., in the order constraint, Line~\texttt{23}).
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Partitioning Nodes into Sets}
@@ -79,14 +81,16 @@ the user to identify particular node values to look for when partitioning
 and includes only those values; the exclude property does the opposite. 
 For example in Figure~\ref{fig:syphilis-spec}, Line~\texttt{5}, the user
 partitions the nodes by the \texttt{group} property and ignores the nodes
-for which the value of \texttt{group} is \emph{``other.''}
+for which the value of \texttt{group} is \emph{``other.''} This parition 
+will produce three sets with the nodes separated by \texttt{group}, and the 
+13 nodes with group \emph{``other''} will not appear in any of these sets.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \subsubsection{Specifying Sets with Predicates}
 \constraint{Ex: \texttt{node.depth == 2}}
 For more flexibility in the definition of sets, users
 can specify a concrete list of sets, each defined by an arbitrary boolean
-expression. For each expression, nodes are evaluated by the expression
+expression. For each expression, each node is evaluated by the expression
 to determine if it should be included in the set. The user may
 refer to properties of the node using dot syntax; for example,
 \texttt{node.depth} refers to the depth property. In 
@@ -107,12 +111,13 @@ To combine the flexibility of \emph{predicates} with the automation of
 For each element on which the constraint definition is applied, each key expression is
 evaluated to identify the nodes in that set.
 For example, in Figure~\ref{fig:tlr4-spec},~Line~\texttt{34}, the 
-user creates a constraint definition that applies to all nodes with type
-``unknown'' (in this case, only one node). On Line~\texttt{35}, the user 
-creates a set definition with two key expressions: one identifies
-the \texttt{\_id} of the node, the other identifies the \texttt{\_id}s of
-the neighboring nodes. The one set produced contains the element 
-itself and all its neighbors. We also include several 
+user creates a constraint definition that applies only to nodes with type
+\emph{``unknown''} (in this case, only one node). On Line~\texttt{35}, the user 
+creates a set definition with two key expressions: one key expression identifies
+the \texttt{\_id} of the node (e.g., \texttt{node.\_id}), and the other 
+key expression identifies the \texttt{\_id}s of the neighboring nodes 
+(e.g., \texttt{node.neighbors.extract("\_id")}). The one set produced
+contains the element itself and all its neighbors. We also include several 
 built-in properties for identifying structural relationships in the 
 graph, which are described in Section~\ref{sec:built-in-properties}.
 
@@ -195,15 +200,15 @@ for undirected graphs. We selected this list of properties as common structural 
 applicable to a variety of layout specifications. For example, the \texttt{depth}
 property is useful for producing hierarchical tree layouts and the 
 \texttt{sources}, \texttt{targets}, and \texttt{neighbors} properties
-reflect the structure produced by the graph edges. There are many other
-properties that could be useful for graph layouts that are not included 
+depict the relationship between nodes as dictated by the graph edges. 
+There are many other properties that could be useful for graph layouts that are not included 
 here and this list could easily be extended in the future to include other
 common properties.
 
 In addition to the built-in properties, we include several operators for 
 manipulating the resulting lists of elements: \texttt{length}, \texttt{reverse},
 \texttt{contains}, \texttt{sort}, and \texttt{extract}. The function 
-\texttt{length()} returns the length of the list; \texttt{reverse()} 
+\texttt{length()} returns the length of the list, \texttt{reverse()} 
 reverses the order of the list, and \texttt{contains(value)} determines if
 the list contains the identified value. The user may also choose to \texttt{sort} 
 the list based on a property of the elements or \texttt{extract} the value of each

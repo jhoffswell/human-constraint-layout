@@ -15,7 +15,7 @@ symmetrical tree layouts based on aesthetic properties.
 Radial layouts \cite{battista1998graph,herman2000graph} follow similar procedures using polar 
 coordinates, with a root node placed at the origin.
 Sugiyama-style layouts~\cite{sugiyama1981methods} visualize directed graphs by first assigning nodes to hierarchical layers and then iteratively adjusting node placement to minimize edge crossings.
-Force-directed techniques~\cite{tutte1963draw,kobourov2012spring,quinn1979forced,fruchterman1991graph} 
+Force-directed techniques~\cite{tutte1963draw,quinn1979forced,fruchterman1991graph,kobourov2012spring} 
 use physical simulation and/or optimization methods that model repulsive forces between nodes and spring-like forces on edges, and attempt to minimize the overall energy. 
 A number of popular tools support graph drawing, including D3.js~\cite{bostock:d3}, Gephi~\cite{bastian2009gephi},
 Graphviz~\cite{ellson2001graphviz}, and Cytoscape~\cite{shannon2003cytoscape}.
@@ -33,7 +33,7 @@ on pairs of nodes to support properties such as customized node ordering or
 downward pointing edges.
 Dwyer and Robertson~\cite{dwyer2009layout} present a strategy for supporting 
 non-linear constraints (such as circle constraints) that does not constrain node
-positions along a single axis, but can incorporate these techniques within
+positions along a single axis, and can incorporate these techniques within
 alternative layout strategies. 
 
 Kieffer et al.~\cite{kieffer2013incremental} present a force-directed,
@@ -53,9 +53,9 @@ expressive, nested layouts.
 
 WebCoLa~\cite{WebCoLa} is a JavaScript library based on libcola 
 for constraint-based layout in a web-programming context that can be used alongside
-D3~\cite{bostock:d3} or Cytoscape~\cite{shannon2003cytoscape}.
+D3 or Cytoscape.
 WebCoLa enables constraints on the alignment and
-position of nodes as well as high-level properties such as flow (to ensure
+position of nodes as well as the specification of high-level properties such as flow (to ensure
 edges point in the same direction) and non-overlapping constraints.
 While WebCoLa can support customized constraints,
 the specification of individual inter-node constraints can be labor intensive.
@@ -90,18 +90,18 @@ Motivated by challenges such as those
 described by Kearney, \projectname aims to provide users
 with a lightweight means for authoring domain-specific constraints for customized layouts.
 
-Biological systems also often require customized visualizations.
-Cerebral~\cite{barsky2008cerebral} is designed to visualize
-biological systems and supports interactive exploration of different
+Biological systems also benefit from customized visualizations.
+Cerebral~\cite{barsky2008cerebral} visualizes
+biological systems and supports interactive exploration across different
 experimental conditions. Genc and Dogrusoz~\cite{genc2003constrained}
 describe a constrained force-directed layout technique for visualizing 
 biological pathways. Cytoscape~\cite{shannon2003cytoscape} is a
 visualization system designed to explore biomolecular interaction networks
-and provides a framework for accepting customized plugins, including 
-a WebCoLa~\cite{WebCoLa} plugin for constraint-based layouts.
+and provides a framework for customized plugins, including 
+a WebCoLa plugin for constraint-based layouts.
 CrowdLayout~\cite{singh2018crowdlayout} introduces a strategy for crowdsourcing 
 biological network layouts from novices that produces more high-quality
-layouts than Cerebral~\cite{barsky2008cerebral} or Graphviz~\cite{ellson2001graphviz}.
+layouts than Cerebral or Graphviz.
 
 Kieffer et al.'s work on incremental grid layouts~\cite{kieffer2013incremental}
 was motivated by related work for grid layouts of biological 
@@ -113,16 +113,17 @@ by first identifying the aesthetic criteria humans use for manual graph layout,
 then producing a new algorithm named HOLA, which employs these techniques for improved,
 human-like layouts.
 
-Social networks often leverage force-directed layout techniques
-to demonstrate the connectedness or clustering of the nodes. However, some
-layouts may introduce additional separation or clustering
-to highlight properties such as ethnographically-identified groups~\cite{rothenberg1998using},
-the timeline of disease
-exposure~\cite{fitzpatrick2001preventable,mcelroy2003network},
+Social networks often leverage force-directed layout techniques to demonstrate the 
+connectedness or clustering of the graph nodes~\cite{scott1988social}. 
+However, some network layouts may introduce additional separation or clustering
+to highlight properties specific to the social network, 
+such as ethnographically-identified groups~\cite{rothenberg1998using},
+the timeline of disease exposure~\cite{fitzpatrick2001preventable,mcelroy2003network},
 or differences in reported relationship types~\cite{fu2011hiv}.
-For each of these domain areas, the visualizations are created using specially
+
+For each of these domain areas, the visualizations are often created using specially
 designed tools or layout algorithms to leverage properties of the data
-specific to the domain. With \projectname, we aim to reduce the barrier to
+specific to the domain of interest. With \projectname, we aim to reduce the barrier to
 creating customized graph layouts by providing a compact way to specify
 reusable domain-specific layouts that incorporate expert knowledge.
 

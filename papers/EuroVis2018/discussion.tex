@@ -21,9 +21,9 @@ number of constraints produced. In particular, the procedure for generating
 order constraints adds potentially superfluous inter-node 
 constraints. For the small tree example (Figure \ref{fig:small-tree-example}c), 
 the \projectname compiler produces 11 WebCoLa constraints.
-In this example, the \projectname compiler creates two constraints: $b.y < boundary1.y$ (Line~\texttt{44}) 
-and $c.y < boundary1.y$ (Line~\texttt{46}), in addition to a
-constraint that $b.y == c.y$ (Line~\texttt{32}-\texttt{36}), thus 
+The \projectname compiler creates two constraints: \mbox{$b.y < boundary1.y$ (Line~\texttt{44})} 
+and \mbox{$c.y < boundary1.y$ (Line~\texttt{46})}, in addition to a
+constraint that \mbox{$b.y == c.y$ (Line~\texttt{32}-\texttt{36})}, thus 
 making one of the first two constraints superfluous. 
 Future work should explore whether these redundant constraints have a 
 significant performance impact, and if they do, investigate 
@@ -57,7 +57,7 @@ strategies for debugging the graph layout.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \vspace{-7px}
-\subsection{Limitations to the Expressiveness}
+\subsection{Limitations of SetCoLa's Expressiveness}
 The current \projectname implementation requires the graph to be fully formed
 at input, including all properties (beyond the ones computed in Section 
 \ref{sec:built-in-properties}). All the edges and nodes in this graph are

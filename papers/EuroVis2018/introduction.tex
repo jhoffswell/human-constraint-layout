@@ -2,21 +2,21 @@
 \section{Introduction}
 By using an appropriate graph layout, node-link diagrams can effectively 
 convey properties of the network structure, such as the hierarchy or network connectedness. 
-Such visualizations are common across numerous domains, including 
-social networks \cite{scott1988social,rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv},
-biological systems \cite{barsky2008cerebral,shannon2003cytoscape,gehlenborg2010visualization,saraiya2005visualizing,becker2001graph,kojima2007efficient,li2005grid},
-and ecological networks \cite{hinke2004visualizing,harper2006dynamic,lavigne1996cod,baskerville2011spatial,yodzis1998local,cohen2003ecological,kearney2016blog,benson2016higher,kruger2017}. 
-Graph layouts may utilize domain-specific properties 
+Such visualizations are common across many domains, including 
+social networks~\cite{scott1988social,rothenberg1998using,fitzpatrick2001preventable,mcelroy2003network,fu2011hiv},
+biological systems~\cite{becker2001graph,shannon2003cytoscape,saraiya2005visualizing,li2005grid,kojima2007efficient,barsky2008cerebral,gehlenborg2010visualization},
+and ecological networks~\cite{lavigne1996cod,yodzis1998local,cohen2003ecological,hinke2004visualizing,harper2006dynamic,baskerville2011spatial,kearney2016blog,benson2016higher,kruger2017}. 
+Graph layouts may also utilize domain-specific properties 
 to emphasize relevant patterns in the data.
 In a biological pathway, nodes can be layered by their
-subcellular location to visualize the cellular structure
-(Figure~\ref{fig:tlr4-layout}). The additional ``transcriptionally regulated genes'' layer
-can further show the outcomes of this network, grouped by molecular function.
+subcellular location to visualize the cellular structure~(Figure~\ref{fig:tlr4-layout}). 
+The \emph{``transcriptionally regulated genes''} layer can
+further show the outcomes of this network, grouped by molecular function.
 
 \tlrfourLayout
 
 Many domain-specific layout techniques address particular needs
-for customized layouts~\cite{barsky2008cerebral,genc2003constrained,shannon2003cytoscape,kearney2017d3,kearney2017ecopath}. These
+for customized layouts~\cite{genc2003constrained,shannon2003cytoscape,barsky2008cerebral,kearney2017d3,kearney2017ecopath}. These
 techniques leverage common structural properties that are significant to the
 domain, such as known data hierarchies including cellular 
 structure (Figure~\ref{fig:tlr4-layout}) or trophic level
@@ -31,13 +31,13 @@ Creating a customized layout algorithm requires both
 domain and programming expertise, and so introduces a gap between 
 analysis needs and the techniques available to handle those needs.
 
-Constraints can be used to specify desired layout properties by
-allowing the designer to control the positions of nodes using
-domain-specific information.  However, many existing techniques
-for constraint layout require the user to define constraints
+An alternative strategy is for the designer to specify constraints on the 
+position of nodes based on domain-specific information. However, many existing 
+techniques for constraint layout require the user to define constraints
 on individual nodes or node pairs. This process can be labor
 intensive, requiring thousands of similar constraints and careful reasoning
-about which nodes should be constrained. Moreover, instance-level constraints 
+about which nodes should be constrained to produce the desired layout. 
+Moreover, instance-level constraints 
 (e.g., defined \emph{extensionally} via node indices) prevent
 reuse of a layout across various graphs from the same domain.
 
