@@ -45,15 +45,14 @@ elements do not match. By default, the orientation is defined as \setcolavalue{c
 and aligns the center point of each element. When the alignment axis is defined as \setcolavalue{x},
 the user may specify the orientation as either \setcolavalue{top} or \setcolavalue{bottom}, which introduces
 an offset to align the top or bottom of the nodes. When the alignment axis is 
-defined as \setcolavalue{y}, the user may specify the orientation as either \setcolavalue{right} or \setcolavalue{left}.
+defined as \setcolavalue{y}, the user may specify the orientation as either 
+\setcolavalue{right} or \setcolavalue{left}.
 
-These constraints are defined as follows.  Suppose that
-the user defines the \setcolaproperty{axis}
+These constraints are defined as follows. Suppose that the user defines the \setcolaproperty{axis}
 as \setcolavalue{x} and the \setcolaproperty{orientation} as \setcolavalue{top}.  Then, for all
-nodes $n_1$ and $n_2$ in $S$
-such that $n_1 \neq n_2$, we produce the constraint
-$n_1[y] - height(n_1)/2$ = $n_2[y] - height(n_2)/2$.  Analogous constraints
-are produced for the other possible combinations of axis and orientation.
+nodes $n_1$ and $n_2$ in set $S$ such that $n_1 \neq n_2$, we produce the constraint
+$n_1.y - n_1.height/2$ = $n_2.y - n_2.height/2$.
+Analogous constraints are produced for the other possible combinations of axis and orientation.
 Alignment constraints are one of the constraint types natively supported in
 WebCoLa. The WebCoLa alignment constraint takes the \nodeproperty{\_id} of all nodes
 that should be aligned and offsets for each node, which can be used to change the orientation.
@@ -63,17 +62,17 @@ that should be aligned and offsets for each node, which can be used to change th
 \constraint{Ex: \constraintname{position} \setcolavalue{right} \setcolaproperty{of} \setcolareference{top\_guide}}
 Position constraints ensure that all nodes in the set are positioned relative to
 a guide or previously named set. The user must specify the relative
-placement for the node position as one of \setcolavalue{left}, \setcolavalue{right}, 
+placement for the node as one of \setcolavalue{left}, \setcolavalue{right}, 
 \setcolavalue{above}, or \setcolavalue{below} relative to the guide.
-The user may optionally provide a \setcolaproperty{gap} that enforces additional spacing
-between the nodes and identified guide (\figureline{fig:syphilis-spec}{}{7}).
+The user may optionally define the size of the \setcolaproperty{gap}
+between the node and guide (\figureline{fig:syphilis-spec}{}{7}).
 
 These constraints are defined as follows. Suppose the user defines the
 \setcolaproperty{position} as \setcolavalue{left},
-the guide as \setcolareference{g}, and the \setcolaproperty{gap} as \setcolavalue{v}. For all nodes $n$
-in $S$, we define a constraint that \mbox{$n[x] + v < g[x]$}.
+the guide as \setcolavalue{g}, and the \setcolaproperty{gap} as \setcolavalue{v}. 
+For all nodes $n \in S_1$, we define a constraint that \mbox{$n.x + v < g.x$}.
 Position constraints are one of the constraint types natively supported in
-WebCoLa. The WebCoLa position constraint is defined by the node 
+WebCoLa and are defined by the node 
 \nodeproperty{\_id}s, \setcolaproperty{axis}, and desired \setcolaproperty{gap}. For each node
 in set $S_1$, we produce one position constraint relative to the specified guide.
 When the position constraint is defined relative to a named set $S_2$,
@@ -94,10 +93,10 @@ or not to \setcolaproperty{reverse} the order of the elements.
 
 These constraints are defined as follows.  Suppose the user defines the \setcolaproperty{axis} as
 \setcolavalue{x} and the property to sort \setcolaproperty{by} as \nodeproperty{depth}. For all nodes $n_1$ 
-and $n_2$ in $S$  such that $n_1 \neq n_2$ then $n_1[x]$ < $n_2[x]$
-if $n_1[depth] < n_2[depth]$. We optimize the implementation of this order
+and $n_2$ in set $S$ such that $n_1 \neq n_2$ then $n_1.x$ < $n_2.x$
+if \mbox{$n_1.depth < n_2.depth$}. We optimize the implementation of this order
 constraint by only producing constraints between adjacent nodes in the sorted 
-order; in other words, for a set $S$ with $N$ nodes we produce $O(N)$ 
+order; in other words, for a set $S$ with $n$ nodes we produce $O(n)$ 
 constraints on the node positions.
 
 When applying constraints to elements that are sets rather than to nodes
@@ -108,7 +107,7 @@ identify the order of the sets and produce constraints with the internal
 nodes for the set. For constraint definition $C$ with $s$ sets, let $S_1$ and
 $S_2$ be two adjacent sets such that $S_1 < S_2$ in the sort order. Let $b_1$ be
 the boundary between these two sets. We produce constraints such that for all
-nodes $n \in S_1$ then $n[x] < b_1[x]$ and for all nodes $m \in S_2$ then $b_1[x] < m[x]$.
+nodes $n \in S_1$ then $n.x < b_1.x$ and for all nodes $m \in S_2$ then $b_1.x < m.x$.
 Users may optionally specify a \setcolaproperty{band} property (\figureline{fig:syphilis-spec}{}{18})
 that determines a size for each set region to introduce fixed spacing between regions.
 In this case, we create s + 1 boundary guides and generate additional 
@@ -157,9 +156,9 @@ boundary~(\figureline{fig:tlr4-spec}{}{28}).
 This constraint produces a visual grouping of nodes that is more strict than the cluster constraint.
 These constraints are defined as follows. We produce a minimally enclosing rectangle 
 $B$ with properties $B.x1$, $B.x2$, $B.y1$, $B.y2$. For all nodes
-$n$ in $S$, we define constraints such that $B.x1 < n[x]$, \mbox{$n[x] < B.x2$},
-$B.y1 < n[y]$, $n[y] < B.y2$. For all nodes $m$ not in $S$, we define
-constraints such that $m[x] < B[x1]$ $||$ $B[x2] < m[x]$ and $m[y] < B[y1]$ $||$ $B[y2] < m[x]$.
+$n \in S$, we define constraints such that $B.x1 < n.x$, \mbox{$n.x < B.x2$},
+$B.y1 < n.y$, and $n.y < B.y2$. For all nodes $m \notin S$, we define
+constraints such that \mbox{$m.x < B.x1$ $||$ $B.x2 < m.x$} and \mbox{$m.y < B.y1$ $||$ $B.y2 < m.y$}.
 We implement hull constraints in WebCoLa using its built-in support for 
 specifying groups, which produce a boundary around 
 the nodes defined by their \nodeproperty{\_id}.
