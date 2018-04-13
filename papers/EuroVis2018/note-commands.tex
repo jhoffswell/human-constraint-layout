@@ -29,12 +29,16 @@
 % \definecolor{figuregreen}{RGB}{82,102,0} % dark figure green
 % \definecolor{figureblue}{RGB}{39,66,102} % dark figure blue
 % \definecolor{figurepurple}{RGB}{83,54,102} % dark figure purple
-\definecolor{figuregreen}{RGB}{134,166,0} % medium figure green: brightness: 40->65
-\definecolor{figureblue}{RGB}{63,108,166} % medium figure blue: brightness: 40->65
-\definecolor{figurepurple}{RGB}{135,88,166} % medium figure purple: brightness 40->65
-\newcommand{\figuregreen}[1]{\textcolor{figuregreen}{#1}}
-\newcommand{\figureblue}[1]{\textcolor{figureblue}{#1}}
-\newcommand{\figurepurple}[1]{\textcolor{figurepurple}{#1}}
+% \definecolor{figuregreen}{RGB}{134,166,0} % medium figure green: brightness: 40->65
+% \definecolor{figureblue}{RGB}{63,108,166} % medium figure blue: brightness: 40->65
+% \definecolor{figurepurple}{RGB}{135,88,166} % medium figure purple: brightness 40->65
+
+\definecolor{figuregreen}{RGB}{198,219,199} % medium figure green: brightness: 40->65
+\definecolor{figureblue}{RGB}{182,197,212} % medium figure blue: brightness: 40->65
+\definecolor{figurepurple}{RGB}{180,165,196} % medium figure purple: brightness 40->65
+\newcommand{\figuregreen}[1]{\textcolor{figuregreen}{\textbf{#1}}}
+\newcommand{\figureblue}[1]{\textcolor{figureblue}{\textbf{#1}}}
+\newcommand{\figurepurple}[1]{\textcolor{figurepurple}{\textbf{#1}}}
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
@@ -48,5 +52,5 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
-\newcommand{\linenumber}[1]{Line \texttt{#1}}
-\newcommand{\figureline}[3]{Figure~\ref{#1}#2, \linenumber{#3}}
+\newcommand{\linenumber}[1]{Line~\texttt{#1}}
+\newcommand{\figureline}[3]{\mbox{Figure~\ref{#1}#2, \linenumber{#3}}}

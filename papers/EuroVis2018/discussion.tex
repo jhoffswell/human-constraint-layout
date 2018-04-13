@@ -21,9 +21,9 @@ number of constraints produced. In particular, the procedure for generating
 order constraints adds potentially superfluous inter-node 
 constraints. For the small tree example (Figure \ref{fig:small-tree-example}c), 
 the \projectname compiler produces 11 WebCoLa constraints.
-The \projectname compiler creates two constraints: \mbox{$b.y < boundary1.y$ (Line~\texttt{44})} 
-and \mbox{$c.y < boundary1.y$ (Line~\texttt{46})}, in addition to a
-constraint that \mbox{$b.y == c.y$ (Line~\texttt{32}-\texttt{36})}, thus 
+The \projectname compiler creates two constraints: \mbox{$b.y < boundary1.y$ (\linenumber{39})} 
+and \mbox{$c.y < boundary1.y$ (\linenumber{41})}, in addition to a
+constraint that \mbox{$b.y == c.y$ (Line~\texttt{29}-\texttt{32})}, thus 
 making one of the first two constraints superfluous. 
 Future work should explore whether these redundant constraints have a 
 significant performance impact, and if they do, investigate 
